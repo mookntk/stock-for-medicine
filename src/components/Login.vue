@@ -2,75 +2,67 @@
 
 <!------ Include the above in your HEAD tag ---------->
 
-<div class="container login-container">
-    
-            <div class="row">
-                <div class="col-md-6 login-form-1">
-                    <h3>Login for Form 1</h3>
-                    <form>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Your Email *" value="" v-model = "username" />
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Your Password *" value="" v-model = "password"/>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="btnSubmit" value="Login" @click="login"/>
-                        </div>
-                        <div class="form-group">
-                            <a href="#" class="ForgetPwd">Forget Password?</a>
-                        </div>
-                        <p>{{username}}</p>
-                    </form>
-                </div>
-
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-md-6 login-form-1">
+                <h3>Login for Form 1</h3>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Your Email *" value="" v-model = "username" />
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Your Password *" value="" v-model = "password"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btnSubmit" value="Login" @click="login"/>
+                    </div>
+                    <div class="form-group">
+                        <a href="#" class="ForgetPwd">Forget Password?</a>
+                    </div>
+                    <p>{{username}}</p>
+                </form>
             </div>
         </div>
+    </div>
 </template>
 <script>
 // import ConnectDatabase from '../server/server'
 import axios from 'axios'
-import mysql from 'mysql'
-import net from 'net'
-// const con = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "root",
-//     database: "test"
-// });
-// console.log(con)
-// con.connect(function(err) {
-//     if (err) throw err;
-//     console.log("Connected!");
-//     let sql = `SELECT * FROM user;`;
-//     con.query(sql, function (err, result) {
-//       if (err) throw err;
-//       console.log(result);
-//       console.log("The Database is created!!");
-//     });
-// });
   export default {
   data(){
       return{
-          username:"admin",
-          password:"admin",
-          type:""
+          username:"hos_staff",
+          password:"1234",
+          type:"",
+          data:""
       }
     },
     mounted(){
+        axios.get("http://localhost:3000/user")
+        .then(res => {
+            this.data=res.data
+            console.log(this.data)}
         
+        )
+        // this.allRecords();
         // ConnectDatabase(con);
         
     },
-    methods:{
+    methods: {
         login:function(){
-           axios.get("http://localhost:3306/login/"+this.username)
-        .then(response=>{
-            console.log(response)
-        }) 
+            console.log("login")
+            var size = 0;
+        for (var key in this.data) {
+                if (this.data.hasOwnProperty(key)) size++;
+            }
+            for(var i=0;i<size;i++){
+                if(this.data[i].username==this.username&&this.data[i].password==this.password){
+                    this.$router.push('/about')
+                }
+            }
         }
-    }
-  }
+   }
+}
 
 </script>
 
