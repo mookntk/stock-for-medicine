@@ -38,28 +38,33 @@ import axios from 'axios'
       }
     },
     mounted(){
-        axios.get("http://localhost:3000/user")
-        .then(res => {
-            this.data=res.data
-            console.log(this.data)}
+        // axios.post("http://localhost:3000/user/"+"hos_staff")
+        // .then(res => {
+        //     this.data=res.data
+        //     console.log(this.data)}
         
-        )
+        // )
         // this.allRecords();
         // ConnectDatabase(con);
         
     },
     methods: {
         login:function(){
-            console.log("login")
-            var size = 0;
-        for (var key in this.data) {
-                if (this.data.hasOwnProperty(key)) size++;
-            }
-            for(var i=0;i<size;i++){
-                if(this.data[i].username==this.username&&this.data[i].password==this.password){
+            axios.post("http://localhost:3000/user/hos_staff")
+        .then(res => {
+            this.data=res.data
+            console.log(this.data)
+            if(this.data[0].password==this.password){
                     this.$router.push('/about')
-                }
-            }
+            }}
+
+        )
+        //     var size = 0;
+        // for (var key in this.data) {
+        //         if (this.data.hasOwnProperty(key)) size++;
+        //     }
+        // console.log(this.data[0])
+            
         }
    }
 }

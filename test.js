@@ -12,22 +12,26 @@ const con = mysql.createConnection({
     // port: "3307"
     
   });
+  con.connect(function(err) {if (err) throw err;});
 console.log(con)
-var ConnectDatabase = function(con) {
+var ConnectDatabase = function(username) {
   
-  con.connect(function(err) {
-    if (err) throw err;
+  
+    
     // console.log("Connected!");
-    let sql = `SELECT * FROM user;`;
+    let sql = `SELECT username , password FROM user
+              WHERE username = "${username}";`;
+    console.log(sql)
     con.query(sql, function (err, result) {
       if (err) throw err;
       db.result = result
-      // console.log(result);
+      
+      console.log(result);
       // console.log("The Database is created!!");
     });
-  });
+  
 }
-ConnectDatabase(con);
+// ConnectDatabase(con);
 
 // var tasks = require('./routes/tasks')
 // var cors = require('cors')
@@ -41,7 +45,8 @@ var app = express()
 // app.use(bodyParser.urlencoded({ extended: false }))
 
 // app.use('/api', tasks)
-app.get('/user', (req, res, next) => {
+app.post('/user/:username', (req, res, next) => {
+    ConnectDatabase(req.params.username);
     res.send(db.result)
   })
   
