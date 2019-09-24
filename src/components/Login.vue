@@ -1,7 +1,7 @@
 <template>
     <v-app id="inspire" class="cyan lighten-4" >
      <div style="position:absolute;width:100%">
-        <v-alert border="left" v-if="loader" type="error" > Incorrect username or password </v-alert> 
+        <v-alert border="left" v-if="alert" type="error" > Incorrect username or password </v-alert> 
      </div>
     <v-content >
       <v-container 
@@ -51,7 +51,7 @@
               </v-card-text>
               <v-card-actions>
                 <div class="flex-grow-1"></div>
-                <v-btn color="teal lighten-2 white--text" large block  :loading="loader" @click="login" >Login</v-btn>
+                <v-btn color="teal lighten-2 white--text" large block  @click="login" >Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -60,6 +60,7 @@
     </v-content>
   </v-app>
 </template>
+
 <script>
 // import ConnectDatabase from '../server/server'
 import axios from 'axios'
@@ -67,23 +68,18 @@ import axios from 'axios'
   data(){
       return{
           username:"hos_staff",
-          password:"1234",
+          password:"",
           type:"",
           data:"",
-          loader: false,
+          alert: false,
           showpass: false
       }
     },
     mounted(){
-        // axios.post("http://localhost:3000/user/"+"hos_staff")
-        // .then(res => {
-        //     this.data=res.data
-        //     console.log(this.data)}
-        
-        // )
-        // this.allRecords();
-        // ConnectDatabase(con);
-        
+      // console.log(localStorage.getItem(login))
+      if(localStorage.getItem('login')==true){
+        this.$router.push('/about')
+      }
     },
     methods: {
         hidepass:function(){
@@ -94,78 +90,18 @@ import axios from 'axios'
         .then(res => {
             this.data=res.data
             console.log(this.data)
+            
             if(this.data[0].password==this.password){
+              this.alert = false
+              localStorage.setItem('login', true)
+              console.log(localStorage.getItem('login'))
               this.$router.push('/about')
             }
             else{
-              this.loader = true
+              this.alert = true
             }}
-
         )
-        //     var size = 0;
-        // for (var key in this.data) {
-        //         if (this.data.hasOwnProperty(key)) size++;
-        //     }
-        // console.log(this.data[0])
-        
         }
    }
 }
-
 </script>
-
-<style scope>
-.login-container{
-    margin-top: 5%;
-    margin-bottom: 5%;
-}
-.login-form-1{
-    padding: 5%;
-    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-}
-.login-form-1 h3{
-    text-align: center;
-    color: #333;
-}
-.login-form-2{
-    padding: 5%;
-    background: #0062cc;
-    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-}
-.login-form-2 h3{
-    text-align: center;
-    color: #fff;
-}
-.login-container form{
-    padding: 10%;
-}
-.btnSubmit
-{
-    width: 50%;
-    border-radius: 1rem;
-    padding: 1.5%;
-    border: none;
-    cursor: pointer;
-}
-.login-form-1 .btnSubmit{
-    font-weight: 600;
-    color: #fff;
-    background-color: #0062cc;
-}
-.login-form-2 .btnSubmit{
-    font-weight: 600;
-    color: #0062cc;
-    background-color: #fff;
-}
-.login-form-2 .ForgetPwd{
-    color: #fff;
-    font-weight: 600;
-    text-decoration: none;
-}
-.login-form-1 .ForgetPwd{
-    color: #0062cc;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-</style>

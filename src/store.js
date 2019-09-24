@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     status: '',
-  	user_type: localStorage.getItem('user_type') || '',
+    user_type: localStorage.getItem('user_type') || '',
+    login: localStorage.getItem('login') || ''
   },
   mutations: {
 

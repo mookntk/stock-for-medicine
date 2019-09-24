@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar app v-if="false">
-      <v-toolbar-title  class="headline text-uppercase">
+    <v-app-bar app v-if="logged=='true'">
+      <v-toolbar-title  v-if="logged" class="headline text-uppercase">
         <span>Vuetify</span>
         <span class="font-weight-light">MATERIAL DESIGN</span>
       </v-toolbar-title>
@@ -30,8 +30,13 @@ export default {
     HelloWorld,
     Login
   },
-  data: () => ({
-    //
-  }),
+  data(){
+    return {
+      logged : localStorage.getItem('login')
+    }
+  },
+  mounted(){
+    console.log("logged "+this.logged)
+  }
 };
 </script>
