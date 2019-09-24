@@ -1,7 +1,7 @@
 <template>
     <v-app-bar app v-if="logged=='true'">
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
+        <span>STOCK FOR MEDICINE</span>
         <span class="font-weight-light">MATERIAL DESIGN</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
