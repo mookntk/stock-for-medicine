@@ -1,35 +1,31 @@
 var express = require('express')
 var path = require('path')
 var bodyParser = require('body-parser')
-const mysql = require('mysql');
+const mysql = require('mysql')
 
 const db = {}
 const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "test",
-    // port: "3307"
-    
-  });
-  con.connect(function(err) {if (err) throw err;});
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'test'
+  // port: "3307"
+
+})
+con.connect(function (err) { if (err) throw err })
 console.log(con)
-var ConnectDatabase = function(username) {
-  
-  
-    
-    // console.log("Connected!");
-    let sql = `SELECT username , password FROM user
-              WHERE username = "${username}";`;
-    console.log(sql)
-    con.query(sql, function (err, result) {
-      if (err) throw err;
-      db.result = result
-      
-      console.log(result);
-      // console.log("The Database is created!!");
-    });
-  
+var ConnectDatabase = function (username) {
+  // console.log("Connected!");
+  let sql = `SELECT username , password FROM user
+              WHERE username = "${username}";`
+  console.log(sql)
+  con.query(sql, function (err, result) {
+    if (err) throw err
+    db.result = result
+
+    console.log(result)
+    // console.log("The Database is created!!");
+  })
 }
 // ConnectDatabase(con);
 
@@ -46,10 +42,10 @@ var app = express()
 
 // app.use('/api', tasks)
 app.post('/user/:username', (req, res, next) => {
-    ConnectDatabase(req.params.username);
-    res.send(db.result)
-  })
-  
-app.listen(port, function() {
+  ConnectDatabase(req.params.username)
+  res.send(db.result)
+})
+
+app.listen(port, function () {
   console.log('Server started on port ' + port)
 })
