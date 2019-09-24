@@ -34,6 +34,7 @@
                     prepend-icon="mdi-account"
                     type="text"
                     v-model = "username"
+                    required
                   >
                   </v-text-field>
                   <v-text-field
@@ -44,7 +45,9 @@
                     :type="showpass?'text':'password'"
                     :append-icon="showpass ? 'mdi-eye' : 'mdi-eye-off'"
                     v-model="password"
+                    required
                     @click:append="showpass = !showpass"
+                    @keyup.enter = "login"
                   >
                   </v-text-field>
                 </v-form>
@@ -101,6 +104,9 @@ import axios from 'axios'
               this.alert = true
             }}
         )
+        },
+        entertologin(e){
+
         }
    }
 }
