@@ -81,7 +81,7 @@ import axios from 'axios'
     mounted(){
       // console.log(localStorage.getItem(login))
       if(localStorage.getItem('login')==true){
-        this.$router.push('/about')
+        this.$router.push('/admin')
       }
     },
     methods: {
@@ -98,7 +98,7 @@ import axios from 'axios'
               this.alert = false
               localStorage.setItem('login', true)
               console.log(localStorage.getItem('login'))
-              this.$router.push('/about')
+              this.$router.push('/admin')
             }
             else{
               this.alert = true
