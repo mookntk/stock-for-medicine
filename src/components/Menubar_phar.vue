@@ -1,13 +1,13 @@
 <template>
-    <v-app-bar app v-if="logged=='true'">
+    <v-app-bar app v-if="logged=='true'" class="teal lighten-3">
       <v-toolbar-title class="headline text-uppercase ">
-        <span>STOCK FOR MEDICINE</span>
+        <span>Pharmacist</span>
         <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn text @click="click" value="order">Order</v-btn>
-        <v-btn text @click="click" value="notification">
+        <v-btn depressed @click="click" value="order" :color="btncolor[0]">Order</v-btn>
+        <v-btn depressed @click="click" value="notification" :color="btncolor[1]">
           <v-icon>mdi-bell</v-icon>
         </v-btn>
       </v-toolbar-items>
@@ -41,26 +41,27 @@ export default {
         return{
             logged : localStorage.getItem('login'),
             items: ['ph_staff','เลขใบอนุญาต','Logout'],
-            active: [false,false]
+            active: [false,false],
+            btncolor: ["teal lighten-3","teal lighten-3"]
         }
     },
     methods: {
         logout:function(e){
             console.log(e.currentTarget)
             // console.log(localStorage.getItem('login'))
-            // this.$router.push('/')
+            this.$router.push('/')
         },
         click:function(e){
           console.log(e.currentTarget.value)
           if(e.currentTarget.value == "notification"){
-            this.active[1] = true
-            this.active[0] = false
-            console.log(this.active)
+            this.btncolor[1] = "teal lighten-1"
+            this.btncolor[0] = "teal lighten-3"
+            console.log(this.btncolor)
           }
           else{
-            this.active[0] = true
-            this.active[1] = false
-            console.log(this.active)
+            this.btncolor[0] = "teal lighten-1"
+            this.btncolor[1] = "teal lighten-3"
+            console.log(this.btncolor)
           }
         }
    }

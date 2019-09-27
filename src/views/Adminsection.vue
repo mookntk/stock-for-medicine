@@ -1,8 +1,21 @@
 <template>
-  <v-app class="admin">
+  <v-app class="admin cyan lighten-5" >
     <Menuadmin />
     <v-content>
-      <h1>Welcome to Staff Management Page!</h1>
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <v-col
+            cols="3"
+            sm="8"
+            md="5"
+            align="center"
+            justify="center"
+          >
+          <h1 >Welcome to Staff Management Page!</h1>
+          </v-col>
+        </v-row>
       <!-- <v-btn @click="logout">logout</v-btn> -->
     </v-content>
   </v-app>

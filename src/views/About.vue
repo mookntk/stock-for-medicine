@@ -1,5 +1,5 @@
 <template>
-  <v-app class="about">
+  <v-app class="about cyan lighten-5">
     <Menubar/>
     <v-content>
       {{date_now}}
@@ -8,20 +8,20 @@
     :items="desserts"
     :search="search"
     sort-by="calories"
-    class="elevation-1"
-    @click="dialog($event)"
+    class="elevation-1 "
   >
     <template v-slot:item.carbs="{ item }">
       <v-chip :color="getColor(item.carbs)" dark>{{ item.carbs }}</v-chip>
     </template>
     <template v-slot:top>
-      <v-toolbar flat color="white">
+      <v-toolbar flat >
         <v-toolbar-title>Today</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
           vertical
         ></v-divider>
+        <div class="flex-grow-1 "></div>
         <div class="flex-grow-1"></div>
         <v-text-field
         v-model="search"
@@ -30,7 +30,7 @@
         single-line
         hide-details
       ></v-text-field>
-        <v-dialog v-model="dialog" max-width="500px">
+        <!-- <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
             <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
           </template>
@@ -65,11 +65,11 @@
               <v-btn color="blue darken-1" text @click="save">Save</v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-dialog> -->
       </v-toolbar>
     </template>
 
-    <template v-slot:item.action="{ item }">
+    <!-- <template v-slot:item.action="{ item }">
       <v-icon
         small
         class="mr-2"
@@ -83,12 +83,12 @@
       >
         mdi-delete
       </v-icon>
-    </template>
+    </template> -->
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
     </template>
   </v-data-table>
-    <v-btn @click="logout">logout</v-btn>
+    <!-- <v-btn @click="logout">logout</v-btn> -->
     </v-content>
   </v-app>
 </template>
@@ -120,7 +120,7 @@ export default {
         { text: 'Name', value: 'calories' },
         { text: 'Due date', value: 'fat' },
         { text: 'Status', value: 'carbs' },
-        { text: 'Actions', value: 'action', sortable: false },
+        // { text: 'Actions', value: 'action', sortable: false },
       ],
       desserts: [],
       editedIndex: -1,

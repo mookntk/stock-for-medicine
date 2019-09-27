@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app v-if="logged=='true'">
+  <v-app-bar app v-if="logged=='true'" class="teal lighten-3">
     <v-toolbar-title class="headline text-uppercase">
       <span>Staff Management</span>
     </v-toolbar-title>

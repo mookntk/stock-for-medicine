@@ -23,7 +23,7 @@
                 dark
                 flat
               >
-                <v-toolbar-title>Stock For Medicine</v-toolbar-title>
+                <v-toolbar-title>Hospital</v-toolbar-title>
                 <div class="flex-grow-1"></div>
               </v-toolbar>
               <v-card-text>
@@ -81,7 +81,7 @@ import axios from 'axios'
     mounted(){
       // console.log(localStorage.getItem(login))
       if(localStorage.getItem('login')==true){
-        this.$router.push('/admin')
+        this.$router.push('/about')
       }
     },
     methods: {
@@ -98,7 +98,7 @@ import axios from 'axios'
               this.alert = false
               localStorage.setItem('login', true)
               console.log(localStorage.getItem('login'))
-              this.$router.push('/admin')
+              this.$router.push('/about')
             }
             else{
               this.alert = true

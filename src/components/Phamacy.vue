@@ -1,5 +1,5 @@
 <template>
-  <v-app class="admin">
+  <v-app class="admin cyan lighten-5">
     <Menuadmin />
     <v-data-table :search="search" :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
       <template v-slot:top>
