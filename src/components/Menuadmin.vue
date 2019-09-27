@@ -6,9 +6,9 @@
     <div class="flex-grow-1"></div>
 
     <v-toolbar-items>
-      <v-btn text @click="viewallhosstaff">Hospital staff</v-btn>
-      <v-btn text @click="viewallphamacy">Phamacy</v-btn>
-      <v-btn text @click="viewallphamacist">Phamacist</v-btn>
+      <v-btn depressed @click="viewallhosstaff" value="hosstaff" :color="btncolor">Hospital staff</v-btn>
+      <v-btn depressed @click="viewallphamacy" value="phamacy" :color="btncolor1">Phamacy</v-btn>
+      <v-btn depressed @click="viewallphamacist" value="phamacist" :color="btncolor2">Phamacist</v-btn>
 
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
@@ -30,7 +30,10 @@ export default {
   data() {
     return {
       logged: localStorage.getItem("login"),
-      items: ["ชื่อ-สกุล", "Logout"]
+      items: ["ชื่อ-สกุล", "Logout"],
+      btncolor: "teal lighten-3",
+      btncolor1: "teal lighten-3",
+      btncolor2: "teal lighten-3"
     };
   },
   methods: {
@@ -39,16 +42,69 @@ export default {
       console.log(localStorage.getItem("login"));
       this.$router.push("/");
     },
-    viewallhosstaff: function(){
-        this.$router.push('/hospitalstaff')
+
+    viewallhosstaff: function(e) {
+      console.log(e.currentTarget.value);
+      if (e.currentTarget.value == "hosstaff") {
+        this.btncolor = "teal lighten-1";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "phamacy") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-1";
+        this.btncolor2 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "phamacist") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-1";
+        console.log(this.btncolor);
+      }
+      this.$router.push("/hospitalstaff");
     },
-    viewallphamacy: function(){
-        this.$router.push('/phamacy')
+
+    viewallphamacy: function(e) {
+      console.log(e.currentTarget.value);
+      if (e.currentTarget.value == "phamacy") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-1";
+        this.btncolor2 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "้hosstaff") {
+        this.btncolor = "teal lighten-1";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "้phamacist") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-1";
+        console.log(this.btncolor);
+      }
+      this.$router.push("/phamacy");
     },
-    viewallphamacist: function(){
-        this.$router.push('/phamacist')
+    
+    viewallphamacist: function(e) {
+      console.log(e.currentTarget.value);
+      if (e.currentTarget.value == "phamacist") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-1";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "hosstaff")  {
+        this.btncolor = "teal lighten-1";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "phamacy")  {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-1";
+        this.btncolor2 = "teal lighten-3";
+        console.log(this.btncolor);
+      }
+      this.$router.push("/phamacist");
     }
-    }
-  
+  }
 };
 </script>
