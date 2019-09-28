@@ -57,6 +57,11 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './components/Phamacist.vue')
     }
+    ,{
+      path: '/Orderdetail',
+      name: 'Orderdatail',
+      component: () => import(/* webpackChunkName: "about" */ './views/OrderDetail.vue')
+    }
   ]
 })
 

@@ -14,6 +14,7 @@
             justify="center"
           >
           <h1 >Welcome to Staff Management Page!</h1>
+          <router-view></router-view>
           </v-col>
         </v-row>
       <!-- <v-btn @click="logout">logout</v-btn> -->

@@ -13,24 +13,17 @@ const con = mysql.createConnection({
 
 })
 con.connect(function (err) { if (err) throw err })
-console.log(con)
+
 var ConnectDatabase = function (username) {
   // console.log("Connected!");
   let sql = `SELECT username , password FROM user
               WHERE username = "${username}";`
-  console.log(sql)
   con.query(sql, function (err, result) {
     if (err) throw err
     db.result = result
-
     console.log(result)
-    // console.log("The Database is created!!");
   })
 }
-// ConnectDatabase(con);
-
-// var tasks = require('./routes/tasks')
-// var cors = require('cors')
 
 var port = 3000
 
