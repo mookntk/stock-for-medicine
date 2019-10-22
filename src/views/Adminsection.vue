@@ -13,7 +13,7 @@
             align="center"
             justify="center"
           >
-          <h1 >Welcome to Staff Management Page!</h1>
+          <h1 >ยินดีต้อนรับท่านเข้าสู่หน้าการจัดการเจ้าหน้าที่ :)</h1>
           </v-col>
         </v-row>
       <!-- <v-btn @click="logout">logout</v-btn> -->
@@ -28,6 +28,7 @@ import Menuadmin from "../components/Menuadmin";
 import Hospitalstaff from "../components/Hospitalstaff";
 import Phamacy from "../components/Phamacy";
 import Phamacist from "../components/Phamacist";
+import Medicine from "../components/Medicine";
 export default {
   data() {
     return {};
@@ -36,7 +37,8 @@ export default {
     Menuadmin,
     Hospitalstaff,
     Phamacy,
-    Phamacist
+    Phamacist,
+    Medicine
   }
 //   },
 //   methods: {

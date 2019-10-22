@@ -10,12 +10,12 @@
     >
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title>Phamacy</v-toolbar-title>
+          <v-toolbar-title>ร้านขายยา</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="Search"
+            label="ค้นหา"
             single-line
             hide-details
           ></v-text-field>
@@ -23,7 +23,7 @@
           <div class="flex-grow-1"></div>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark class="mb-2" v-on="on">Add new phamacy</v-btn>
+              <v-btn color="primary" dark class="mb-2" v-on="on">เพิ่มร้านขายยา</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -34,22 +34,22 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
+                      <v-text-field v-model="editedItem.name" label="ชื่อร้านขายยา"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.address" label="address"></v-text-field>
+                      <v-text-field v-model="editedItem.address" label="ที่อยู่"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.subdistrict" label="subdistrict"></v-text-field>
+                      <v-text-field v-model="editedItem.subdistrict" label="ตำบล/แขวง"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.district" label="district"></v-text-field>
+                      <v-text-field v-model="editedItem.district" label="อำเภอ/เขต"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.province" label="province"></v-text-field>
+                      <v-text-field v-model="editedItem.province" label="จังหวัด"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.telno" label="telno"></v-text-field>
+                      <v-text-field v-model="editedItem.telno" label="เบอร์ติดต่อ"></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -57,8 +57,8 @@
 
               <v-card-actions>
                 <div class="flex-grow-1"></div>
-                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="close">ยกเลิก</v-btn>
+                <v-btn color="blue darken-1" text @click="save">เสร็จสิ้น</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -66,7 +66,7 @@
       </template>
       <template v-slot:item.action="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon small class="mr-5" @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -82,13 +82,13 @@ export default {
     search: "",
     dialog: false,
     headers: [
-      { text: "Name", value: "name" },
-      { text: "Address", value: "address" },
-      { text: "Sub-district", value: "subdistrict" },
-      { text: "Distrcit", value: "district" },
-      { text: "Province", value: "province" },
-      { text: "Telephone number", value: "telno", sortable: false  },
-      { text: "Action", value: "action", sortable: false }
+      { text: "ชื่อร้านขายยา", value: "name" },
+      { text: "ที่อยู่", value: "address" },
+      { text: "ตำบล / แขวง", value: "subdistrict" },
+      { text: "อำเภอ/เขต", value: "district" },
+      { text: "จังหวัด", value: "province" },
+      { text: "เบอร์ติดต่อ", value: "telno", sortable: false  },
+      { text: "แก้ไข / ลบ", value: "action", sortable: false }
     ],
     phamacy: [],
     editedIndex: -1,
@@ -115,7 +115,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "เพิ่มร้านขายยา" : "แก้ไขข้อมูลร้านขายยา";
     }
   },
 

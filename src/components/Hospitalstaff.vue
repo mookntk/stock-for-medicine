@@ -10,12 +10,12 @@
     >
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title>Hospital Staff</v-toolbar-title>
+          <v-toolbar-title>เภสัชกรโรงพยาบาล</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="Search"
+            label="ค้นหา"
             single-line
             hide-details
           ></v-text-field>
@@ -23,7 +23,7 @@
           <div class="flex-grow-1"></div>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark class="mb-2" v-on="on">Add new hospitall staff</v-btn>
+              <v-btn color="primary" dark class="mb-2" v-on="on">เพิ่มเภสัชกรของโรงพยาบาล</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -34,17 +34,17 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
+                      <v-text-field v-model="editedItem.name" label="ชื่อ"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.surname" label="Surname"></v-text-field>
+                      <v-text-field v-model="editedItem.surname" label="นามสกุล"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.username" label="username"></v-text-field>
+                      <v-text-field v-model="editedItem.username" label="ชื่อผู้ใช้"></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <!-- <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.password" label="password"></v-text-field>
-                    </v-col>
+                    </v-col> -->
                     <!-- <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>-->
                     <!-- </v-col> -->
@@ -54,16 +54,17 @@
 
               <v-card-actions>
                 <div class="flex-grow-1"></div>
-                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="close">ยกเลิก</v-btn>
+                <v-btn color="blue darken-1" text @click="save">เสร็จสิ้น</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
         </v-toolbar>
       </template>
       <template v-slot:item.action="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon small class="mr-6" @click="editItem(item)">mdi-pencil</v-icon>
+        <v-icon small class="mr-6" @click="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon small @click="forgetpw(item)">mdi-email-send</v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -79,27 +80,27 @@ export default {
     search: "",
     dialog: false,
     headers: [
-      { text: "Name", value: "name" },
-      { text: "Surname", value: "surname" },
+      { text: "ชื่อ", value: "name" },
+      { text: "นามสกุล", value: "surname" },
       { text: "username", value: "username", sortable: false },
-      { text: "password", value: "password", sortable: false },
-      // { text: "Carbs (g)", value: "carbs" },
-      // { text: "Protein (g)", value: "protein" },
-      { text: "Actions", value: "action", sortable: false }
+      // { text: "password", value: "password", sortable: false },
+      { text: "แก้ไข / ลบ / ส่งรหัสผ่านใหม่ให้ผู้ใช้", value: "action", sortable: false }
     ],
     hosstaff: [],
     editedIndex: -1,
     editedItem: {
       name: "",
       surname: "",
-      username: "",
-      password: ""
+      username: ""
+      // ,
+      // password: ""
     },
     defaultItem: {
       name: "",
       surname: "",
-      username: "",
-      password: ""
+      username: ""
+      // ,
+      // password: ""
     }
   }),
   components: {
@@ -108,7 +109,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Staff" : "Edit Staff";
+      return this.editedIndex === -1 ? "เพิ่มเภสัชกรของโรงพยาบาล" : "แก้ไขข้อมูลเภสัชกรของโรงพยาบาล";
     }
   },
 
@@ -129,61 +130,61 @@ export default {
           name: "บุญมณี",
           surname: "พิไลลักษณ์",
           username: "hos_staff01",
-          password: "1234"
+          // password: "1234"
         },
         {
           name: "น้ำทอง",
           surname: "วาสนา",
           username: "hos_staff02",
-          password: "1235"
+          // password: "1235"
         },
         {
           name: "ญาณกวี",
           surname: "มหาศาล",
           username: "hos_staff03",
-          password: "1236"
+          // password: "1236"
         },
         {
           name: "ธงปลิว",
           surname: "คงยิ่ง",
           username: "hos_staff04",
-          password: "1237"
+          // password: "1237"
         },
         {
           name: "ยิ่งลักษณ์",
           surname: "ยิ่งชอบ",
           username: "hos_staff05",
-          password: "1238"
+          // password: "1238"
         },
         {
           name: "สมศักดิ์",
           surname: "ทิวไทย",
           username: "hos_staff06",
-          password: "1239"
+          // password: "1239"
         },
         {
           name: "มะลิลา",
           surname: "งามยอด",
           username: "hos_staff07",
-          password: "1240"
+          // password: "1240"
         },
         {
           name: "งามยอด",
           surname: "บุญโต",
           username: "hos_staff08",
-          password: "1241"
+          // password: "1241"
         },
         {
           name: "อำนาจ",
           surname: "บุญเจริญ",
           username: "hos_staff09",
-          password: "1242"
+          // password: "1242"
         },
         {
           name: "ยุพาวรรณ",
           surname: "มานี",
           username: "hos_staff010",
-          password: "1243"
+          // password: "1243"
         }
       ];
     },
@@ -196,8 +197,13 @@ export default {
 
     deleteItem(item) {
       const index = this.hosstaff.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm("คุณแน่ใจหรือที่จะลบเจ้าหน้าที่เภสัชกรคนนี้?") &&
         this.hosstaff.splice(index, 1);
+    },
+
+    forgetpw(item) {
+      const index = this.hosstaff.indexOf(item);
+      confirm("คุณแน่ใจหรือที่จะส่งรหัสผ่านใหม่ให้ผู้ใช้คนนี้?");
     },
 
     close() {

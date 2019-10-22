@@ -1,14 +1,15 @@
 <template>
   <v-app-bar app v-if="logged=='true'" class="teal lighten-3">
     <v-toolbar-title class="headline text-uppercase">
-      <span>Staff Management</span>
+      <span>การจัดการเจ้าหน้าที่และยา</span>
     </v-toolbar-title>
     <div class="flex-grow-1"></div>
 
     <v-toolbar-items>
-      <v-btn depressed @click="viewallhosstaff" value="hosstaff" :color="btncolor">Hospital staff</v-btn>
-      <v-btn depressed @click="viewallphamacy" value="phamacy" :color="btncolor1">Phamacy</v-btn>
-      <v-btn depressed @click="viewallphamacist" value="phamacist" :color="btncolor2">Phamacist</v-btn>
+      <v-btn depressed @click="viewallhosstaff" value="hosstaff" :color="btncolor">เภสัชกรของโรงพยาบาล</v-btn>
+      <v-btn depressed @click="viewallphamacy" value="phamacy" :color="btncolor1">ร้านขายยา</v-btn>
+      <v-btn depressed @click="viewallphamacist" value="phamacist" :color="btncolor2">เภสัชกรร้านขายยา</v-btn>
+      <v-btn depressed @click="viewallmedicine" value="medicine" :color="btncolor3">ยา</v-btn>
 
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
@@ -33,7 +34,8 @@ export default {
       items: ["ชื่อ-สกุล", "Logout"],
       btncolor: "teal lighten-3",
       btncolor1: "teal lighten-3",
-      btncolor2: "teal lighten-3"
+      btncolor2: "teal lighten-3",
+      btncolor3: "teal lighten-3"
     };
   },
   methods: {
@@ -49,16 +51,25 @@ export default {
         this.btncolor = "teal lighten-1";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
       } else if (e.currentTarget.value == "phamacy") {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-1";
         this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
       } else if (e.currentTarget.value == "phamacist") {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-1";
+        this.btncolor3 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "medicine") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-1";
         console.log(this.btncolor);
       }
       this.$router.push("/hospitalstaff");
@@ -70,16 +81,25 @@ export default {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-1";
         this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
       } else if (e.currentTarget.value == "้hosstaff") {
         this.btncolor = "teal lighten-1";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
       } else if (e.currentTarget.value == "้phamacist") {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-1";
+        this.btncolor3 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "medicine") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-1";
         console.log(this.btncolor);
       }
       this.$router.push("/phamacy");
@@ -91,19 +111,57 @@ export default {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-1";
+        this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
       } else if (e.currentTarget.value == "hosstaff")  {
         this.btncolor = "teal lighten-1";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
       } else if (e.currentTarget.value == "phamacy")  {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-1";
         this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "medicine") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-1";
         console.log(this.btncolor);
       }
       this.$router.push("/phamacist");
+    },
+    viewallmedicine: function(e) {
+      console.log(e.currentTarget.value);
+      if (e.currentTarget.value == "phamacist") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-1";
+        this.btncolor3 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "hosstaff")  {
+        this.btncolor = "teal lighten-1";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "phamacy")  {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-1";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "medicine") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-1";
+        console.log(this.btncolor);
+      }
+      this.$router.push("/medicine");
     }
   }
 };
