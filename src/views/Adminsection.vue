@@ -1,5 +1,5 @@
 <template>
-  <v-app class="admin cyan lighten-5" >
+  <v-app class="admin cyan lighten-5">
     <Menuadmin />
     <v-content>
         <v-row
@@ -40,13 +40,13 @@ export default {
     Phamacist,
     Medicine
   }
-//   },
-//   methods: {
-//     logout: function() {
-//       localStorage.setItem("login", "false");
-//       console.log(localStorage.getItem("login"));
-//       this.$router.push("/");
-//     }
-//   }
+  //   },
+  //   methods: {
+  //     logout: function() {
+  //       localStorage.setItem("login", "false");
+  //       console.log(localStorage.getItem("login"));
+  //       this.$router.push("/");
+  //     }
+  //   }
 };
 </script>

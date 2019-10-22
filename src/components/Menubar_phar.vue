@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app v-if="logged=='true'" class="teal lighten-3">
+  <v-app-bar app  class="teal lighten-3">
     <v-toolbar-title class="headline text-uppercase">
       <span>Pharmacist</span>
       <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
@@ -47,11 +47,13 @@ export default {
       if (e.currentTarget.value == "notification") {
         this.btncolor1 = "teal lighten-1";
         this.btncolor = "teal lighten-3";
+        
         console.log(this.btncolor);
       } else {
         this.btncolor = "teal lighten-1";
         this.btncolor1 = "teal lighten-3";
         console.log(this.btncolor);
+        this.$router.push("/Orderdetail")
       }
     }
   }
