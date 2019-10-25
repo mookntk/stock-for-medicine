@@ -89,15 +89,24 @@ export default new Router({
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/OrderDetail.vue")
     },
-    {
-      path: "/test",
-      name: "Hospital",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/test.vue")
-    },
+    // {
+    //   path: "/test",
+    //   name: "Hospital",
+    //   // route level code-splitting
+    //   // this generates a separate chunk (about.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+    //   component: () =>
+    //     import(/* webpackChunkName: "about" */ "./views/test.vue")
+    // },
+    // {
+    //   path: "/ordertoday",
+    //   name: "Order_Today",
+    //   // route level code-splitting
+    //   // this generates a separate chunk (about.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+    //   component: () =>
+    //     import(/* webpackChunkName: "about" */ "./views/OrderList_today.vue")
+    // },
     {
       path: "/patient",
       name: "Patient",

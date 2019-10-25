@@ -13,6 +13,7 @@
             </v-card-title>
             <v-card-text>
               <v-container>
+                <v-date-picker v-model="picker" v-if="click"></v-date-picker>
                 <v-row>
                   <v-col cols="12" sm="6" md="12" align="right">order id : {{order_id}}</v-col>
                   <v-col cols="12" sm="6" md="6">
