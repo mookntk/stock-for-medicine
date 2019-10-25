@@ -1,24 +1,24 @@
 <template>
   <v-app-bar app class="teal lighten-3">
     <v-toolbar-title class="headline text-uppercase">
-      <span>Pharmacist</span>
+      <span>เภสัชกรโรงพยาบาล</span>
       <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn depressed @click="click" value="order" :color="btncolor">Order</v-btn>
+      <v-btn depressed @click="click" value="order" :color="btncolor">ข้อมูลผู้ป่วย</v-btn>
+      <v-btn depressed @click="click" value="order" :color="btncolor">ออร์เดอร์</v-btn>
       <v-btn depressed @click="click" value="notification" :color="btncolor1">
         <v-icon>mdi-bell</v-icon>
       </v-btn>
     </v-toolbar-items>
     <v-menu offset-y open-on-hover>
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on" text>User</v-btn>
+        <v-btn color="primary" dark v-on="on" text>ชื่อผู้ใช้</v-btn>
       </template>
       <v-list>
         <v-list-item v-for="(item, index) in items" :key="index">
           <v-list-item-title :value="index" @click="logout">{{ item }}</v-list-item-title>
-          <!-- {{ item }} -->
         </v-list-item>
       </v-list>
     </v-menu>

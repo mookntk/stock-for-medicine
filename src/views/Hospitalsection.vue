@@ -2,8 +2,93 @@
   <v-app class="admin cyan lighten-5">
     <Menu />
     <v-content style="margin:20px">
+      <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar dark color="primary">
+            <v-btn icon dark @click="dialog_row = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>{{pharmacy}}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-btn dark text @click="dialog_row = false">จัดส่งยา</v-btn>
+            </v-toolbar-items>
+          </v-toolbar>
+          <!-- <v-list three-line subheader>
+            <v-subheader>User Controls</v-subheader>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Content filtering</v-list-item-title>
+                <v-list-item-subtitle>Set the content filtering level to restrict apps that can be downloaded</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Password</v-list-item-title>
+                <v-list-item-subtitle>Require password for purchase or use password to restrict purchase</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <v-divider></v-divider>
+          <v-list three-line subheader>
+            <v-subheader>General</v-subheader>
+            <v-list-item>
+              <v-list-item-action>
+                <v-checkbox v-model="notifications"></v-checkbox>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Notifications</v-list-item-title>
+                <v-list-item-subtitle>Notify me about updates to apps or games that I downloaded</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-action>
+                <v-checkbox v-model="sound"></v-checkbox>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Sound</v-list-item-title>
+                <v-list-item-subtitle>Auto-update apps at any time. Data charges may apply</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-action>
+                <v-checkbox v-model="widgets"></v-checkbox>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Auto-add widgets</v-list-item-title>
+                <v-list-item-subtitle>Automatically add home screen widgets</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>-->
+          <v-data-table
+            v-model="selected"
+            :items="order[index].orders"
+            :items-per-page="10"
+            class="elevation-1"
+            :headers="sub_headers"
+          >
+            <template v-slot:body="{ items }">
+              <tbody>
+                <tr
+                  v-for="item in items"
+                  :key="item.name"
+                  @click="selectItem(item)"
+                  :class="{'selectedRow': item === selectedItem}"
+                >
+                  <td>{{ item.order_id }}</td>
+                  <td style="text-align:center">{{ item.name }}</td>
+                  <td style="text-align:center">{{ item.due_date }}</td>
+                  <td style="text-align:center">
+                    <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-dialog>
       <v-row>
-        <v-col align="left" style="font-size:18px">{{date}}</v-col>
+        <v-col align="left" style="font-size:25px">{{date}}</v-col>
         <v-col justify="right" align="right">
           <v-dialog v-model="dialog" persistent max-width="600px">
             <template v-slot:activator="{ on }">
@@ -17,13 +102,14 @@
                 <v-container>
                   <v-date-picker v-model="picker" v-if="click"></v-date-picker>
                   <v-row>
+                    <v-col cols="12" sm="6" md="12" align="right">order id : {{order_id}}</v-col>
                     <v-col cols="12" sm="6" md="6">
                       ชื่อผู้ป่วย
-                      <v-text-field required></v-text-field>
+                      <v-text-field required v-model="order_name"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                       นามสกุล
-                      <v-text-field required></v-text-field>
+                      <v-text-field required v-model="order_surname"></v-text-field>
                     </v-col>
                     <v-col cols="12">
                       โรค
@@ -35,13 +121,16 @@
                     </v-col>
                     <v-col cols="12" sm="6">
                       วันที่รับยา
-                      <v-text-field :label="picker" @click="click=!click" required></v-text-field>
+                      <v-text-field
+                        :label="picker"
+                        @click="click=!click"
+                        required
+                        v-model="order_date"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
                       ร้านขายยา
-                      <v-select
-                        :items="['บ้านเภสัชกร','Gingerbread','Ice cream sandwich','Eclair']"
-                      ></v-select>
+                      <v-select :items="order" @change="selectpharmacy" item-text="name"></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -50,9 +139,29 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
               </v-card-actions>
             </v-card>
+            <!-- <v-form ref="form" v-model="valid" lazy-validation class="white">
+              <v-text-field :counter="20" :rules="nameRules" label="ชื่อผู้ป่วย" required></v-text-field>
+              <v-text-field :counter="20" :rules="nameRules" label="" required></v-text-field>
+              <v-text-field :rules="emailRules" label="E-mail" required></v-text-field>
+
+              <v-select
+                v-model="selectedpharmacy"
+                :items="order"
+                item-text="name"
+                :rules="[v => !!v || 'Item is required']"
+                label="Item"
+                required
+              ></v-select>
+
+              <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
+
+              <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
+
+              <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
+            </v-form>-->
           </v-dialog>
         </v-col>
       </v-row>
@@ -60,16 +169,25 @@
       <v-data-table
         v-model="selected"
         :headers="headers"
-        :items="desserts"
-        :items-per-page="5"
+        :items="order"
+        :items-per-page="10"
         class="elevation-1"
       >
-        <template slot="items" slot-scope="props">
-          <tr @click="showAlert(props.item)">
-            <td>{{ props.item.name }}</td>
-            <td class="text-xs-right">{{ props.item.order }}</td>
-            <td class="text-xs-right">{{ props.item.status }}</td>
-          </tr>
+        <template v-slot:body="{ items }">
+          <tbody>
+            <tr
+              v-for="item in items"
+              :key="item.name"
+              @click="selectItem(item)"
+              :class="{'selectedRow': item === selectedItem}"
+            >
+              <td>{{ item.name }}</td>
+              <td style="text-align:center">{{ item.orders.length }}</td>
+              <td style="text-align:center">
+                <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
+              </td>
+            </tr>
+          </tbody>
         </template>
       </v-data-table>
     </v-content>
@@ -84,10 +202,16 @@ export default {
   data() {
     return {
       picker: new Date().toISOString().substr(0, 10),
+      order_id: 1,
+      order_name: null,
+      order_surname: null,
+      order_date: null,
       click: false,
       dialog: false,
+      dialog_row: false,
       selected: [],
       pharmacy: "",
+      index: 0,
       headers: [
         {
           text: "ชื่อร้านขายยา",
@@ -95,42 +219,153 @@ export default {
           sortable: false,
           value: "name"
         },
-        { text: "จำนวนออร์เดอร์", value: "order" },
-        { text: "สถานะ", value: "status" }
+        { text: "จำนวนออร์เดอร์", align: "center", value: "order" },
+        { text: "สถานะ", align: "center", value: "status" }
       ],
-      desserts: [
+      sub_headers: [
         {
+          text: "เลขออร์เดอร์",
+          align: "left",
+          sortable: false,
+          value: "name"
+        },
+        { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
+        { text: "วันรับยา", align: "center", value: "status" },
+        { text: "สถานะ", align: "center", value: "status" }
+      ],
+      order: [
+        {
+          id: 0,
           name: "บ้านเภสัชกร",
-          order: 5,
-          value: false,
+          orders: [
+            {
+              order_id: 1,
+              name: "วันชัย ศุภจตุรัส",
+              due_date: "15 ตุลาคม 2562"
+            },
+            {
+              order_id: 3,
+              name: "เอก เวสโกสิทธิ์",
+              due_date: "9 มีนาคม 2562"
+            },
+            {
+              order_id: 15,
+              name: "วิชัย วิทุรวงศ์",
+              due_date: "30 สิงหาคม 2562"
+            }
+          ],
           status: "ทำการขนส่ง"
         },
         {
-          name: "Ice cream sandwich",
-          order: 10,
-          value: false,
-          status: 9.0
+          id: 1,
+          name: "ลิขิตฟาร์มาซี",
+          orders: [
+            {
+              order_id: 2,
+              name: "สุกรี ฉัตรรัตนกุลชัย",
+              due_date: "12 กันยายน 2562"
+            },
+            {
+              order_id: 5,
+              name: "สมาน พิทยาพิบูลพงศ์",
+              due_date: "20 มีนาคม 2562"
+            },
+            {
+              order_id: 11,
+              name: "วิชัย วิทุรวงศ์",
+              due_date: "30 สิงหาคม 2562"
+            },
+            {
+              order_id: 39,
+              name: "นภาพรรณ วัฒนประดิษฐ",
+              due_date: "30 สิงหาคม 2562"
+            },
+            {
+              order_id: 40,
+              name: "เฉลิม ศรีเมือง",
+              due_date: "15 มกราคม 2562"
+            }
+          ],
+          status: "ยังไม่ได้จัดส่ง"
         },
         {
-          name: "Eclair",
-          order: 12,
-          value: false,
-          status: 16.0
+          id: 2,
+          name: "ร้านฟาร์มาซี สาย2",
+
+          orders: [
+            {
+              order_id: 1,
+              name: "วันชัย ศุภจตุรัส",
+              due_date: "15 ตุลาคม 2562"
+            },
+            {
+              order_id: 3,
+              name: "เอก เวสโกสิทธิ์",
+              due_date: "9 มีนาคม 2562"
+            }
+          ],
+          status: "ยังไม่ได้จัดส่ง"
         },
         {
-          name: "Cupcake",
-          order: 10,
-          value: false,
-          status: 3.7
+          id: 3,
+          name: "เวิลด์ ฟาร์มาซี",
+
+          orders: [
+            {
+              order_id: 1,
+              name: "นภาพรรณ วิทุรวงศ์",
+              due_date: "15 ตุลาคม 2562"
+            },
+            {
+              order_id: 3,
+              name: "เอก เวสโกสิทธิ์",
+              due_date: "9 มีนาคม 2562"
+            },
+            {
+              order_id: 15,
+              name: "สลิลลา พิทยาพิบูลพงศ์",
+              due_date: "30 สิงหาคม 2562"
+            },
+            {
+              order_id: 15,
+              name: "สุทธิพงศ์ ภัทรมังกร",
+              due_date: "30 สิงหาคม 2562"
+            },
+            {
+              order_id: 15,
+              name: "วิชัย วิทุรวงศ์",
+              due_date: "30 สิงหาคม 2562"
+            }
+          ],
+          status: "ยังไม่ได้จัดส่ง"
         },
         {
-          name: "Gingerbread",
-          order: 25,
-          value: false,
-          status: 16.0
+          id: 4,
+          name: "ซิตี้ฟาร์มาซี",
+
+          orders: [
+            {
+              order_id: 1,
+              name: "สุทธิพงศ์ ภัทรมังกร",
+              due_date: "15 ตุลาคม 2562"
+            },
+            {
+              order_id: 3,
+              name: "เอก เวสโกสิทธิ์",
+              due_date: "9 มีนาคม 2562"
+            },
+            {
+              order_id: 15,
+              name: "เฉลิม วัฒนประดิษฐ",
+              due_date: "30 สิงหาคม 2562"
+            }
+          ],
+          status: "ยังไม่ได้จัดส่ง"
         }
       ],
-      date: ""
+      date: "",
+      selectedpharmacy: "",
+      selectedItem: ""
     };
   },
   mounted() {
@@ -173,22 +408,62 @@ export default {
     Menu
   },
   methods: {
-    showAlert(a) {
-      //   if (event.target.classList.contains("btn__content")) return;
-      console.log("sss");
-      alert("Alert! \n" + a.name);
+    getColor(status) {
+      if (status == "ยังไม่ได้จัดส่ง") return "red";
+      else return "green";
+    },
+    selectItem(item) {
+      this.index = item.id;
+      this.pharmacy = item.name;
+      this.dialog_row = true;
     },
     save() {
-      for (var i = 0; i < this.desserts.length; i++) {}
+      this.dialog = false;
+      var count = 0;
+      var i = 0;
+      var new_detail = {
+        order_id: this.order_id,
+        name: this.order_name + " " + this.order_surname,
+        due_date: this.picker
+      };
+      console.log(new_detail);
+      for (i = 0; i < this.order.length; i++) {
+        if (this.order[i].status == "ยังไม่ได้จัดส่ง") {
+          if (this.selectedpharmacy == this.order[i].name) {
+            this.order[i].orders.push(new_detail);
+            count++;
+            console.log(this.order);
+            break;
+          }
+        }
+      }
+      if (count == 0) {
+        var new_order = {
+          id: this.order.length,
+          name: this.selectedpharmacy,
+          orders: [new_detail],
+          status: "ยังไม่ได้จัดส่ง"
+        };
+        this.order.push(new_order);
+      }
+      this.order_id++;
+      this.order_name = "";
+      this.order_surname = "";
+      this.order_date = "";
+    },
+    selectpharmacy(e) {
+      this.selectedpharmacy = e;
+      console.log(this.selectedpharmacy);
     }
   }
-  //   },
-  //   methods: {
-  //     logout: function() {
-  //       localStorage.setItem("login", "false");
-  //       console.log(localStorage.getItem("login"));
-  //       this.$router.push("/");
-  //     }
-  //   }
 };
 </script>
+<style>
+@import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
+.admin {
+  font-family: "Sarabun", sans-serif;
+}
+thead{
+  background-color: antiquewhite
+}
+</style>
