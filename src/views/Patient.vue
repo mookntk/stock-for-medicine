@@ -37,6 +37,9 @@
                   <v-col cols="12" sm="6">
                     <v-text-field v-model="editedItem.phone" label="เบอร์โทรศัพท์" outlined></v-text-field>
                   </v-col>
+                  <v-col cols="12" sm="12">
+                    <v-text-field v-model="editedItem.address" label="ที่อยู่" outlined></v-text-field>
+                  </v-col>
                   <v-col cols="12" sm="8">
                     <v-text-field v-model="editedItem.pharmacy" label="ร้านขายยา" outlined></v-text-field>
                   </v-col>
@@ -122,6 +125,9 @@
                     readonly
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12" sm="12">
+                  <v-text-field :value="patients[index].address" label="ที่อยู่" filled readonly></v-text-field>
+                </v-col>
               </v-row>
               <v-data-table :headers="record_headers" :items="patients[index].record"></v-data-table>
             </v-container>
@@ -203,6 +209,7 @@ export default {
           email: "natcha_yindee@hotmail.com",
           phone: "0851477526",
           pharmacy: "บ้านเภสัชกร",
+          address: "2/2 ม.5 พุทธมณฑล จ.นครปฐม 73130",
           record: [
             {
               no: 1,
@@ -232,6 +239,7 @@ export default {
           email: "worrapan@gmail.com",
           phone: "0864588223",
           pharmacy: "ลิขิตฟาร์มาซี",
+          address: "2/2 ม.5 พุทธมณฑล จ.นครปฐม 73130",
           record: [
             {
               no: 1,
@@ -261,6 +269,7 @@ export default {
           email: "nattapol.t@gmail.com",
           phone: "0857773239",
           pharmacy: "บ้านเภสัชกร",
+          address: "2/2 ม.5 พุทธมณฑล จ.นครปฐม 73130",
           record: [
             {
               no: 1,
@@ -290,6 +299,7 @@ export default {
           email: "ploy_warisara@hotmail.com",
           phone: "0852880026",
           pharmacy: "เวิลด์ ฟาร์มาซี",
+          address: "2/2 ม.5 พุทธมณฑล จ.นครปฐม 73130",
           record: [
             {
               no: 1,
@@ -319,6 +329,7 @@ export default {
           email: "phakawat@hotmail.com",
           phone: "0851856921",
           pharmacy: "ร้านฟาร์มาซี สาย2",
+          address: "2/2 ม.5 อ.พานทอง จ.ชลบุรี 20160",
           record: [
             {
               no: 1,
@@ -358,6 +369,7 @@ export default {
         email: "",
         phone: "",
         pharmacy: "",
+        address: "",
         record: []
       },
       defaultItem: {
@@ -370,6 +382,7 @@ export default {
         email: "",
         phone: "",
         pharmacy: "",
+        address: "",
         record: []
       }
     };
