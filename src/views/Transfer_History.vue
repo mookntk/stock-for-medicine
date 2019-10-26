@@ -11,7 +11,7 @@
             <v-toolbar-title>{{pharmacy}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn dark text @click="dialog_row = false">จัดส่งยา</v-btn>
+              <v-btn dark text @click="changestatus">{{formtitle}}</v-btn>
             </v-toolbar-items>
           </v-toolbar>
           <v-row></v-row>
@@ -26,23 +26,57 @@
               >
                 <template v-slot:body="{ items }">
                   <tbody>
-                    <tr
-                      v-for="item in items"
-                      :key="item.name"
-                      @click="selectItem(item)"
-                      :class="{'selectedRow': item === selectedItem}"
-                    >
+                    <tr v-for="item in items" :key="item.name">
                       <td>{{ item.order_id }}</td>
                       <td style="text-align:center">{{ item.name }}</td>
                       <td style="text-align:center">{{ item.due_date }}</td>
-                      <td style="text-align:center">
-                        <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
-                      </td>
                     </tr>
                   </tbody>
                 </template>
               </v-data-table>
             </v-col>
+          </v-row>
+          <v-row style="margin:20px">
+            <v-list subheader two-line flat>
+              <v-header>จำนวนยาทั้งหมด</v-header>
+              <v-list-item-group v-model="settings" multiple>
+                <v-list-item>
+                  <template v-slot:default="{ active, toggle }">
+                    <v-list-item-action>
+                      <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
+                    </v-list-item-action>
+
+                    <v-list-item-content>
+                      <v-list-item-title>Notifications</v-list-item-title>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+
+                <v-list-item>
+                  <template v-slot:default="{ active, toggle }">
+                    <v-list-item-action>
+                      <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
+                    </v-list-item-action>
+
+                    <v-list-item-content>
+                      <v-list-item-title>Sound</v-list-item-title>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+
+                <v-list-item>
+                  <template v-slot:default="{ active, toggle }">
+                    <v-list-item-action>
+                      <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
+                    </v-list-item-action>
+
+                    <v-list-item-content>
+                      <v-list-item-title>Video sounds</v-list-item-title>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
           </v-row>
         </v-card>
       </v-dialog>
@@ -118,8 +152,7 @@ export default {
           value: "name"
         },
         { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
-        { text: "วันรับยา", align: "center", value: "status" },
-        { text: "คร", align: "center", value: "status" }
+        { text: "วันนัดรับยา", align: "center", value: "status" }
       ],
       order: [
         {
@@ -150,7 +183,7 @@ export default {
           id: 1,
           name: "ลิขิตฟาร์มาซี",
           create_date: "10 กรกฏาคม 2562",
-          receive_date: "18 กรกฎาคม 2562",
+          receive_date: "",
           orders: [
             {
               order_id: 2,
@@ -204,7 +237,7 @@ export default {
           id: 3,
           name: "เวิลด์ ฟาร์มาซี",
           create_date: "11 สิงหาคม 2562",
-          receive_date: "15 สิงหาคม 2562",
+          receive_date: "",
           orders: [
             {
               order_id: 1,
@@ -238,7 +271,7 @@ export default {
           id: 4,
           name: "ซิตี้ฟาร์มาซี",
           create_date: "25 กรกฏาคม 2562",
-          receive_date: "29 กรกฎาคม 2562",
+          receive_date: "",
           orders: [
             {
               order_id: 1,
@@ -304,6 +337,16 @@ export default {
     Menu
   },
   methods: {
+    changestatus() {
+      if (this.order[this.index].status == "รอการจัดส่ง") {
+        this.order[this.index].status = "กำลังจัดส่ง";
+      } else if (this.order[this.index].status == "รอการจัดยา") {
+        this.order[this.index].status = "รอการจัดส่ง";
+      } else if (this.order[this.index].status == "หยุดชั่วคราว") {
+        this.order[this.index].status = "รอการจัดยา";
+      }
+      this.dialog_row = false;
+    },
     getColor(status) {
       if (status == "หยุดชั่วคราว") return "red";
       else if (status == "รอการจัดส่ง") return "grey";
@@ -359,7 +402,16 @@ export default {
   },
   computed: {
     formtitle() {
-      if (true) {
+      if (this.order[this.index].status == "หยุดชั่วคราว") {
+        return "ได้รับยาเรียบร้อย";
+      } else if (this.order[this.index].status == "รอการจัดส่ง") {
+        return "จัดส่ง";
+      } else if (this.order[this.index].status == "รอการจัดยา") {
+        return "จัดยาเรียบร้อย";
+      } else if (this.order[this.index].status == "กำลังจัดส่ง") {
+        return "";
+      } else if (this.order[this.index].status == "ได้รับยาแล้ว") {
+        return "";
       }
     }
   }

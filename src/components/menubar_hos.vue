@@ -6,6 +6,7 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
+      <v-btn depressed @click="click" value="home" :color="btncolor">หน้าหลัก</v-btn>
       <v-btn depressed @click="click" value="return" :color="btncolor">เรียกคืนยา</v-btn>
       <v-btn depressed @click="click" value="patient" :color="btncolor">ข้อมูลผู้ป่วย</v-btn>
       <v-menu offset-y open-on-hover>
@@ -69,6 +70,8 @@ export default {
         this.$router.push("/patient");
       } else if (selected == "return") {
         this.$router.push("/recall");
+      } else if (selected == "home") {
+        this.$router.push("/hospital");
       }
     }
   }
