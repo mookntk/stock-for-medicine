@@ -23,7 +23,7 @@
           <div class="flex-grow-1"></div>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark class="mb-2" v-on="on">เพิ่มเภสัชกรร้านขายยา</v-btn>
+              <v-btn color="primary" dark class="mb-2" v-on="on">+ เพิ่มเภสัชกรร้านขายยา</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -42,9 +42,9 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.username" label="ชื่อผู้ใช้"></v-text-field>
                     </v-col>
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.password" label="password"></v-text-field>
-                    </v-col> -->
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field v-model="editedItem.email" label="email"></v-text-field>
+                    </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.phamacy" label="ร้านขายยาที่ประจำ"></v-text-field>
                     </v-col>
@@ -67,7 +67,7 @@
       <template v-slot:item.action="{ item }">
         <v-icon small class="mr-6" @click="editItem(item)">mdi-pencil</v-icon>
         <v-icon small class="mr-6" @click="deleteItem(item)">mdi-delete</v-icon>
-        <v-icon small @click="forgetpw(item)">mdi-email-send</v-icon>
+        <v-icon small class="mr-6" @click="forgetpw(item)">mdi-email-send</v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -86,9 +86,9 @@ export default {
       { text: "ชื่อ", value: "name" },
       { text: "นามสกุล", value: "surname" },
       { text: "username", value: "username", sortable: false },
-      // { text: "password", value: "password", sortable: false },
+      { text: "อีเมล", value: "email", sortable: false },
       { text: "ร้านขายยาที่ประจำ", value: "phamacy", sortable: false },
-      { text: "เลขใบอนุญาตฯเภสัช", value: "phamacistid", sortable: false },
+      { text: "เลขใบอนุญาตฯเภสัช", value: "phamacistid",align:"center", sortable: false },
       { text: "แก้ไข / ลบ / ส่งรหัสผ่านใหม่ให้ผู้ใช้", value: "action", sortable: false }
     ],
     phamacist: [],
@@ -97,7 +97,7 @@ export default {
       name: "",
       surname: "",
       username: "",
-      // password: "",
+      email: "",
       phamacy: "",
       phamacistid: ""
     },
@@ -105,7 +105,7 @@ export default {
       name: "",
       surname: "",
       username: "",
-      // password: "",
+      email: "",
       phamacy: "",
       phamacistid: ""
     }
@@ -137,7 +137,7 @@ export default {
           name: "วันชัย",
           surname: "ศุภจตุรัส",
           username: "phamacist01809",
-          // password: "43251",
+          email: "xokf@hotmail.com",
           phamacy: "เอสอีซี.ฟาร์มาซี",
           phamacistid: "01809"
         },
@@ -145,7 +145,7 @@ export default {
           name: "สุกรี",
           surname: "ฉัตรรัตนกุลชัย",
           username: "phamacist01545",
-          // password: "39302",
+          email: "fofo00@hotmail.com",
           phamacy: "บ้านเภสัชกร",
           phamacistid: "01545"
         },
@@ -153,7 +153,7 @@ export default {
           name: "เอก",
           surname: "เวสโกสิทธิ์",
           username: "phamacist01233",
-          // password: "324331",
+          email: "ferrr@hotmail.com",
           phamacy: "บัณฑิตฟาม่าร",
           phamacistid: "01233"
         },
@@ -161,7 +161,7 @@ export default {
           name: "สลิลลา",
           surname: "วีระรัตน์",
           username: "phamacist04453",
-          // password: "09873",
+          email: "kougf@hotmail.com",
           phamacy: "มิตรประชาเมดิคัล",
           phamacistid: "04453"
         },
@@ -169,7 +169,7 @@ export default {
           name: "สมาน",
           surname: "พิทยาพิบูลพงศ์",
           username: "phamacist04421",
-          // password: "58213",
+          email: "sdsds@hotmail.com",
           phamacy: "บัณฑิตเภสัช",
           phamacistid: "04421"
         },
@@ -177,7 +177,7 @@ export default {
           name: "วิชัย",
           surname: "วิทุรวงศ์",
           username: "phamacist02534",
-          // password: "00351",
+          email: "dwwq@hotmail.com",
           phamacy: "นิยมเภสัช",
           phamacistid: "02534"
         },
@@ -185,7 +185,7 @@ export default {
           name: "วิโรจน์",
           surname: "ศรีเมือง",
           username: "phamacist02538",
-          // password: "003576",
+          email: "7ttt@hotmail.com",
           phamacy: "ศาลายาดรัก",
           phamacistid: "02538"
         },
@@ -193,7 +193,7 @@ export default {
           name: "นภาพรรณ",
           surname: "วัฒนประดิษฐ",
           username: "phamacist01873",
-          // password: "027163",
+          email: "df34@hotmail.com",
           phamacy: "ศาลายาเภสัช",
           phamacistid: "01873"
         },
@@ -201,7 +201,7 @@ export default {
           name: "เฉลิม",
           surname: "ศิธรกุล",
           username: "phamacist01173",
-          // password: "0032111",
+          email: "jutqe5@hotmail.com",
           phamacy: "ฟาสซิโน ตลาดศาลายา",
           phamacistid: "01173"
         },
@@ -209,7 +209,7 @@ export default {
           name: "สุทธิพงศ์",
           surname: "ภัทรมังกร",
           username: "phamacist04433",
-          // password: "02131",
+          email: "loyr4@hotmail.com",
           phamacy: "รักษ์ยาเภสัช",
           phamacistid: "04433"
         }
@@ -229,7 +229,7 @@ export default {
     },
 
     forgetpw(item) {
-      const index = this.hosstaff.indexOf(item);
+      const index = this.phamacist.indexOf(item);
       confirm("คุณแน่ใจหรือที่จะส่งรหัสผ่านใหม่ให้ผู้ใช้คนนี้?");
     },
 

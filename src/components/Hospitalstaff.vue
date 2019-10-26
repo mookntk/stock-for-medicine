@@ -23,7 +23,7 @@
           <div class="flex-grow-1"></div>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark class="mb-2" v-on="on">เพิ่มเภสัชกรของโรงพยาบาล</v-btn>
+              <v-btn color="primary" dark class="mb-2" v-on="on">+ เพิ่มเภสัชกรของโรงพยาบาล</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -42,9 +42,9 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.username" label="ชื่อผู้ใช้"></v-text-field>
                     </v-col>
-                    <!-- <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.password" label="password"></v-text-field>
-                    </v-col> -->
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field v-model="editedItem.email" label="email"></v-text-field>
+                    </v-col>
                     <!-- <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>-->
                     <!-- </v-col> -->
@@ -82,7 +82,8 @@ export default {
     headers: [
       { text: "ชื่อ", value: "name" },
       { text: "นามสกุล", value: "surname" },
-      { text: "username", value: "username", sortable: false },
+      { text: "username", value: "username"},
+      { text: "อีเมล",value: "email"},
       // { text: "password", value: "password", sortable: false },
       { text: "แก้ไข / ลบ / ส่งรหัสผ่านใหม่ให้ผู้ใช้", value: "action", sortable: false }
     ],
@@ -91,16 +92,14 @@ export default {
     editedItem: {
       name: "",
       surname: "",
-      username: ""
-      // ,
-      // password: ""
+      username: "",
+      email: ""
     },
     defaultItem: {
       name: "",
       surname: "",
-      username: ""
-      // ,
-      // password: ""
+      username: "",
+      email: ""
     }
   }),
   components: {
@@ -130,60 +129,70 @@ export default {
           name: "บุญมณี",
           surname: "พิไลลักษณ์",
           username: "hos_staff01",
+          email: "x01@hotmal.com"
           // password: "1234"
         },
         {
           name: "น้ำทอง",
           surname: "วาสนา",
           username: "hos_staff02",
+          email: "xx02@hotmal.com"
           // password: "1235"
         },
         {
           name: "ญาณกวี",
           surname: "มหาศาล",
           username: "hos_staff03",
+          email: "xxx03@hotmal.com"
           // password: "1236"
         },
         {
           name: "ธงปลิว",
           surname: "คงยิ่ง",
           username: "hos_staff04",
+          email: "xxx04@hotmal.com"
           // password: "1237"
         },
         {
           name: "ยิ่งลักษณ์",
           surname: "ยิ่งชอบ",
           username: "hos_staff05",
+          email: "xxx05@hotmal.com"
           // password: "1238"
         },
         {
           name: "สมศักดิ์",
           surname: "ทิวไทย",
           username: "hos_staff06",
+          email: "xxx06@hotmal.com"
           // password: "1239"
         },
         {
           name: "มะลิลา",
           surname: "งามยอด",
           username: "hos_staff07",
+          email: "xxx07@hotmal.com"
           // password: "1240"
         },
         {
           name: "งามยอด",
           surname: "บุญโต",
           username: "hos_staff08",
+          email: "xxx08@hotmal.com"
           // password: "1241"
         },
         {
           name: "อำนาจ",
           surname: "บุญเจริญ",
           username: "hos_staff09",
+          email: "xxx09@hotmal.com"
           // password: "1242"
         },
         {
           name: "ยุพาวรรณ",
           surname: "มานี",
           username: "hos_staff010",
+          email: "xxx10@hotmal.com"
           // password: "1243"
         }
       ];

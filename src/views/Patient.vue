@@ -51,7 +51,9 @@
           </v-card>
         </v-dialog>
       </v-col>
+      <!-- End of Add new patient -->
 
+      <!-- watch patient history -->
       <v-dialog
         v-model="dialog_record"
         fullscreen
@@ -90,6 +92,25 @@
                     readonly
                   ></v-text-field>
                 </v-col>
+              </v-row>
+              <v-data-table :headers="record_headers" :items="patients[index].record"></v-data-table>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog_record = false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialog_edit" persistent max-width="600px">
+        <v-card>
+          <v-card-title>
+            <span class="headline">แก้ไขข้อมูลผู้ป่วย</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
                 <v-col cols="12" sm="6">
                   <v-text-field :value="patients[index].email" label="อีเมล" filled readonly></v-text-field>
                 </v-col>
@@ -107,7 +128,9 @@
           </v-card-text>
         </v-card>
       </v-dialog>
+      <!-- end of edit patient imformation -->
 
+      <!-- Data Table of patient page -->
       <v-data-table :headers="headers" :items="patients" :items-per-page="10" class="elevation-1">
         <template v-slot:body="{ items }">
           <tbody>
@@ -128,6 +151,7 @@
           </tbody>
         </template>
       </v-data-table>
+      <!-- Data Table of patient page -->
     </v-content>
   </v-app>
 </template>

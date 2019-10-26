@@ -1,19 +1,26 @@
 <template>
-  <v-app-bar app  class="teal lighten-3">
+  <v-app-bar app class="teal lighten-3">
     <v-toolbar-title class="headline text-uppercase">
-      <span>Pharmacist</span>
+      <span>เภสัชกรร้านขายยา</span>
       <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn depressed @click="click" value="order" :color="btncolor">Order</v-btn>
-      <v-btn depressed @click="click" value="notification" :color="btncolor1">
+      <v-btn depressed @click="click" value="returnmedicine" :color="btncolor">การคืนยา</v-btn>
+      <v-btn
+        depressed
+        @click="click"
+        value="transferfromhp"
+        :color="btncolor1"
+      >สถานะการจัดส่งยาจากโรงพยาบาล</v-btn>
+      <v-btn depressed @click="click" value="order" :color="btncolor2">ออเดอร์</v-btn>
+      <v-btn depressed @click="click" value="notification" :color="btncolor3">
         <v-icon>mdi-bell</v-icon>
       </v-btn>
     </v-toolbar-items>
     <v-menu offset-y open-on-hover>
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on" text>User</v-btn>
+        <v-btn color="primary" dark v-on="on" text>ชื่อผู้ใช้</v-btn>
       </template>
       <v-list>
         <v-list-item v-for="(item, index) in items" :key="index">
@@ -33,7 +40,9 @@ export default {
       items: ["ph_staff", "เลขใบอนุญาต", "Logout"],
       active: [false, false],
       btncolor: "teal lighten-3",
-      btncolor1:"teal lighten-3"
+      btncolor1: "teal lighten-3",
+      btncolor2: "teal lighten-3",
+      btncolor3: "teal lighten-3"
     };
   },
   methods: {
@@ -44,18 +53,32 @@ export default {
     },
     click: function(e) {
       console.log(e.currentTarget.value);
-      if (e.currentTarget.value == "notification") {
-        this.btncolor1 = "teal lighten-1";
-        this.btncolor = "teal lighten-3";
-        
-        console.log(this.btncolor);
-      } else {
+      if (e.currentTarget.value == "returnmedicine") {
         this.btncolor = "teal lighten-1";
         this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
-        this.$router.push("/Orderdetail")
-      }
-    }
+      } else if(e.currentTarget.value == "transferfromhp") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-1";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
+        console.log(this.btncolor);
+
+      } else if(e.currentTarget.value == "order") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-1";
+        this.btncolor3 = "teal lighten-3";
+        console.log(this.btncolor);
+        this.$router.push("/Orderdetail");
+    } else if(e.currentTarget.value == "notification") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-1";
+        console.log(this.btncolor);
   }
-};
+}}};
 </script>

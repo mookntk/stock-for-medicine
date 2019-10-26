@@ -23,7 +23,7 @@
           <div class="flex-grow-1"></div>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark class="mb-2" v-on="on">เพิ่มร้านขายยา</v-btn>
+              <v-btn color="primary" dark class="mb-2" v-on="on">+ เพิ่มร้านขายยา</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -88,7 +88,7 @@ export default {
       { text: "อำเภอ/เขต", value: "district" },
       { text: "จังหวัด", value: "province" },
       { text: "เบอร์ติดต่อ", value: "telno", sortable: false  },
-      { text: "แก้ไข / ลบ", value: "action", sortable: false }
+      { text: "แก้ไข / ลบ", value: "action",align:"center", sortable: false }
     ],
     phamacy: [],
     editedIndex: -1,
@@ -223,7 +223,7 @@ export default {
 
     deleteItem(item) {
       const index = this.phamacy.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm("คุณแน่ใจหรือที่จะลบร้านขายยานี้?") &&
         this.phamacy.splice(index, 1);
     },
 

@@ -74,20 +74,20 @@ export default {
         this.hidepassword === "password" ? "text" : "password";
     },
     login: function() {
-      //     axios.post("http://localhost:3000/user/hos_staff")
-      // .then(res => {
-      //     this.data=res.data
-      //     console.log(this.data)
-      //     if(this.data[0].password==this.password){
-      //       this.alert = false
-      //       localStorage.setItem('login', true)
-      //       console.log(localStorage.getItem('login'))
-      //       this.$router.push('/admin')
-      //     }
-      //     else{
-      //       this.alert = true
-      //     }}
-      // )
+          axios.post("http://localhost:3000/user/hos_staff")
+      .then(res => {
+          this.data=res.data
+          console.log(this.data)
+          if(this.data[0].password==this.password){
+            this.alert = false
+            localStorage.setItem('login', true)
+            console.log(localStorage.getItem('login'))
+            this.$router.push('/about')
+          }
+          else{
+            this.alert = true
+          }}
+      )
     },
     entertologin(e) {}
   }

@@ -23,7 +23,7 @@
           <div class="flex-grow-1"></div>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark class="mb-2" v-on="on">เพิ่มข้อมูลยา</v-btn>
+              <v-btn color="primary" dark class="mb-2" v-on="on">+ เพิ่มข้อมูลยา</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -44,6 +44,9 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.strenght" label="ปริมาณยา (strenght)"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field v-model="editedItem.price" label="ราคาต่อหนึ่งปริมาณยา (price/strenght)"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="editedItem.unit" label="รูปแบบยา (unit)"></v-text-field>
@@ -80,11 +83,13 @@ export default {
     dialog: false,
     headers: [
       { text: "รหัสยา (TMT)", value: "TMT" },
-      { text: "ชื่อสามัญ", value: "generic" },
-      { text: "ชื่อทางการค้า", value: "trade" },
-      { text: "ปริมาณยา (strenght)", value: "strenght", sortable: false },
-      { text: "รูปแบบยา (unit)", value: "unit", sortable: false },
-      { text: "แก้ไข / ลบ", value: "action", sortable: false }
+      { text: "ชื่อสามัญ", value: "generic",align:"center" },
+      { text: "ชื่อทางการค้า", value: "trade",align:"center" },
+      { text: "ปริมาณยา (strenght)", value: "strenght",align:"center", sortable: false },
+      { text: "ราคาต่อหนึ่งปริมาณยา (price/strenght)", value: "price",align:"center", sortable: false },
+      { text: "รูปแบบยา (unit)", value: "unit",align:"center", sortable: false },
+      
+      { text: "แก้ไข / ลบ", value: "action",align:"center", sortable: false }
     ],
     medicine: [],
     editedIndex: -1,
@@ -93,6 +98,7 @@ export default {
       generic: "",
       trade: "",
       strenght: "",
+      price:"",
       unit: ""
     },
     defaultItem: {
@@ -100,6 +106,7 @@ export default {
       generic: "",
       trade: "",
       strenght: "",
+      price:"",
       unit: ""
     }
   }),
@@ -131,6 +138,7 @@ export default {
           generic: "AAA",
           trade: "AAA",
           strenght: "100",
+          price:"250",
           unit: "Tablet"
         },
         {
@@ -138,6 +146,7 @@ export default {
           generic: "BBB",
           trade: "BBB",
           strenght: "200",
+          price:"140",
           unit: "Tablet"
         },
         {
@@ -145,14 +154,8 @@ export default {
           generic: "CCC",
           trade: "CCC",
           strenght: "300",
+          price:"270",
           unit: "Tablet"
-        },
-        {
-          TMT: "0000WWWW",
-          generic: "DDD",
-          trade: "DDD",
-          strenght: "400",
-          unit: "Liquid"
         }
       ];
     },
@@ -165,7 +168,7 @@ export default {
 
     deleteItem(item) {
       const index = this.medicine.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm("คุณแน่ใจหรือที่จะลบข้อมูลยานี้?") &&
         this.medicine.splice(index, 1);
     },
 
