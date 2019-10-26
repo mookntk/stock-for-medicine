@@ -1,58 +1,52 @@
 <template>
-  <v-app class="admin cyan lighten-5">
+  <v-app class="font cyan lighten-5">
     <Menu />
     <v-content style="margin:20px">
-      <v-col justify="right" align="right">
-        <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-col align="left" style="font-size:25px">ข้อมูลผู้ป่วย</v-col>
+      <v-col align="right">
+        <v-dialog v-model="dialog_edit" persistent max-width="700px">
           <template v-slot:activator="{ on }">
             <v-btn color="primary" dark v-on="on">+ เพิ่มข้อมูลผู้ป่วยรายใหม่</v-btn>
           </template>
-          <v-card>
+          <v-card class="blue-grey lighten-5 font">
             <v-card-title>
-              <span class="headline">ข้อมูลผู้ป่วยรายใหม่</span>
+              <span>{{formTitle}}</span>
             </v-card-title>
             <v-card-text>
               <v-container>
-                <v-date-picker v-model="picker" v-if="click"></v-date-picker>
                 <v-row>
-                  <v-col cols="12" sm="6" md="12" align="right">order id : {{order_id}}</v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    ชื่อผู้ป่วย
-                    <v-text-field required v-model="order_name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    นามสกุล
-                    <v-text-field required v-model="order_surname"></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    โรค
-                    <v-text-field required></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    ยา
-                    <v-text-field required></v-text-field>
+                  <v-col cols="12" sm="12" align="right">HN: {{patients[index].HN}}</v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="editedItem.name" label="ชื่อ" outlined></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
-                    วันที่รับยา
-                    <v-text-field
-                      :label="picker"
-                      @click="click=!click"
-                      required
-                      v-model="order_date"
-                    ></v-text-field>
+                    <v-text-field v-model="editedItem.surname" label="นามสกุล" outlined></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="4">
+                    <v-text-field v-model="editedItem.gender" label="เพศ" outlined></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="2">
+                    <v-text-field v-model="editedItem.age" label="อายุ" outlined></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
-                    ร้านขายยา
-                    <v-select :items="order" @change="selectpharmacy" item-text="name"></v-select>
+                    <v-text-field v-model="editedItem.dob" label="วัน/เดือน/ปีเกิด" outlined></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="editedItem.email" label="อีเมล" outlined></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="editedItem.phone" label="เบอร์โทรศัพท์" outlined></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="8">
+                    <v-text-field v-model="editedItem.pharmacy" label="ร้านขายยา" outlined></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
-              <small>*indicates required field</small>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              <v-btn @click="close" rounded color="red lighten-1" large>ปิด</v-btn>
+              <v-btn rounded color="green lighten-1" large @click="save">เสร็จสิ้น</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -64,9 +58,12 @@
         hide-overlay
         transition="dialog-bottom-transition"
       >
-        <v-card>
-          <v-card-title>
-            <span class="headline">ข้อมูลผู้ป่วย</span>
+        <v-card class="font">
+          <v-card-title class="teal lighten-2 elevation-3">
+            <v-btn icon dark @click="dialog_record = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <span>ข้อมูลผู้ป่วย</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -97,41 +94,6 @@
               <v-data-table :headers="record_headers" :items="patients[index].record"></v-data-table>
             </v-container>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog_record = false">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog v-model="dialog_edit" persistent max-width="600px">
-        <v-card>
-          <v-card-title>
-            <span class="headline">แก้ไขข้อมูลผู้ป่วย</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="6">
-                  <v-text-field :value="patient_selected" label="ชื่อ-นามสกุลผู้ป่วย"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-text-field :value="patients[index].gender" label="เพศ"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <v-text-field :value="patients[index].age" label="อายุ"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="8">
-                  <v-text-field :value="patients[index].dob" label="วัน/เดือน/ปีเกิด"></v-text-field>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog_edit = false">ปิด</v-btn>
-            <v-btn color="blue darken-1" text @click="save">เสร็จสิ้น</v-btn>
-          </v-card-actions>
         </v-card>
       </v-dialog>
 
@@ -167,6 +129,7 @@ export default {
       dialog_record: false,
       dialog_edit: false,
       index: 0,
+      editedIndex: -1,
       headers: [
         {
           text: "HN",
@@ -196,7 +159,6 @@ export default {
       ],
       patients: [
         {
-          id: 0,
           HN: "0041523",
           name: "ณัชชา",
           surname: "ยินดี",
@@ -226,7 +188,6 @@ export default {
           ]
         },
         {
-          id: 1,
           HN: "0048543",
           name: "วรพรรณ",
           surname: "พุ่มประทุม",
@@ -256,14 +217,13 @@ export default {
           ]
         },
         {
-          id: 2,
           HN: "0521483",
-          name: "ณัฐวุฒิ",
+          name: "ณัฐพล",
           surname: "ตันเสวกวงษ์",
           age: 41,
           gender: "ชาย",
           dob: "20 กุมภาพันธ์ 2521",
-          email: "nattawut.t@gmail.com",
+          email: "nattapol.t@gmail.com",
           phone: "0857773239",
           pharmacy: "บ้านเภสัชกร",
           record: [
@@ -286,7 +246,6 @@ export default {
           ]
         },
         {
-          id: 3,
           HN: "0065893",
           name: "วริศรา",
           surname: "ใจดี",
@@ -316,7 +275,6 @@ export default {
           ]
         },
         {
-          id: 4,
           HN: "0011254",
           name: "ภควัตน์",
           surname: "อัศววิวัฒน์",
@@ -355,8 +313,38 @@ export default {
         }
       ],
       patient_selected: null,
-      editedItem: null
+      editedItem: {
+        HN: "0011254",
+        name: "",
+        surname: "",
+        age: null,
+        gender: "",
+        dob: "",
+        email: "",
+        phone: "",
+        pharmacy: "",
+        record: []
+      },
+      defaultItem: {
+        HN: "0011254",
+        name: "",
+        surname: "",
+        age: null,
+        gender: "",
+        dob: "",
+        email: "",
+        phone: "",
+        pharmacy: "",
+        record: []
+      }
     };
+  },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1
+        ? "ข้อมูลผู้ป่วยรายใหม่"
+        : "แก้ไขข้อมูลผู้ป่วย";
+    }
   },
   components: {
     Menu
@@ -369,6 +357,7 @@ export default {
     },
     editItem(item) {
       this.index = this.patients.indexOf(item);
+      this.editedIndex = this.patients.indexOf(item);
       this.patient_selected = item.name + " " + item.surname;
       this.editedItem = Object.assign({}, item);
       this.dialog_edit = true;
@@ -383,13 +372,22 @@ export default {
       ) && this.patients.splice(index, 1);
     },
     save() {
-      if (this.index > -1) {
-        Object.assign(this.patients[this.index], this.editedItem);
+      console.log(this.editedItem);
+      if (this.editedIndex > -1) {
+        Object.assign(this.patients[this.editedIndex], this.editedItem);
       } else {
+        console.log(this.editedItem);
         this.patients.push(this.editedItem);
       }
-
+      this.close();
+    },
+    close() {
+      console.log(this.editedIndex);
       this.dialog_edit = false;
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      }, 300);
     }
   }
 };
@@ -397,13 +395,7 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
-.admin {
+.font {
   font-family: "Sarabun", sans-serif;
 }
-
-/* table,
-th,
-td {
-  border: 1px solid black;
-} */
 </style>

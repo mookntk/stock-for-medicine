@@ -1,13 +1,26 @@
 <template>
   <v-app-bar app class="teal lighten-3">
-    <v-toolbar-title class="headline text-uppercase">
+    <v-toolbar-title class="font">
       <span>เภสัชกรโรงพยาบาล</span>
       <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn depressed @click="click" value="order" :color="btncolor">ข้อมูลผู้ป่วย</v-btn>
-      <v-btn depressed @click="click" value="order" :color="btncolor">ออร์เดอร์</v-btn>
+      <v-btn depressed @click="click" value="return" :color="btncolor">เรียกคืนยา</v-btn>
+      <v-btn depressed @click="click" value="patient" :color="btncolor">ข้อมูลผู้ป่วย</v-btn>
+      <v-menu offset-y open-on-hover>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" text>
+            <span style="margin-right:7px">ประวัติ</span>
+            <v-icon left>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="item in links" :key="item.value" router :to="item.route">
+            <v-list-item-title>{{ item.value }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn depressed @click="click" value="notification" :color="btncolor1">
         <v-icon>mdi-bell</v-icon>
       </v-btn>
@@ -17,8 +30,8 @@
         <v-btn color="primary" dark v-on="on" text>ชื่อผู้ใช้</v-btn>
       </template>
       <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index">
-          <v-list-item-title :value="index" @click="logout">{{ item }}</v-list-item-title>
+        <v-list-item v-for="item in items" :key="item" @click="logout">
+          <v-list-item-title>{{ item }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -31,80 +44,40 @@ export default {
     return {
       logged: localStorage.getItem("login"),
       items: ["ชื่อ-สกุล", "Logout"],
+      links: [
+        { value: "ประวัติออร์เดอร์", route: "/order_history" },
+        {
+          value: "ประวัติการจัดส่งยา",
+          route: "/transfer_history"
+        }
+      ],
       btncolor: "teal lighten-3",
       btncolor1: "teal lighten-3",
       btncolor2: "teal lighten-3"
     };
   },
   methods: {
-    logout: function() {
+    logout: function(e) {
+      console.log(e.currentTarget.key);
       localStorage.setItem("login", "false");
       console.log(localStorage.getItem("login"));
-      this.$router.push("/");
+      // this.$router.push("/");
     },
-
-    viewallhosstaff: function(e) {
-      console.log(e.currentTarget.value);
-      if (e.currentTarget.value == "hosstaff") {
-        this.btncolor = "teal lighten-1";
-        this.btncolor1 = "teal lighten-3";
-        this.btncolor2 = "teal lighten-3";
-        console.log(this.btncolor);
-      } else if (e.currentTarget.value == "phamacy") {
-        this.btncolor = "teal lighten-3";
-        this.btncolor1 = "teal lighten-1";
-        this.btncolor2 = "teal lighten-3";
-        console.log(this.btncolor);
-      } else if (e.currentTarget.value == "phamacist") {
-        this.btncolor = "teal lighten-3";
-        this.btncolor1 = "teal lighten-3";
-        this.btncolor2 = "teal lighten-1";
-        console.log(this.btncolor);
+    click(e) {
+      var selected = e.currentTarget.value;
+      if (selected == "patient") {
+        this.$router.push("/patient");
+      } else if (selected == "return") {
+        this.$router.push("/recall");
       }
-      this.$router.push("/hospitalstaff");
-    },
-
-    viewallphamacy: function(e) {
-      console.log(e.currentTarget.value);
-      if (e.currentTarget.value == "phamacy") {
-        this.btncolor = "teal lighten-3";
-        this.btncolor1 = "teal lighten-1";
-        this.btncolor2 = "teal lighten-3";
-        console.log(this.btncolor);
-      } else if (e.currentTarget.value == "้hosstaff") {
-        this.btncolor = "teal lighten-1";
-        this.btncolor1 = "teal lighten-3";
-        this.btncolor2 = "teal lighten-3";
-        console.log(this.btncolor);
-      } else if (e.currentTarget.value == "้phamacist") {
-        this.btncolor = "teal lighten-3";
-        this.btncolor1 = "teal lighten-3";
-        this.btncolor2 = "teal lighten-1";
-        console.log(this.btncolor);
-      }
-      this.$router.push("/phamacy");
-    },
-
-    viewallphamacist: function(e) {
-      console.log(e.currentTarget.value);
-      if (e.currentTarget.value == "phamacist") {
-        this.btncolor = "teal lighten-3";
-        this.btncolor1 = "teal lighten-3";
-        this.btncolor2 = "teal lighten-1";
-        console.log(this.btncolor);
-      } else if (e.currentTarget.value == "hosstaff") {
-        this.btncolor = "teal lighten-1";
-        this.btncolor1 = "teal lighten-3";
-        this.btncolor2 = "teal lighten-3";
-        console.log(this.btncolor);
-      } else if (e.currentTarget.value == "phamacy") {
-        this.btncolor = "teal lighten-3";
-        this.btncolor1 = "teal lighten-1";
-        this.btncolor2 = "teal lighten-3";
-        console.log(this.btncolor);
-      }
-      this.$router.push("/phamacist");
     }
   }
 };
 </script>
+
+<style scoped>
+@import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
+.font {
+  font-family: "Sarabun", sans-serif;
+}
+</style>
