@@ -90,6 +90,17 @@
                     readonly
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field :value="patients[index].email" label="อีเมล" filled readonly></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    :value="patients[index].phone"
+                    label="เบอร์โทรศัพท์"
+                    filled
+                    readonly
+                  ></v-text-field>
+                </v-col>
               </v-row>
               <v-data-table :headers="record_headers" :items="patients[index].record"></v-data-table>
             </v-container>
@@ -141,7 +152,7 @@ export default {
         { text: "อีเมล", align: "center", value: "email" },
         { text: "เบอร์โทรศัพท์", align: "center", value: "phone" },
         { text: "ร้านขายยา", align: "center", value: "pharmacy" },
-        { text: "ประวัติและยา", align: "center", value: "history" },
+        { text: "ประวัติการตรวจ", align: "center", value: "history" },
         { text: "แก้ไข/ลบ", align: "center", value: "edit" }
       ],
       record_headers: [

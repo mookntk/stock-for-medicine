@@ -100,11 +100,11 @@ export default new Router({
       name: "Patient",
       component: () => import("./views/Patient.vue")
     },
-    // {
-    //   path: "/recall",
-    //   name: "Racall_Medicine",
-    //   component: () => import("./views/Recall_med.vue")
-    // },
+    {
+      path: "/recall",
+      name: "Racall_Medicine",
+      component: () => import("./views/Recall_med.vue")
+    },
     {
       path: "/order_history",
       name: "Order_History",
