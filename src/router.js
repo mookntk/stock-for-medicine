@@ -65,29 +65,17 @@ export default new Router({
     {
       path: "/Medicine",
       name: "Medicine",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./components/Medicine.vue")
+      component: () => import("./components/Medicine.vue")
     },
     {
       path: "/hospital",
       name: "Hospital",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/Hospitalsection.vue")
+      component: () => import("./views/Hospitalsection.vue")
     },
     {
       path: "/Orderdetail",
       name: "Orderdetail",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/OrderDetail.vue")
+      component: () => import("./views/OrderDetail.vue")
     },
     // {
     //   path: "/test",
@@ -112,11 +100,11 @@ export default new Router({
       name: "Patient",
       component: () => import("./views/Patient.vue")
     },
-    {
-      path: "/recall",
-      name: "Racall_Medicine",
-      component: () => import("./views/Recall_med.vue")
-    },
+    // {
+    //   path: "/recall",
+    //   name: "Racall_Medicine",
+    //   component: () => import("./views/Recall_med.vue")
+    // },
     {
       path: "/order_history",
       name: "Order_History",
