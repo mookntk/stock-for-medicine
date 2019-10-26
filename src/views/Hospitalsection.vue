@@ -11,34 +11,73 @@
             <v-toolbar-title>{{pharmacy}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn dark text @click="dialog_row = false">จัดส่งยา</v-btn>
+              <v-btn dark text @click="changestatus">{{formtitle}}</v-btn>
             </v-toolbar-items>
           </v-toolbar>
-          <v-data-table
-            v-model="selected"
-            :items="order[index].orders"
-            :items-per-page="10"
-            class="elevation-1"
-            :headers="sub_headers"
-          >
-            <template v-slot:body="{ items }">
-              <tbody>
-                <tr
-                  v-for="item in items"
-                  :key="item.name"
-                  @click="selectItem(item)"
-                  :class="{'selectedRow': item === selectedItem}"
-                >
-                  <td>{{ item.order_id }}</td>
-                  <td style="text-align:center">{{ item.name }}</td>
-                  <td style="text-align:center">{{ item.due_date }}</td>
-                  <td style="text-align:center">
-                    <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
-                  </td>
-                </tr>
-              </tbody>
-            </template>
-          </v-data-table>
+          <v-row></v-row>
+          <v-row style="margin:20px">
+            <v-col cols="12" sm="12">
+              <v-data-table
+                v-model="selected"
+                :items="order[index].orders"
+                :items-per-page="10"
+                class="elevation-1"
+                :headers="sub_headers"
+              >
+                <template v-slot:body="{ items }">
+                  <tbody>
+                    <tr v-for="item in items" :key="item.name">
+                      <td>{{ item.order_id }}</td>
+                      <td style="text-align:center">{{ item.name }}</td>
+                      <td style="text-align:center">{{ item.due_date }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-data-table>
+            </v-col>
+          </v-row>
+          <v-row style="margin:20px">
+            <v-list subheader two-line flat>
+              <v-header>จำนวนยาทั้งหมด</v-header>
+              <v-list-item-group v-model="settings" multiple>
+                <v-list-item>
+                  <template v-slot:default="{ active, toggle }">
+                    <v-list-item-action>
+                      <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
+                    </v-list-item-action>
+
+                    <v-list-item-content>
+                      <v-list-item-title>Notifications</v-list-item-title>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+
+                <v-list-item>
+                  <template v-slot:default="{ active, toggle }">
+                    <v-list-item-action>
+                      <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
+                    </v-list-item-action>
+
+                    <v-list-item-content>
+                      <v-list-item-title>Sound</v-list-item-title>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+
+                <v-list-item>
+                  <template v-slot:default="{ active, toggle }">
+                    <v-list-item-action>
+                      <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
+                    </v-list-item-action>
+
+                    <v-list-item-content>
+                      <v-list-item-title>Video sounds</v-list-item-title>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-row>
         </v-card>
       </v-dialog>
       <v-row>
@@ -96,26 +135,6 @@
                 <v-btn color="blue darken-1" text @click="save">Save</v-btn>
               </v-card-actions>
             </v-card>
-            <!-- <v-form ref="form" v-model="valid" lazy-validation class="white">
-              <v-text-field :counter="20" :rules="nameRules" label="ชื่อผู้ป่วย" required></v-text-field>
-              <v-text-field :counter="20" :rules="nameRules" label="" required></v-text-field>
-              <v-text-field :rules="emailRules" label="E-mail" required></v-text-field>
-
-              <v-select
-                v-model="selectedpharmacy"
-                :items="order"
-                item-text="name"
-                :rules="[v => !!v || 'Item is required']"
-                label="Item"
-                required
-              ></v-select>
-
-              <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
-
-              <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
-
-              <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
-            </v-form>-->
           </v-dialog>
         </v-col>
       </v-row>
@@ -137,6 +156,8 @@
             >
               <td>{{ item.name }}</td>
               <td style="text-align:center">{{ item.orders.length }}</td>
+              <td style="text-align:center">{{ item.create_date }}</td>
+              <td style="text-align:center">{{ item.receive_date }}</td>
               <td style="text-align:center">
                 <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
               </td>
@@ -174,6 +195,8 @@ export default {
           value: "name"
         },
         { text: "จำนวนออร์เดอร์", align: "center", value: "order" },
+        { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
+        { text: "วันที่ร้านยาได้รับ", align: "center", value: "order" },
         { text: "สถานะ", align: "center", value: "status" }
       ],
       sub_headers: [
@@ -184,13 +207,14 @@ export default {
           value: "name"
         },
         { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
-        { text: "วันรับยา", align: "center", value: "status" },
-        { text: "สถานะ", align: "center", value: "status" }
+        { text: "วันนัดรับยา", align: "center", value: "status" }
       ],
       order: [
         {
           id: 0,
           name: "บ้านเภสัชกร",
+          create_date: "20 กรกฏาคม 2562",
+          receive_date: "22 กรกฎาคม 2562",
           orders: [
             {
               order_id: 1,
@@ -208,11 +232,13 @@ export default {
               due_date: "30 สิงหาคม 2562"
             }
           ],
-          status: "ทำการขนส่ง"
+          status: "ได้รับยาแล้ว"
         },
         {
           id: 1,
           name: "ลิขิตฟาร์มาซี",
+          create_date: "10 กรกฏาคม 2562",
+          receive_date: "",
           orders: [
             {
               order_id: 2,
@@ -240,11 +266,13 @@ export default {
               due_date: "15 มกราคม 2562"
             }
           ],
-          status: "ยังไม่ได้จัดส่ง"
+          status: "รอการจัดยา"
         },
         {
           id: 2,
           name: "ร้านฟาร์มาซี สาย2",
+          create_date: "15 มีนาคม 2562",
+          receive_date: "18 มีนาคม 2562",
 
           orders: [
             {
@@ -258,12 +286,13 @@ export default {
               due_date: "9 มีนาคม 2562"
             }
           ],
-          status: "ยังไม่ได้จัดส่ง"
+          status: "หยุดชั่วคราว"
         },
         {
           id: 3,
           name: "เวิลด์ ฟาร์มาซี",
-
+          create_date: "11 สิงหาคม 2562",
+          receive_date: "",
           orders: [
             {
               order_id: 1,
@@ -291,12 +320,13 @@ export default {
               due_date: "30 สิงหาคม 2562"
             }
           ],
-          status: "ยังไม่ได้จัดส่ง"
+          status: "รอการจัดส่ง"
         },
         {
           id: 4,
           name: "ซิตี้ฟาร์มาซี",
-
+          create_date: "25 กรกฏาคม 2562",
+          receive_date: "",
           orders: [
             {
               order_id: 1,
@@ -314,7 +344,7 @@ export default {
               due_date: "30 สิงหาคม 2562"
             }
           ],
-          status: "ยังไม่ได้จัดส่ง"
+          status: "กำลังจัดส่ง"
         }
       ],
       date: "",
@@ -362,12 +392,27 @@ export default {
     Menu
   },
   methods: {
+    changestatus() {
+      if (this.order[this.index].status == "รอการจัดส่ง") {
+        this.order[this.index].status = "กำลังจัดส่ง";
+      } else if (this.order[this.index].status == "รอการจัดยา") {
+        this.order[this.index].status = "รอการจัดส่ง";
+      } else if (this.order[this.index].status == "หยุดชั่วคราว") {
+        this.order[this.index].status = "รอการจัดยา";
+      }
+      this.dialog_row = false;
+    },
     getColor(status) {
-      if (status == "ยังไม่ได้จัดส่ง") return "red";
+      if (status == "หยุดชั่วคราว") return "red";
+      else if (status == "รอการจัดส่ง") return "grey";
+      else if (status == "รอการจัดยา") return "grey";
+      else if (status == "กำลังจัดส่ง") return "orange";
       else return "green";
     },
     selectItem(item) {
-      this.index = item.id;
+      this.index = this.order.indexOf(item);
+      if (item.status == "") {
+      }
       this.pharmacy = item.name;
       this.dialog_row = true;
     },
@@ -408,6 +453,21 @@ export default {
     selectpharmacy(e) {
       this.selectedpharmacy = e;
       console.log(this.selectedpharmacy);
+    }
+  },
+  computed: {
+    formtitle() {
+      if (this.order[this.index].status == "หยุดชั่วคราว") {
+        return "ได้รับยาเรียบร้อย";
+      } else if (this.order[this.index].status == "รอการจัดส่ง") {
+        return "จัดส่ง";
+      } else if (this.order[this.index].status == "รอการจัดยา") {
+        return "จัดยาเรียบร้อย";
+      } else if (this.order[this.index].status == "กำลังจัดส่ง") {
+        return "";
+      } else if (this.order[this.index].status == "ได้รับยาแล้ว") {
+        return "";
+      }
     }
   }
 };
