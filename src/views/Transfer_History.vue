@@ -1,9 +1,9 @@
 <template>
-  <v-app class="admin cyan lighten-5">
+  <v-app class="font cyan lighten-5">
     <Menu />
     <v-content style="margin:20px">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card>
+        <v-card class="font">
           <v-toolbar dark color="primary">
             <v-btn icon dark @click="dialog_row = false">
               <v-icon>mdi-close</v-icon>
@@ -29,6 +29,7 @@
                     <tr v-for="item in items" :key="item.name">
                       <td>{{ item.order_id }}</td>
                       <td style="text-align:center">{{ item.name }}</td>
+                      <td style="text-align:center">{{ item.create_date }}</td>
                       <td style="text-align:center">{{ item.due_date }}</td>
                     </tr>
                   </tbody>
@@ -37,7 +38,7 @@
             </v-col>
           </v-row>
           <v-row style="margin:20px">
-            <v-list subheader two-line flat>
+            <v-list subheader two-line flat class="font">
               <v-header>จำนวนยาทั้งหมด</v-header>
               <v-list-item-group v-model="settings" multiple>
                 <v-list-item>
@@ -47,31 +48,7 @@
                     </v-list-item-action>
 
                     <v-list-item-content>
-                      <v-list-item-title>Notifications</v-list-item-title>
-                    </v-list-item-content>
-                  </template>
-                </v-list-item>
-
-                <v-list-item>
-                  <template v-slot:default="{ active, toggle }">
-                    <v-list-item-action>
-                      <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
-                    </v-list-item-action>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Sound</v-list-item-title>
-                    </v-list-item-content>
-                  </template>
-                </v-list-item>
-
-                <v-list-item>
-                  <template v-slot:default="{ active, toggle }">
-                    <v-list-item-action>
-                      <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
-                    </v-list-item-action>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Video sounds</v-list-item-title>
+                      <v-list-item-title>Enalapril 20 mg 20 tablet</v-list-item-title>
                     </v-list-item-content>
                   </template>
                 </v-list-item>
@@ -82,8 +59,25 @@
       </v-dialog>
       <v-row>
         <v-col align="left" style="font-size:25px">ประวัติการจัดส่งยา</v-col>
+        <v-col sm="2" align="right" style="font-size:12px">
+          <v-text-field
+            :value="date_th"
+            outlined
+            @click="calendar = true"
+            label="เลือกวัน/เดือน/ปี"
+          ></v-text-field>
+        </v-col>
       </v-row>
-
+      <v-dialog v-model="calendar" width="300px">
+        <v-row justify="space-around">
+          <v-date-picker
+            v-model="picker2"
+            color="green lighten-1"
+            header-color="primary"
+            locale="th"
+          ></v-date-picker>
+        </v-row>
+      </v-dialog>
       <v-data-table
         v-model="selected"
         :headers="headers"
@@ -121,6 +115,8 @@ import Menu from "../components/menubar_hos";
 export default {
   data() {
     return {
+      picker2: "",
+      calendar: false,
       picker: new Date().toISOString().substr(0, 10),
       order_id: 1,
       order_name: null,
@@ -140,7 +136,7 @@ export default {
           value: "name"
         },
         { text: "จำนวนออร์เดอร์", align: "center", value: "order" },
-        { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
+        { text: "วันที่จัดส่งยา", align: "center", value: "order" },
         { text: "วันที่ร้านยาได้รับ", align: "center", value: "order" },
         { text: "สถานะ", align: "center", value: "status" }
       ],
@@ -152,6 +148,7 @@ export default {
           value: "name"
         },
         { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
+        { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
         { text: "วันนัดรับยา", align: "center", value: "status" }
       ],
       order: [
@@ -164,16 +161,19 @@ export default {
             {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
+              create_date: "7 ตุลาคม 2562",
               due_date: "15 ตุลาคม 2562"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
+              create_date: "2 มีนาคม 2562",
               due_date: "9 มีนาคม 2562"
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
+              create_date: "7 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             }
           ],
@@ -182,32 +182,37 @@ export default {
         {
           id: 1,
           name: "ลิขิตฟาร์มาซี",
-          create_date: "10 กรกฏาคม 2562",
+          create_date: "",
           receive_date: "",
           orders: [
             {
               order_id: 2,
               name: "สุกรี ฉัตรรัตนกุลชัย",
+              create_date: "7 กันยายน 2562",
               due_date: "12 กันยายน 2562"
             },
             {
               order_id: 5,
               name: "สมาน พิทยาพิบูลพงศ์",
+              create_date: "10 มีนาคม 2562",
               due_date: "20 มีนาคม 2562"
             },
             {
               order_id: 11,
               name: "วิชัย วิทุรวงศ์",
+              create_date: "15 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             },
             {
               order_id: 39,
               name: "นภาพรรณ วัฒนประดิษฐ",
+              create_date: "7 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             },
             {
               order_id: 40,
               name: "เฉลิม ศรีเมือง",
+              create_date: "7 มกราคม 2562",
               due_date: "15 มกราคม 2562"
             }
           ],
@@ -223,11 +228,13 @@ export default {
             {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
+              create_date: "7 ตุลาคม 2562",
               due_date: "15 ตุลาคม 2562"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
+              create_date: "1 มีนาคม 2562",
               due_date: "9 มีนาคม 2562"
             }
           ],
@@ -236,32 +243,37 @@ export default {
         {
           id: 3,
           name: "เวิลด์ ฟาร์มาซี",
-          create_date: "11 สิงหาคม 2562",
+          create_date: "",
           receive_date: "",
           orders: [
             {
               order_id: 1,
               name: "นภาพรรณ วิทุรวงศ์",
+              create_date: "5 ตุลาคม 2562",
               due_date: "15 ตุลาคม 2562"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
+              create_date: "5 ตุลาคม 2562",
               due_date: "9 มีนาคม 2562"
             },
             {
               order_id: 15,
               name: "สลิลลา พิทยาพิบูลพงศ์",
+              create_date: "5 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             },
             {
               order_id: 15,
               name: "สุทธิพงศ์ ภัทรมังกร",
+              create_date: "5 สิงหาคมม 2562",
               due_date: "30 สิงหาคม 2562"
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
+              create_date: "5 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             }
           ],
@@ -276,20 +288,117 @@ export default {
             {
               order_id: 1,
               name: "สุทธิพงศ์ ภัทรมังกร",
+              create_date: "10 ตุลาคม 2562",
               due_date: "15 ตุลาคม 2562"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
+              create_date: "5 มีนาคม 2562",
               due_date: "9 มีนาคม 2562"
             },
             {
               order_id: 15,
               name: "เฉลิม วัฒนประดิษฐ",
+              create_date: "15 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             }
           ],
           status: "กำลังจัดส่ง"
+        },
+        {
+          id: 0,
+          name: "บ้านเภสัชกร",
+          create_date: "25 กรกฏาคม 2562",
+          receive_date: "30 กรกฎาคม 2562",
+          orders: [
+            {
+              order_id: 1,
+              name: "วันชัย ศุภจตุรัส",
+              create_date: "7 ตุลาคม 2562",
+              due_date: "15 ตุลาคม 2562"
+            },
+            {
+              order_id: 3,
+              name: "เอก เวสโกสิทธิ์",
+              create_date: "2 มีนาคม 2562",
+              due_date: "9 มีนาคม 2562"
+            },
+            {
+              order_id: 15,
+              name: "วิชัย วิทุรวงศ์",
+              create_date: "7 สิงหาคม 2562",
+              due_date: "30 สิงหาคม 2562"
+            },
+            {
+              order_id: 70,
+              name: "วันชัย ศุภจตุรัส",
+              create_date: "25 ตุลาคม 2562",
+              due_date: "31 ตุลาคม 2562"
+            }
+          ],
+          status: "ได้รับยาแล้ว"
+        },
+        {
+          id: 1,
+          name: "ลิขิตฟาร์มาซี",
+          create_date: "10 มกราคม 2562",
+          receive_date: "20 มกราคม 2562",
+          orders: [
+            {
+              order_id: 2,
+              name: "สุกรี ฉัตรรัตนกุลชัย",
+              create_date: "7 กันยายน 2562",
+              due_date: "12 กันยายน 2562"
+            },
+            {
+              order_id: 5,
+              name: "สมาน พิทยาพิบูลพงศ์",
+              create_date: "10 มีนาคม 2562",
+              due_date: "20 มีนาคม 2562"
+            },
+            {
+              order_id: 11,
+              name: "วิชัย วิทุรวงศ์",
+              create_date: "15 สิงหาคม 2562",
+              due_date: "30 สิงหาคม 2562"
+            },
+            {
+              order_id: 39,
+              name: "นภาพรรณ วัฒนประดิษฐ",
+              create_date: "7 สิงหาคม 2562",
+              due_date: "30 สิงหาคม 2562"
+            }
+          ],
+          status: "ได้รับยาแล้ว"
+        },
+        {
+          id: 2,
+          name: "ร้านฟาร์มาซี สาย2",
+          create_date: "",
+          receive_date: "",
+
+          orders: [
+            {
+              order_id: 1,
+              name: "วันชัย ศุภจตุรัส",
+              create_date: "7 ตุลาคม 2562",
+              due_date: "15 ตุลาคม 2562"
+            },
+            {
+              order_id: 3,
+              name: "เอก เวสโกสิทธิ์",
+              create_date: "1 มีนาคม 2562",
+              due_date: "9 มีนาคม 2562"
+            },
+            {
+              order_id: 40,
+              name: "เฉลิม ศรีเมือง",
+              create_date: "7 มกราคม 2562",
+              due_date: "15 มกราคม 2562"
+            }
+          ],
+          status: "รอการจัดยา"
         }
       ],
       date: "",
@@ -297,6 +406,7 @@ export default {
       selectedItem: ""
     };
   },
+
   mounted() {
     var day = [
       "วันอาทิตย์",
@@ -413,16 +523,39 @@ export default {
       } else if (this.order[this.index].status == "ได้รับยาแล้ว") {
         return "";
       }
+    },
+    date_th() {
+      var month = [
+        "มกราคม",
+        "กุมภาพันธ์",
+        "มีนาคม",
+        "เมษายน",
+        "พฤษภาคม",
+        "มิถุนายน",
+        "กรกฎาคม",
+        "สิงหาคม",
+        "กันยายน",
+        "ตุลาคม",
+        "พฤศจิกายน",
+        "ธันวาคม"
+      ];
+      if (this.picker2 != "") {
+        var date = this.picker2.split("-");
+        date[0] = parseInt(date[0]) + 543;
+        date = date[2] + " " + month[date[1] - 1] + " " + date[0];
+        console.log(date);
+        return date;
+      } else return "";
     }
   }
 };
 </script>
-<style>
+<style >
 @import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
-.admin {
+.font {
   font-family: "Sarabun", sans-serif;
 }
 thead {
-  background-color: antiquewhite;
+  background-color: #ffd54f;
 }
 </style>

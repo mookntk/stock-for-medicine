@@ -54,6 +54,9 @@
                     readonly
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12" sm="12">
+                  <v-text-field :value="patients[index].pharmacy" label="ร้านขายยา" filled readonly></v-text-field>
+                </v-col>
               </v-row>
               <v-data-table :headers="record_headers" :items="patients[index].record"></v-data-table>
             </v-container>
@@ -131,7 +134,7 @@ export default {
           order_id: 15,
           create_date: "9 มีนาคม 2562",
           due_date: "15 มีนาคม 2562",
-          status: "success",
+          status: "สำเร็จ",
           HN: "0041523",
           name: "ณัชชา",
           surname: "ยินดี",
@@ -164,7 +167,7 @@ export default {
           order_id: 5,
           create_date: "15 สิงหาคม 2562",
           due_date: "22 สิงหาคม 2562",
-          status: "success",
+          status: "สำเร็จ",
           HN: "0048543",
           name: "วรพรรณ",
           surname: "พุ่มประทุม",
@@ -197,7 +200,7 @@ export default {
           order_id: 14,
           create_date: "20 สิงหาคม 2562",
           due_date: "",
-          status: "ready",
+          status: "พร้อมจ่ายยา",
           HN: "0521483",
           name: "ณัฐพล",
           surname: "ตันเสวกวงษ์",
@@ -230,7 +233,7 @@ export default {
           order_id: 52,
           create_date: "15 สิงหาคม 2562",
           due_date: "20 สิงหาคม 2562",
-          status: "success",
+          status: "สำเร็จ",
           HN: "0065893",
           name: "วริศรา",
           surname: "ใจดี",
@@ -263,7 +266,7 @@ export default {
           order_id: 7,
           create_date: "5 สิงหาคม 2562",
           due_date: "",
-          status: "cancel",
+          status: "ยกเลิก",
           HN: "0011254",
           name: "ภควัตน์",
           surname: "อัศววิวัฒน์",
@@ -271,6 +274,47 @@ export default {
           gender: "ชาย",
           dob: "15 กันยายน 2534",
           email: "phakawat@hotmail.com",
+          phone: "0851856921",
+          pharmacy: "ร้านฟาร์มาซี สาย2",
+          record: [
+            {
+              no: 1,
+              date: "20 กุมภาพันธ์ 2562",
+              weight: 70,
+              height: 175,
+              pressure: "125/82",
+              pharmacist: "สลิลลา วีระรัตน์"
+            },
+            {
+              no: 2,
+              date: "20 กันยายน 2562",
+              weight: 69,
+              height: 175,
+              pressure: "120/80",
+              pharmacist: "สลิลลา วีระรัตน์"
+            },
+            {
+              no: 3,
+              date: "15 ธันวาคม 2562",
+              weight: 69,
+              height: 175,
+              pressure: "110/75",
+              pharmacist: "สลิลลา วีระรัตน์"
+            }
+          ]
+        },
+        {
+          order_id: 7,
+          create_date: "5 สิงหาคม 2562",
+          due_date: "",
+          status: "รอการจัดยา",
+          HN: "0011254",
+          name: "จริน",
+          surname: "จันมี",
+          age: 28,
+          gender: "หญิง",
+          dob: "15 กันยายน 2534",
+          email: "jarin@hotmail.com",
           phone: "0851856921",
           pharmacy: "ร้านฟาร์มาซี สาย2",
           record: [
@@ -335,8 +379,9 @@ export default {
       }
     },
     getColor(status) {
-      if (status == "cancel") return "red";
-      else if (status == "ready") return "orange";
+      if (status == "ยกเลิก") return "red";
+      else if (status == "พร้อมจ่ายยา") return "orange";
+      else if (status == "รอการจัดยา") return "grey";
       else return "green";
     }
   },
@@ -347,9 +392,12 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style >
 @import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
-.font {
+.admin {
   font-family: "Sarabun", sans-serif;
+}
+thead {
+  background-color: #ffd54f;
 }
 </style>

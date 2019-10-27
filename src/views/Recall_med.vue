@@ -1,9 +1,9 @@
 <template>
-  <v-app class="admin cyan lighten-5">
+  <v-app class="font cyan lighten-5">
     <Menu />
     <v-content style="margin:20px">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card>
+        <v-card class="font">
           <v-toolbar dark color="primary">
             <v-btn icon dark @click="dialog_row = false">
               <v-icon>mdi-close</v-icon>
@@ -51,7 +51,7 @@
                     </v-list-item-action>
 
                     <v-list-item-content>
-                      <v-list-item-title>Notifications</v-list-item-title>
+                      <v-list-item-title>Januvia 100 mg 20 tablet</v-list-item-title>
                     </v-list-item-content>
                   </template>
                 </v-list-item>
@@ -63,19 +63,7 @@
                     </v-list-item-action>
 
                     <v-list-item-content>
-                      <v-list-item-title>Sound</v-list-item-title>
-                    </v-list-item-content>
-                  </template>
-                </v-list-item>
-
-                <v-list-item>
-                  <template v-slot:default="{ active, toggle }">
-                    <v-list-item-action>
-                      <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
-                    </v-list-item-action>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Video sounds</v-list-item-title>
+                      <v-list-item-title>Enalapril 20 mg 25 tablet</v-list-item-title>
                     </v-list-item-content>
                   </template>
                 </v-list-item>
@@ -85,7 +73,7 @@
         </v-card>
       </v-dialog>
       <v-row>
-        <v-col align="left" style="font-size:25px">ประวัติการจัดส่งยา</v-col>
+        <v-col align="left" style="font-size:25px">ระะบบคืนยา</v-col>
       </v-row>
       <v-dialog v-model="dialog_med" persistent max-width="700px">
         <v-card class="blue-grey lighten-5 font">
@@ -272,7 +260,7 @@ export default {
             }
           ],
           status: "cancel",
-          note: "ผู้ไม่มารับ",
+          note: "ผู้ป่วยไม่มารับ",
           confirm: false
         },
         {
@@ -379,7 +367,7 @@ export default {
             }
           ],
           status: "cancel",
-          note: "ผู้ไม่มารับ",
+          note: "ผู้ป่วยไม่มารับ",
           confirm: true
         },
         {
@@ -657,12 +645,12 @@ export default {
   }
 };
 </script>
-<style>
+<style >
 @import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
-.admin {
+.font {
   font-family: "Sarabun", sans-serif;
 }
 thead {
-  background-color: antiquewhite;
+  background-color: #ffd54f;
 }
 </style>

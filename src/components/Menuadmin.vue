@@ -1,14 +1,25 @@
 <template>
-  <v-app-bar app  class="teal lighten-3">
+  <v-app-bar app class="teal lighten-3">
     <v-toolbar-title class="headline text-uppercase">
       <span>การจัดการเจ้าหน้าที่และยา</span>
     </v-toolbar-title>
     <div class="flex-grow-1"></div>
 
     <v-toolbar-items>
-      <v-btn depressed @click="viewallhosstaff" value="hosstaff" :color="btncolor">เภสัชกรของโรงพยาบาล</v-btn>
+      <v-btn depressed @click="viewallhosstaff" value="home" :color="btncolor">หน้าหลัก</v-btn>
+      <v-btn
+        depressed
+        @click="viewallhosstaff"
+        value="hosstaff"
+        :color="btncolor"
+      >เภสัชกรของโรงพยาบาล</v-btn>
       <v-btn depressed @click="viewallphamacy" value="phamacy" :color="btncolor1">ร้านขายยา</v-btn>
-      <v-btn depressed @click="viewallphamacist" value="phamacist" :color="btncolor2">เภสัชกรร้านขายยา</v-btn>
+      <v-btn
+        depressed
+        @click="viewallphamacist"
+        value="phamacist"
+        :color="btncolor2"
+      >เภสัชกรร้านขายยา</v-btn>
       <v-btn depressed @click="viewallmedicine" value="medicine" :color="btncolor3">ยา</v-btn>
 
       <v-menu offset-y>
@@ -52,6 +63,7 @@ export default {
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-3";
+        this.$router.push("/hospitalstaff");
         console.log(this.btncolor);
       } else if (e.currentTarget.value == "phamacy") {
         this.btncolor = "teal lighten-3";
@@ -71,8 +83,14 @@ export default {
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-1";
         console.log(this.btncolor);
+      } else if (e.currentTarget.value == "home") {
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-1";
+        this.$router.push("/admin");
+        console.log(this.btncolor);
       }
-      this.$router.push("/hospitalstaff");
     },
 
     viewallphamacy: function(e) {
@@ -104,7 +122,7 @@ export default {
       }
       this.$router.push("/phamacy");
     },
-    
+
     viewallphamacist: function(e) {
       console.log(e.currentTarget.value);
       if (e.currentTarget.value == "phamacist") {
@@ -113,13 +131,13 @@ export default {
         this.btncolor2 = "teal lighten-1";
         this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
-      } else if (e.currentTarget.value == "hosstaff")  {
+      } else if (e.currentTarget.value == "hosstaff") {
         this.btncolor = "teal lighten-1";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
-      } else if (e.currentTarget.value == "phamacy")  {
+      } else if (e.currentTarget.value == "phamacy") {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-1";
         this.btncolor2 = "teal lighten-3";
@@ -142,13 +160,13 @@ export default {
         this.btncolor2 = "teal lighten-1";
         this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
-      } else if (e.currentTarget.value == "hosstaff")  {
+      } else if (e.currentTarget.value == "hosstaff") {
         this.btncolor = "teal lighten-1";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
-      } else if (e.currentTarget.value == "phamacy")  {
+      } else if (e.currentTarget.value == "phamacy") {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-1";
         this.btncolor2 = "teal lighten-3";

@@ -3,15 +3,15 @@
     <Menu />
     <v-content style="margin:20px">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar dark color="primary">
+        <v-card class="admin cyan lighten-4">
+          <v-toolbar color="cyan darken-3">
             <v-btn icon dark @click="dialog_row = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-toolbar-title>{{pharmacy}}</v-toolbar-title>
+            <v-toolbar-title class="white--text">{{pharmacy}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn dark text @click="changestatus">{{formtitle}}</v-btn>
+              <v-btn text dark @click="changestatus">{{formtitle}}</v-btn>
             </v-toolbar-items>
           </v-toolbar>
           <v-row></v-row>
@@ -26,10 +26,15 @@
               >
                 <template v-slot:body="{ items }">
                   <tbody>
-                    <tr v-for="item in items" :key="item.name">
+                    <tr v-for="item in items" :key="item.name" @click="show_med(item)">
                       <td>{{ item.order_id }}</td>
                       <td style="text-align:center">{{ item.name }}</td>
+                      <td style="text-align:center">{{ item.create_date }}</td>
                       <td style="text-align:center">{{ item.due_date }}</td>
+                      <td>
+                        <tr>Enalapril 20 mg 2 tablets</tr>
+                        <tr>Januvia 100 mg 1 tablet</tr>
+                      </td>
                     </tr>
                   </tbody>
                 </template>
@@ -37,7 +42,7 @@
             </v-col>
           </v-row>
           <v-row style="margin:20px">
-            <v-list subheader two-line flat>
+            <v-list subheader two-line flat class="admin cyan lighten-4">
               <v-header>จำนวนยาทั้งหมด</v-header>
               <v-list-item-group v-model="settings" multiple>
                 <v-list-item>
@@ -47,7 +52,7 @@
                     </v-list-item-action>
 
                     <v-list-item-content>
-                      <v-list-item-title>Notifications</v-list-item-title>
+                      <v-list-item-title>Januvia 100 mg 20 tablet</v-list-item-title>
                     </v-list-item-content>
                   </template>
                 </v-list-item>
@@ -59,7 +64,7 @@
                     </v-list-item-action>
 
                     <v-list-item-content>
-                      <v-list-item-title>Sound</v-list-item-title>
+                      <v-list-item-title>SymlinPen 60 mcg</v-list-item-title>
                     </v-list-item-content>
                   </template>
                 </v-list-item>
@@ -71,7 +76,7 @@
                     </v-list-item-action>
 
                     <v-list-item-content>
-                      <v-list-item-title>Video sounds</v-list-item-title>
+                      <v-list-item-title>Enalapril 20 mg 25 tablet</v-list-item-title>
                     </v-list-item-content>
                   </template>
                 </v-list-item>
@@ -87,9 +92,9 @@
             <template v-slot:activator="{ on }">
               <v-btn color="primary" dark v-on="on">สร้างออร์เดอร์</v-btn>
             </template>
-            <v-card>
+            <v-card class="admin">
               <v-card-title>
-                <span class="headline">สร้างออร์เดอร์</span>
+                <span>สร้างออร์เดอร์</span>
               </v-card-title>
               <v-card-text>
                 <v-container>
@@ -97,21 +102,19 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="12" align="right">order id : {{order_id}}</v-col>
                     <v-col cols="12" sm="6" md="6">
-                      ชื่อผู้ป่วย
-                      <v-text-field required v-model="order_name"></v-text-field>
+                      <v-text-field required v-model="order_name" label="ชื่อผู้ป่วย" outlined></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
-                      นามสกุล
-                      <v-text-field required v-model="order_surname"></v-text-field>
+                      <v-text-field required v-model="order_surname" label="นามสกุล" outlined></v-text-field>
                     </v-col>
-                    <v-col cols="12">
+                    <!-- <v-col cols="12">
                       โรค
                       <v-text-field required></v-text-field>
                     </v-col>
                     <v-col cols="12">
                       ยา
                       <v-text-field required></v-text-field>
-                    </v-col>
+                    </v-col>-->
                     <v-col cols="12" sm="6">
                       วันที่รับยา
                       <v-text-field
@@ -119,15 +122,16 @@
                         @click="click=!click"
                         required
                         v-model="order_date"
+                        outlined
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
                       ร้านขายยา
-                      <v-select :items="order" @change="selectpharmacy" item-text="name"></v-select>
+                      <v-select :items="order" @change="selectpharmacy" item-text="name" outlined></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
-                <small>*indicates required field</small>
+                <!-- <small>*indicates required field</small> -->
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -195,7 +199,7 @@ export default {
           value: "name"
         },
         { text: "จำนวนออร์เดอร์", align: "center", value: "order" },
-        { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
+        { text: "วันที่จัดส่งยา", align: "center", value: "order" },
         { text: "วันที่ร้านยาได้รับ", align: "center", value: "order" },
         { text: "สถานะ", align: "center", value: "status" }
       ],
@@ -207,7 +211,9 @@ export default {
           value: "name"
         },
         { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
-        { text: "วันนัดรับยา", align: "center", value: "status" }
+        { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
+        { text: "วันนัดรับยา", align: "center", value: "status" },
+        { text: "ข้อมูลยา", align: "center", value: "status" }
       ],
       order: [
         {
@@ -219,16 +225,19 @@ export default {
             {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
+              create_date: "7 ตุลาคม 2562",
               due_date: "15 ตุลาคม 2562"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
+              create_date: "2 มีนาคม 2562",
               due_date: "9 มีนาคม 2562"
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
+              create_date: "7 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             }
           ],
@@ -237,32 +246,37 @@ export default {
         {
           id: 1,
           name: "ลิขิตฟาร์มาซี",
-          create_date: "10 กรกฏาคม 2562",
+          create_date: "",
           receive_date: "",
           orders: [
             {
               order_id: 2,
               name: "สุกรี ฉัตรรัตนกุลชัย",
+              create_date: "7 กันยายน 2562",
               due_date: "12 กันยายน 2562"
             },
             {
               order_id: 5,
               name: "สมาน พิทยาพิบูลพงศ์",
+              create_date: "10 มีนาคม 2562",
               due_date: "20 มีนาคม 2562"
             },
             {
               order_id: 11,
               name: "วิชัย วิทุรวงศ์",
+              create_date: "15 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             },
             {
               order_id: 39,
               name: "นภาพรรณ วัฒนประดิษฐ",
+              create_date: "7 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             },
             {
               order_id: 40,
               name: "เฉลิม ศรีเมือง",
+              create_date: "7 มกราคม 2562",
               due_date: "15 มกราคม 2562"
             }
           ],
@@ -278,11 +292,13 @@ export default {
             {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
+              create_date: "7 ตุลาคม 2562",
               due_date: "15 ตุลาคม 2562"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
+              create_date: "1 มีนาคม 2562",
               due_date: "9 มีนาคม 2562"
             }
           ],
@@ -291,32 +307,37 @@ export default {
         {
           id: 3,
           name: "เวิลด์ ฟาร์มาซี",
-          create_date: "11 สิงหาคม 2562",
+          create_date: "",
           receive_date: "",
           orders: [
             {
               order_id: 1,
               name: "นภาพรรณ วิทุรวงศ์",
+              create_date: "5 ตุลาคม 2562",
               due_date: "15 ตุลาคม 2562"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
+              create_date: "5 ตุลาคม 2562",
               due_date: "9 มีนาคม 2562"
             },
             {
               order_id: 15,
               name: "สลิลลา พิทยาพิบูลพงศ์",
+              create_date: "5 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             },
             {
               order_id: 15,
               name: "สุทธิพงศ์ ภัทรมังกร",
+              create_date: "5 สิงหาคมม 2562",
               due_date: "30 สิงหาคม 2562"
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
+              create_date: "5 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             }
           ],
@@ -331,16 +352,19 @@ export default {
             {
               order_id: 1,
               name: "สุทธิพงศ์ ภัทรมังกร",
+              create_date: "10 ตุลาคม 2562",
               due_date: "15 ตุลาคม 2562"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
+              create_date: "5 มีนาคม 2562",
               due_date: "9 มีนาคม 2562"
             },
             {
               order_id: 15,
               name: "เฉลิม วัฒนประดิษฐ",
+              create_date: "15 สิงหาคม 2562",
               due_date: "30 สิงหาคม 2562"
             }
           ],
@@ -453,7 +477,8 @@ export default {
     selectpharmacy(e) {
       this.selectedpharmacy = e;
       console.log(this.selectedpharmacy);
-    }
+    },
+    show_med(item) {}
   },
   computed: {
     formtitle() {
@@ -478,6 +503,6 @@ export default {
   font-family: "Sarabun", sans-serif;
 }
 thead {
-  background-color: antiquewhite;
+  background-color: #ffd54f;
 }
 </style>

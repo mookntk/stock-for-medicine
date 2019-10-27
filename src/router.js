@@ -100,6 +100,16 @@ export default new Router({
       path: "/recall",
       name: "Patient",
       component: () => import("./views/Recall_med.vue")
+    },
+    {
+      path: "/status_history",
+      name: "Patient",
+      component: () => import("./views/Status_history.vue")
+    },
+    {
+      path: "/traceability",
+      name: "Patient",
+      component: () => import("./views/Sendback.vue")
     }
   ]
 });

@@ -1,14 +1,19 @@
 <template>
-  <v-app class="font cyan lighten-5">
+  <v-app class="admin about cyan lighten-5">
     <Menubar />
     <v-content style="margin:0px 100px 10px 0px">
-      <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <v-dialog
+        v-model="dialog_sendback"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+      >
         <v-card>
           <v-toolbar dark color="primary">
-            <v-btn icon dark @click="dialog_row = false">
+            <v-btn icon dark @click="dialog_sendback = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-toolbar-title>ออร์เดอร์ที่ {{order.orderid}}</v-toolbar-title>
+            <v-toolbar-title>ออร์เดอร์ที่ {{order[index].HN}}</v-toolbar-title>
           </v-toolbar>
 
           <v-card-title>
@@ -18,32 +23,21 @@
             <v-container>
               <v-row>
                 <v-col cols="12" sm="6">
-                  <v-text-field :value="order.name" label="ชื่อ-นามสกุลผู้ป่วย" filled readonly></v-text-field>
+                  <v-text-field
+                    :value="order[index].name"
+                    label="ชื่อ-นามสกุลผู้ป่วย"
+                    filled
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
-                  <v-text-field :value="order.gender" label="เพศ" filled readonly></v-text-field>
+                  <v-text-field :value="order[index].gender" label="เพศ" filled readonly></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4">
-                  <v-text-field :value="order.age" label="อายุ" filled readonly></v-text-field>
+                  <v-text-field :value="order[index].age" label="อายุ" filled readonly></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="8">
-                  <v-text-field :value="order.dob" label="วัน/เดือน/ปีเกิด" filled readonly></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4" md="6">
-                  <v-text-field :value="order.status" label="สถานะ" filled readonly></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col cols="12">กรอกข้อมูลผู้ป่วย</v-col>
-                <v-col>
-                  <v-text-field cols="12" label="น้ำหนัก" filled clearable></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-text-field cols="12" label="ส่วนสูง" filled clearable></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-text-field cols="12" label="ความดัน" filled clearable></v-text-field>
+                  <v-text-field :value="order[index].dob" label="วัน/เดือน/ปีเกิด" filled readonly></v-text-field>
                 </v-col>
               </v-row>
 
@@ -69,16 +63,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              rounded
-              color="success"
-              dark
-              text
-              @click="successItem(item)"
-            >ผู้ป่วยรับยาเรียบร้อย</v-btn>
+            <v-btn rounded color="success" dark @click="successItem(item)">ส่งยาคืนโรงพยาบาล</v-btn>
 
-            <v-btn rounded color="warning" dark text @click="dialog_row = false">ยกเลิก</v-btn>
+            <v-btn rounded color="warning" dark @click="dialog_sendback = false">ยกเลิก</v-btn>
           </v-card-actions>
+          <!-- table in pop-up page for see each of order detial -->
         </v-card>
       </v-dialog>
       <v-layout>
@@ -87,40 +76,22 @@
             <v-btn
               width="200px"
               class="blue-grey lighten-3"
-              value="ทั้งหมด"
-              @click="sortdata"
-            >ออร์เดอร์ทั้งหมด</v-btn>
-            <v-btn
-              width="200px"
-              class="gray lighten-1"
-              value="รอการจัดยา"
-              @click="sortdata"
-            >ออร์เดอร์ที่ต้องเตรียมจัดยา</v-btn>
-            <v-btn
-              width="200px"
-              class="orange lighten-1"
-              value="พร้อมจ่ายยา"
-              @click="sortdata"
-            >ออร์เดอร์ที่พร้อมจำหน่าย</v-btn>
-            <v-btn
-              width="200px"
-              class="green lighten-1"
-              value="สำเร็จ"
-              @click="sortdata"
-            >ออร์เดอร์ที่สำเร็จแล้ว</v-btn>
-            <v-btn
-              width="200px"
-              class="red lighten-1"
               value="ยกเลิก"
               @click="sortdata"
-            >ออร์เดอร์ที่ต้องยกเลิก</v-btn>
+            >ออร์เดอร์ที่ถูกยกเลิก</v-btn>
+            <v-btn
+              width="200px"
+              class="yellow lighten-1"
+              value="กำลังขนส่งยาคืน"
+              @click="sortdata"
+            >ออร์เดอร์ที่กำลังส่งกลับ</v-btn>
           </v-layout>
         </v-flex>
         <v-flex class="pr-4">
           <v-card class="red" height="100%" width="1080px">
             <v-data-table
               :headers="headers"
-              :items="order"
+              :items="searchbystatus"
               :search="search"
               sort-by="status"
               class="elevation-1"
@@ -129,26 +100,33 @@
                 <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
               </template>
               <template v-slot:top>
-                <v-toolbar flat>
-                  <v-toolbar-title>Today</v-toolbar-title>
-                  <v-divider class="mx-4" inset vertical></v-divider>
-                  <div class="flex-grow-1"></div>
+                <v-toolbar flat color="white">
+                  <v-spacer></v-spacer>
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="ค้นหา"
+                    single-line
+                    hide-details
+                  ></v-text-field>
                 </v-toolbar>
               </template>
               <template v-slot:body="{ items }">
                 <tbody>
-                  <tr
-                    v-for="item in items"
-                    :key="item.HN"
-                    @click="selectItem(item)"
-                    :class="{'selectedRow': item === selectedItem}"
-                  >
+                  <tr v-for="item in items" :key="item.HN">
                     <td style="text-align:center">{{ item.HN }}</td>
                     <td style="text-align:left">{{ item.name }}</td>
                     <td style="text-align:left">{{ item.surname }}</td>
                     <td style="text-align:left">{{ item.duedate }}</td>
                     <td style="text-align:left">
                       <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
+                    </td>
+                    <td style="text-align:left">
+                      <v-btn
+                        color="primary"
+                        v-if="item.status=='ยกเลิก'"
+                        @click="dialog_sendback=true"
+                      >ส่งกลับ</v-btn>
                     </td>
                   </tr>
                 </tbody>
@@ -162,6 +140,8 @@
 </template>
 
 <script>
+// import ConnectDatabase from '../server/server'
+
 import Menubar from "../components/Menubar_phar";
 export default {
   components: {
@@ -170,6 +150,10 @@ export default {
   mounted() {
     var today = new Date();
     this.date_now = today;
+    for (var i = 0; i < this.order.length; i++) {
+      this.searchbystatus.push(this.order[i]);
+    }
+
     // this.date_now = today.getDate()+"/"+today.getMonth()+"/"+today.getYear()
   },
   data: () => ({
@@ -185,10 +169,13 @@ export default {
       { text: "ชื่อ", value: "name" },
       { text: "นามสกุล", value: "surname" },
       { text: "วันที่ต้องมารับยา", value: "duedate" },
-      { text: "สถานะ", value: "status" }
+      { text: "สถานะ", value: "status" },
+      { text: "ส่งกลับ", value: "status" }
+
       // ,
       // { text: "Actions", value: "action", sortable: false }
     ],
+    dialog_sendback: false,
     order: [],
     editedIndex: -1,
     editedItem: {
@@ -208,7 +195,8 @@ export default {
     dialog_row: false,
     dialog_record: false,
     selected: [],
-    index: 0
+    index: 0,
+    searchbystatus: []
   }),
   computed: {
     formTitle() {
@@ -239,25 +227,22 @@ export default {
       this.$router.push("/");
     },
     sortdata: function(e) {
-      console.log(e.currentTarget.value);
-      if (e.currentTarget.value == "ทั้งหมด") {
-        this.search = "";
-      } else if (e.currentTarget.value == "รอการจัดยา") {
-        this.search = "รอการจัดยา";
-      } else if (e.currentTarget.value == "พร้อมจ่ายยา") {
-        this.search = "พร้อมจ่ายยา";
-      } else if (e.currentTarget.value == "สำเร็จ") {
-        this.search = "สำเร็จ";
-      } else if (e.currentTarget.value == "ยกเลิก") {
-        this.search = "ยกเลิก";
+      this.searchbystatus = [];
+      var selectstatus = e.currentTarget.value;
+      for (var i = 0; i < this.order.length; i++) {
+        if (this.order[i].status == selectstatus) {
+          this.searchbystatus.push(this.order[i]);
+        }
       }
+      console.log(this.searchbystatus);
     },
     getColor(status) {
       if (status == "ยกเลิก") return "red";
-      else if (status == "พร้อมจ่ายยา") return "orange";
-      else if (status == "รอการจัดยา") return "light gray";
+      else if (status == "กำลังขนส่งยาคืน") return "orange";
+      else if (status == "prepare") return "light gray";
       else return "green";
     },
+    sendback(item) {},
     initialize() {
       this.order = [
         {
@@ -271,7 +256,7 @@ export default {
           phone: "0851477526",
           pharmacy: "บ้านเภสัชกร",
           duedate: "11/10/2562",
-          status: "สำเร็จ",
+          status: "ยกเลิก",
           orderid: "0041523011",
           weight: "",
           height: "",
@@ -289,7 +274,7 @@ export default {
           phone: "0864588223",
           pharmacy: "ลิขิตฟาร์มาซี",
           duedate: "11/10/2562",
-          status: "พร้อมจ่ายยา",
+          status: "ยกเลิก",
           orderid: "0048543010",
           weight: "",
           height: "",
@@ -306,76 +291,8 @@ export default {
           phone: "0857773239",
           pharmacy: "บ้านเภสัชกร",
           duedate: "15/10/2562",
-          status: "สำเร็จ",
+          status: "กำลังขนส่งยาคืน",
           orderid: "0521483098",
-          weight: "",
-          height: "",
-          blood: ""
-        },
-        {
-          HN: "0065893",
-          name: "วริศรา",
-          surname: "ใจดี",
-          age: 30,
-          gender: "หญิง",
-          dob: "20 กรกฎาคม 2532",
-          email: "ploy_warisara@hotmail.com",
-          phone: "0852880026",
-          pharmacy: "เวิลด์ ฟาร์มาซี",
-          duedate: "17/10/2562",
-          status: "สำเร็จ",
-          orderid: "0065893013",
-          weight: "",
-          height: "",
-          blood: ""
-        },
-        {
-          HN: "0011254",
-          name: "ภควัตน์",
-          surname: "อัศววิวัฒน์",
-          age: 28,
-          gender: "ชาย",
-          dob: "15 กันยายน 2534",
-          email: "phakawat@hotmail.com",
-          phone: "0851856921",
-          pharmacy: "ร้านฟาร์มาซี สาย2",
-          duedate: "18/10/2562",
-          status: "พร้อมจ่ายยา",
-          orderid: "0011254009",
-          weight: "",
-          height: "",
-          blood: ""
-        },
-        {
-          HN: "0033754",
-          name: "ภาคิน",
-          surname: "วัฒนพิพัฒน์",
-          age: 78,
-          gender: "ชาย",
-          dob: "31 ตุลาคม 2484",
-          email: "phakin@hotmail.com",
-          phone: "0886048834",
-          pharmacy: "ร้านฟาร์มาซี สาย2",
-          duedate: "18/10/2562",
-          status: "พร้อมจ่ายยา",
-          orderid: "003375521",
-          weight: "",
-          height: "",
-          blood: ""
-        },
-        {
-          HN: "0030964",
-          name: "อำนวย",
-          surname: "วิไกล",
-          age: 34,
-          gender: "ชาย",
-          dob: "7 ธันวาคม 2528",
-          email: "OOnuy@hotmail.com",
-          phone: "0800066645",
-          pharmacy: "ร้านฟาร์มาซีแสนดี",
-          duedate: "15/12/2562",
-          status: "รอการจัดยา",
-          orderid: "003096422",
           weight: "",
           height: "",
           blood: ""
@@ -391,7 +308,7 @@ export default {
           phone: "0834436654",
           pharmacy: "เวิลด์ ฟาร์มาซี",
           duedate: "17/11/2562",
-          status: "ยกเลิก",
+          status: "กำลังขนส่งยาคืน",
           orderid: "1178403027",
           weight: "",
           height: "",
@@ -400,22 +317,14 @@ export default {
       ];
     },
     selectItem(item) {
-      var index = this.order.indexOf(item);
-
-      if (this.order[index].status == "ready") {
-        this.index = this.order;
-        console.log(this.order[index]);
-        this.order = item;
-        this.dialog_row = true;
-      }
+      this.index = this.order.indexOf(item);
+      dialog_sendback = true;
     },
     successItem(item) {
-      console.log("success order");
-      console.log(this.order);
-      if (this.order.status == "ready") {
-        this.order.status = "success";
-      }
-      this.dialog_row = false;
+      this.order[this.index].status = "กำลังขนส่งยาคืน";
+
+      this.dialog_sendback = false;
+      this.sortdata();
     },
     showItem(item) {
       this.editedIndex = this.order.indexOf(item);
@@ -452,7 +361,7 @@ export default {
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
-.font {
+.admin {
   font-family: "Sarabun", sans-serif;
 }
 thead {

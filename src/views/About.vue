@@ -1,5 +1,5 @@
 <template>
-  <v-app class="about cyan lighten-5">
+  <v-app class="font cyan lighten-5">
     <Menubar />
     <v-content style="margin:20px">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
@@ -88,7 +88,7 @@
           <!-- table in pop-up page for see each of order detial -->
         </v-card>
       </v-dialog>
-      {{date_now}}
+      <v-row style="font-size:25px;margin:10px">{{date}}</v-row>
       <v-data-table
         v-model="selected"
         :items="oneorder"
@@ -129,12 +129,43 @@ export default {
     Menubar
   },
   mounted() {
-    var today = new Date();
-    this.date_now = today;
-    // this.date_now = today.getDate()+"/"+today.getMonth()+"/"+today.getYear()
+    var day = [
+      "วันอาทิตย์",
+      "วันจันทร์",
+      "วันอังคาร",
+      "วันพุธ",
+      "วันพฤหัสบดี",
+      "วันศุกร์",
+      "วันเสาร์"
+    ];
+    var month = [
+      "มกราคม",
+      "กุมภาพันธ์",
+      "มีนาคม",
+      "เมษายน",
+      "พฤษภาคม",
+      "มิถุนายน",
+      "กรกฎาคม",
+      "สิงหาคม",
+      "กันยายน",
+      "ตุลาคม",
+      "พฤศจิกายน",
+      "ธันวาคม"
+    ];
+    var date = new Date();
+    var date_format =
+      day[date.getDay()] +
+      " " +
+      date.getDate() +
+      " " +
+      month[date.getMonth()] +
+      " " +
+      (date.getFullYear() + 543);
+
+    this.date = date_format;
   },
   data: () => ({
-    date_now: "",
+    date: "",
     search: "",
     headers: [
       {
@@ -142,9 +173,9 @@ export default {
         align: "center",
         value: "HN"
       },
-      { text: "Name", value: "name", align: "left" },
-      { text: "Due date", value: "duedate", align: "center" },
-      { text: "Status", value: "status", align: "center" }
+      { text: "ชื่อขนามสกุลผู้ป่วย", value: "name", align: "left" },
+      { text: "วันนัดรับยา", value: "duedate", align: "center" },
+      { text: "สถานะ", value: "status", align: "center" }
       // { text: 'Actions', value: 'action', sortable: false },
     ],
     oneorder: [],
@@ -206,7 +237,7 @@ export default {
     },
     getColor(status) {
       if (status == "cancel") return "red";
-      else if (status == "ready") return "orange";
+      else if (status == "พร้อมจ่ายยา") return "orange";
       else return "green";
     },
     initialize() {
@@ -222,7 +253,7 @@ export default {
           phone: "0851477526",
           pharmacy: "บ้านเภสัชกร",
           duedate: "11/10/2562",
-          status: "ready",
+          status: "พร้อมจ่ายยา",
           orderid: "0041523011",
           weight: "",
           height: "",
@@ -239,7 +270,7 @@ export default {
           phone: "0864588223",
           pharmacy: "ลิขิตฟาร์มาซี",
           duedate: "11/10/2562",
-          status: "ready",
+          status: "พร้อมจ่ายยา",
           orderid: "0048543010",
           weight: "",
           height: "",
@@ -256,7 +287,7 @@ export default {
           phone: "0857773239",
           pharmacy: "บ้านเภสัชกร",
           duedate: "15/10/2562",
-          status: "ready",
+          status: "พร้อมจ่ายยา",
           orderid: "0521483098",
           weight: "",
           height: "",
@@ -273,7 +304,7 @@ export default {
           phone: "0852880026",
           pharmacy: "เวิลด์ ฟาร์มาซี",
           duedate: "17/10/2562",
-          status: "ready",
+          status: "พร้อมจ่ายยา",
           orderid: "0065893013",
           weight: "",
           height: "",
@@ -290,7 +321,7 @@ export default {
           phone: "0851856921",
           pharmacy: "ร้านฟาร์มาซี สาย2",
           duedate: "18/10/2562",
-          status: "ready",
+          status: "พร้อมจ่ายยา",
           orderid: "0011254009",
           weight: "",
           height: "",
@@ -327,3 +358,12 @@ export default {
   }
 };
 </script>
+<style>
+@import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
+.font {
+  font-family: "Sarabun", sans-serif;
+}
+thead {
+  background-color: #ffd54f;
+}
+</style>

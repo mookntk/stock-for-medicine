@@ -1,11 +1,12 @@
 <template>
-  <v-app-bar app class="teal lighten-3">
-    <v-toolbar-title class="headline text-uppercase">
+  <v-app-bar app class="admin teal lighten-3">
+    <v-toolbar-title>
       <span>เภสัชกรร้านขายยา</span>
       <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
+      <v-btn depressed @click="click" value="้home" :color="btncolor">หน้าหลัก</v-btn>
       <v-btn depressed @click="click" value="returnmedicine" :color="btncolor">การคืนยา</v-btn>
       <v-btn
         depressed
@@ -37,7 +38,7 @@ export default {
   data() {
     return {
       logged: localStorage.getItem("login"),
-      items: ["ph_staff", "เลขใบอนุญาต", "Logout"],
+      items: ["ชื่อ-นามสกุล", "เลขใบอนุญาต", "Logout"],
       active: [false, false],
       btncolor: "teal lighten-3",
       btncolor1: "teal lighten-3",
@@ -54,31 +55,50 @@ export default {
     click: function(e) {
       console.log(e.currentTarget.value);
       if (e.currentTarget.value == "returnmedicine") {
+        this.$router.push("/traceability");
         this.btncolor = "teal lighten-1";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
-      } else if(e.currentTarget.value == "transferfromhp") {
+      } else if (e.currentTarget.value == "transferfromhp") {
+        this.$router.push("/status_history");
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-1";
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
-
-      } else if(e.currentTarget.value == "order") {
+      } else if (e.currentTarget.value == "order") {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-1";
         this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
         this.$router.push("/Orderdetail");
-    } else if(e.currentTarget.value == "notification") {
+      } else if (e.currentTarget.value == "notification") {
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-1";
         console.log(this.btncolor);
+      } else if (e.currentTarget.value == "้home") {
+        this.$router.push("/about");
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-3";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-1";
+        console.log(this.btncolor);
+      }
+    }
   }
-}}};
+};
 </script>
+<style scoped>
+@import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
+.admin {
+  font-family: "Sarabun", sans-serif;
+}
+thead {
+  background-color: antiquewhite;
+}
+</style>

@@ -2,58 +2,61 @@
   <v-app class="font cyan lighten-5">
     <Menu />
     <v-content style="margin:20px">
-      <v-col align="left" style="font-size:25px">ข้อมูลผู้ป่วย</v-col>
-      <v-col align="right">
-        <v-dialog v-model="dialog_edit" persistent max-width="700px">
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">+ เพิ่มข้อมูลผู้ป่วยรายใหม่</v-btn>
-          </template>
-          <v-card class="blue-grey lighten-5 font">
-            <v-card-title>
-              <span>{{formTitle}}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="12" align="right">HN: {{patients[index].HN}}</v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field v-model="editedItem.name" label="ชื่อ" outlined></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field v-model="editedItem.surname" label="นามสกุล" outlined></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="4">
-                    <v-text-field v-model="editedItem.gender" label="เพศ" outlined></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="2">
-                    <v-text-field v-model="editedItem.age" label="อายุ" outlined></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field v-model="editedItem.dob" label="วัน/เดือน/ปีเกิด" outlined></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field v-model="editedItem.email" label="อีเมล" outlined></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field v-model="editedItem.phone" label="เบอร์โทรศัพท์" outlined></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="12">
-                    <v-text-field v-model="editedItem.address" label="ที่อยู่" outlined></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="8">
-                    <v-text-field v-model="editedItem.pharmacy" label="ร้านขายยา" outlined></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn @click="close" rounded color="red lighten-1" large>ปิด</v-btn>
-              <v-btn rounded color="green lighten-1" large @click="save">เสร็จสิ้น</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-col>
+      <v-row>
+        <v-col align="left" style="font-size:25px">ข้อมูลผู้ป่วย</v-col>
+        <v-col align="right">
+          <v-dialog v-model="dialog_edit" persistent max-width="700px">
+            <template v-slot:activator="{ on }">
+              <v-btn color="primary" dark v-on="on">+ เพิ่มข้อมูลผู้ป่วยรายใหม่</v-btn>
+            </template>
+            <v-card class="blue-grey lighten-5 font">
+              <v-card-title>
+                <span>{{formTitle}}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="12" align="right">HN: {{patients[index].HN}}</v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field v-model="editedItem.name" label="ชื่อ" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field v-model="editedItem.surname" label="นามสกุล" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="4">
+                      <v-text-field v-model="editedItem.gender" label="เพศ" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="2">
+                      <v-text-field v-model="editedItem.age" label="อายุ" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field v-model="editedItem.dob" label="วัน/เดือน/ปีเกิด" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field v-model="editedItem.email" label="อีเมล" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field v-model="editedItem.phone" label="เบอร์โทรศัพท์" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                      <v-text-field v-model="editedItem.address" label="ที่อยู่" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="8">
+                      <v-select label="ร้านขายยา" outlined v-model="editedItem.pharmacy"></v-select>
+                      <!-- <v-text-field v-model="editedItem.pharmacy" label="ร้านขายยา" outlined></v-text-field> -->
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="close" rounded color="red lighten-1" large>ปิด</v-btn>
+                <v-btn rounded color="green lighten-1" large @click="save">เสร็จสิ้น</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-col>
+      </v-row>
       <!-- End of Add new patient -->
 
       <!-- watch patient history -->
@@ -95,6 +98,20 @@
                     readonly
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field :value="patients[index].email" label="อีเมล" filled readonly></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    :value="patients[index].phone"
+                    label="เบอร์โทรศัพท์"
+                    filled
+                    readonly
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="8">
+                  <v-text-field :value="patients[index].pharmacy" label="ร้านขายยา" filled readonly></v-text-field>
+                </v-col>
               </v-row>
               <v-data-table :headers="record_headers" :items="patients[index].record"></v-data-table>
             </v-container>
@@ -106,7 +123,7 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog v-model="dialog_edit" persistent max-width="600px">
+      <!-- <v-dialog v-model="dialog_edit" persistent max-width="600px">
         <v-card>
           <v-card-title>
             <span class="headline">แก้ไขข้อมูลผู้ป่วย</span>
@@ -133,7 +150,7 @@
             </v-container>
           </v-card-text>
         </v-card>
-      </v-dialog>
+      </v-dialog>-->
       <!-- end of edit patient imformation -->
 
       <!-- Data Table of patient page -->
@@ -441,9 +458,12 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 @import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
-.font {
+.admin {
   font-family: "Sarabun", sans-serif;
+}
+thead {
+  background-color: #ffd54f;
 }
 </style>
