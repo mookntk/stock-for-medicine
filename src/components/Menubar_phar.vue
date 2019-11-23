@@ -7,7 +7,20 @@
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-btn depressed @click="click" value="้home" :color="btncolor">หน้าหลัก</v-btn>
-      <v-btn depressed @click="click" value="returnmedicine" :color="btncolor">การคืนยา</v-btn>
+      <!-- <v-btn depressed @click="click" value="returnmedicine" :color="btncolor">การคืนยา</v-btn> -->
+      <v-menu offset-y open-on-hover>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" text>
+            <span style="margin-right:7px">การคืนยา</span>
+            <v-icon left>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="item in links" :key="item.value" router :to="item.route">
+            <v-list-item-title>{{ item.value }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn
         depressed
         @click="click"
@@ -37,6 +50,13 @@
 export default {
   data() {
     return {
+      links: [
+        { value: "สถานะถูกยกเลิก", route: "/traceability" },
+        {
+          value: "สถานะหยุดชั่วคราว",
+          route: "/sendback_order"
+        }
+      ],
       logged: localStorage.getItem("login"),
       items: ["ชื่อ-นามสกุล", "เลขใบอนุญาต", "Logout"],
       active: [false, false],

@@ -1,5 +1,5 @@
 <template>
-  <v-app class="admin cyan lighten-5">
+  <v-app class="font cyan lighten-5">
     <Menuadmin />
     <v-data-table
       :search="search"
@@ -25,9 +25,9 @@
             <template v-slot:activator="{ on }">
               <v-btn color="primary" dark class="mb-2" v-on="on">+ เพิ่มเภสัชกรร้านขายยา</v-btn>
             </template>
-            <v-card>
+            <v-card class="font">
               <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
+                <span>{{ formTitle }}</span>
               </v-card-title>
 
               <v-card-text>
@@ -88,8 +88,17 @@ export default {
       { text: "username", value: "username", sortable: false },
       { text: "อีเมล", value: "email", sortable: false },
       { text: "ร้านขายยาที่ประจำ", value: "phamacy", sortable: false },
-      { text: "เลขใบอนุญาตฯเภสัช", value: "phamacistid",align:"center", sortable: false },
-      { text: "แก้ไข / ลบ / ส่งรหัสผ่านใหม่ให้ผู้ใช้", value: "action", sortable: false }
+      {
+        text: "เลขใบอนุญาตฯเภสัช",
+        value: "phamacistid",
+        align: "center",
+        sortable: false
+      },
+      {
+        text: "แก้ไข / ลบ / ส่งรหัสผ่านใหม่ให้ผู้ใช้",
+        value: "action",
+        sortable: false
+      }
     ],
     phamacist: [],
     editedIndex: -1,
@@ -116,7 +125,9 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "เพิ่มเภสัชกรร้านขายยา" : "แก้ไขข้อมูลเภสัขกรร้านขายยา";
+      return this.editedIndex === -1
+        ? "เพิ่มเภสัชกรร้านขายยา"
+        : "แก้ไขข้อมูลเภสัขกรร้านขายยา";
     }
   },
 
@@ -252,3 +263,12 @@ export default {
   }
 };
 </script>
+<style >
+@import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
+.font {
+  font-family: "Sarabun", sans-serif;
+}
+thead {
+  background-color: #ffd54f;
+}
+</style>

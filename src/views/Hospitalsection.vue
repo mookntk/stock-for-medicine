@@ -1,9 +1,9 @@
 <template>
-  <v-app class="admin cyan lighten-5">
+  <v-app class="font cyan lighten-5">
     <Menu />
     <v-content style="margin:20px">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card class="admin cyan lighten-4">
+        <v-card class="font cyan lighten-5">
           <v-toolbar color="cyan darken-3">
             <v-btn icon dark @click="dialog_row = false">
               <v-icon>mdi-close</v-icon>
@@ -42,7 +42,7 @@
             </v-col>
           </v-row>
           <v-row style="margin:20px">
-            <v-list subheader two-line flat class="admin cyan lighten-4">
+            <v-list subheader two-line flat class="font cyan lighten-5">
               <v-header>จำนวนยาทั้งหมด</v-header>
               <v-list-item-group v-model="settings" multiple>
                 <v-list-item>
@@ -92,7 +92,7 @@
             <template v-slot:activator="{ on }">
               <v-btn color="primary" dark v-on="on">สร้างออร์เดอร์</v-btn>
             </template>
-            <v-card class="admin">
+            <v-card class="font">
               <v-card-title>
                 <span>สร้างออร์เดอร์</span>
               </v-card-title>
@@ -102,10 +102,10 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="12" align="right">order id : {{order_id}}</v-col>
                     <v-col cols="12" sm="6" md="6">
-                      <v-text-field required v-model="order_name" label="ชื่อผู้ป่วย" outlined></v-text-field>
+                      <v-select required v-model="order_name" label="ชื่อผู้ป่วย" outlined></v-select>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
-                      <v-text-field required v-model="order_surname" label="นามสกุล" outlined></v-text-field>
+                      <v-select required v-model="order_surname" label="นามสกุล" outlined></v-select>
                     </v-col>
                     <!-- <v-col cols="12">
                       โรค
@@ -116,12 +116,11 @@
                       <v-text-field required></v-text-field>
                     </v-col>-->
                     <v-col cols="12" sm="6">
-                      วันที่รับยา
                       <v-text-field
-                        :label="picker"
                         @click="click=!click"
+                        label="วันที่รับยา"
                         required
-                        v-model="order_date"
+                        v-model="picker"
                         outlined
                       ></v-text-field>
                     </v-col>
@@ -135,8 +134,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="dialog = false">ปิด</v-btn>
+                <v-btn color="blue darken-1" text @click="save">บันทึก</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -241,7 +240,7 @@ export default {
               due_date: "30 สิงหาคม 2562"
             }
           ],
-          status: "ได้รับยาแล้ว"
+          status: "หยุดชั่วคราว"
         },
         {
           id: 1,
@@ -451,7 +450,7 @@ export default {
       };
       console.log(new_detail);
       for (i = 0; i < this.order.length; i++) {
-        if (this.order[i].status == "ยังไม่ได้จัดส่ง") {
+        if (this.order[i].status != "กำลังจัดส่ง") {
           if (this.selectedpharmacy == this.order[i].name) {
             this.order[i].orders.push(new_detail);
             count++;
@@ -465,7 +464,7 @@ export default {
           id: this.order.length,
           name: this.selectedpharmacy,
           orders: [new_detail],
-          status: "ยังไม่ได้จัดส่ง"
+          status: "รอการจัดยา"
         };
         this.order.push(new_order);
       }
@@ -499,7 +498,7 @@ export default {
 </script>
 <style>
 @import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
-.admin {
+.font {
   font-family: "Sarabun", sans-serif;
 }
 thead {

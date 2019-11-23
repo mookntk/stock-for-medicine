@@ -3,7 +3,7 @@
     <Menu />
     <v-content style="margin:20px">
       <v-row>
-        <v-col align="left" style="font-size:25px">ออร์เดอร์ที่กำลังจัดส่ง</v-col>
+        <v-col align="left" style="font-size:25px">ชุดออร์เดอร์ที่ยาไม่ครบจำนวน</v-col>
       </v-row>
       <!-- <v-row>
         <v-col align="left" style="font-size:20px">{{date}}</v-col>
@@ -55,15 +55,10 @@
             <v-spacer></v-spacer>
             <v-btn color="grey" @click="dialog_order = false">ปิด</v-btn>
             <v-btn
-              color="green lighten-1"
-              @click="dialog_order = false"
-              v-if="order[index].status!='ได้รับยาแล้ว'"
-            >ได้รับยาครบ</v-btn>
-            <v-btn
               color="red lighten-1"
               @click="dialog_order = false"
               v-if="order[index].status!='ได้รับยาแล้ว'"
-            >ยาไม่ครบตามจำนวน</v-btn>
+            >ส่งยากลับโรงพยาบาล</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -113,7 +108,7 @@ export default {
               due_date: "30 สิงหาคม 2562"
             }
           ],
-          status: "ได้รับยาแล้ว"
+          status: "หยุดชั่วคราว"
         },
         {
           id: 1,
@@ -147,7 +142,7 @@ export default {
               due_date: "15 มกราคม 2562"
             }
           ],
-          status: "กำลังจัดส่ง"
+          status: "หยุดชั่วคราว"
         },
         {
           id: 2,
@@ -201,31 +196,7 @@ export default {
               due_date: "30 สิงหาคม 2562"
             }
           ],
-          status: "กำลังจัดส่ง"
-        },
-        {
-          id: 4,
-          name: "ซิตี้ฟาร์มาซี",
-          create_date: "25 กรกฏาคม 2562",
-          receive_date: "",
-          orders: [
-            {
-              order_id: 1,
-              name: "สุทธิพงศ์ ภัทรมังกร",
-              due_date: "15 ตุลาคม 2562"
-            },
-            {
-              order_id: 3,
-              name: "เอก เวสโกสิทธิ์",
-              due_date: "9 มีนาคม 2562"
-            },
-            {
-              order_id: 15,
-              name: "เฉลิม วัฒนประดิษฐ",
-              due_date: "30 สิงหาคม 2562"
-            }
-          ],
-          status: "ได้รับยาแล้ว"
+          status: "หยุดชั่วคราว"
         }
       ]
     };
@@ -237,7 +208,7 @@ export default {
     },
     getColor(status) {
       if (status == "หยุดชั่วคราว") return "red";
-      else if (status == "กำลังจัดส่ง") return "grey";
+      else if (status == "กำลังขนส่งยาคืน") return "orange";
       else return "green";
     }
   },

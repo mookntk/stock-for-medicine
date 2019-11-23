@@ -109,8 +109,11 @@
                     readonly
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="8">
+                <v-col cols="12" sm="6">
                   <v-text-field :value="patients[index].pharmacy" label="ร้านขายยา" filled readonly></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field value="Januvia 100 mg 2 tablets" label="ยา" filled readonly></v-text-field>
                 </v-col>
               </v-row>
               <v-data-table :headers="record_headers" :items="patients[index].record"></v-data-table>

@@ -3,7 +3,7 @@
     <Menubar />
     <v-content style="margin:20px">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card>
+        <v-card class="font">
           <!-- tool-bar -->
           <v-toolbar dark color="primary">
             <v-btn icon dark @click="dialog_row = false">
@@ -75,15 +75,73 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              rounded
-              color="success"
-              dark
-              text
-              @click="successItem(item)"
-            >ผู้ป่วยรับยาเรียบร้อย</v-btn>
+            <v-btn rounded color="success" dark @click="successItem(item)">ผู้ป่วยรับยาเรียบร้อย</v-btn>
+            <v-btn rounded color="red" dark @click="dialog_row = false">ยกเลิกออร์เดอร์</v-btn>
+            <v-btn rounded color="grey" dark @click="dialog_row = false">ปิด</v-btn>
+          </v-card-actions>
+          <!-- table in pop-up page for see each of order detial -->
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialog_wait" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-card class="font">
+          <!-- tool-bar -->
+          <v-toolbar dark color="primary">
+            <v-btn icon dark @click="dialog_wait = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>ออร์เดอร์ที่ {{oneorder.orderid}}</v-toolbar-title>
+            <!-- <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-btn dark text @click="successItem(item)">ผู้ป่วยรับยาเรียบร้อย</v-btn>
+            </v-toolbar-items>-->
+          </v-toolbar>
+          <!-- tool-bar -->
 
-            <v-btn rounded color="warning" dark text @click="dialog_row = false">ยกเลิก</v-btn>
+          <v-card-title>
+            <span></span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-text-field :value="oneorder.name" label="ชื่อ-นามสกุลผู้ป่วย" filled readonly></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field :value="oneorder.gender" label="เพศ" filled readonly></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field :value="oneorder.age" label="อายุ" filled readonly></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="8">
+                  <v-text-field :value="oneorder.dob" label="วัน/เดือน/ปีเกิด" filled readonly></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="12">ยาที่ต้องได้รับ</v-col>
+                <v-col cols="12">
+                  <!-- <p>{{ selected }}</p> -->
+                  <v-checkbox
+                    v-model="selected"
+                    color="success"
+                    label="Enalapril maleate 20 mg จำนวน 25 เม็ด"
+                    value="med1"
+                  ></v-checkbox>
+                  <v-checkbox
+                    v-model="selected"
+                    color="success"
+                    label="Metformin 500 mg จำนวน 25 เม็ด"
+                    value="med2"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn rounded color="success" dark @click="dialog_wait = false">จัดยาเรียบร้อย</v-btn>
+            <v-btn rounded color="red" dark @click="dialog_wait = false">ยกเลิกออร์เดอร์</v-btn>
+            <v-btn rounded color="grey" dark @click="dialog_wait = false">ปิด</v-btn>
           </v-card-actions>
           <!-- table in pop-up page for see each of order detial -->
         </v-card>
@@ -165,6 +223,7 @@ export default {
     this.date = date_format;
   },
   data: () => ({
+    dialog_wait: false,
     date: "",
     search: "",
     headers: [
@@ -173,7 +232,7 @@ export default {
         align: "center",
         value: "HN"
       },
-      { text: "ชื่อขนามสกุลผู้ป่วย", value: "name", align: "left" },
+      { text: "ชื่อ-นามสกุลผู้ป่วย", value: "name", align: "left" },
       { text: "วันนัดรับยา", value: "duedate", align: "center" },
       { text: "สถานะ", value: "status", align: "center" }
       // { text: 'Actions', value: 'action', sortable: false },
@@ -225,20 +284,24 @@ export default {
       this.index = this.oneorder;
       console.log("selected");
       this.oneorder = item;
-      this.dialog_row = true;
+      if (this.oneorder.status == "รอการจัดยา") {
+        this.dialog_wait = true;
+      } else {
+        this.dialog_row = true;
+      }
     },
     successItem(item) {
       console.log("success order");
       console.log(this.oneorder);
-      if (this.oneorder.status == "ready") {
-        this.oneorder.status = "success";
+      if (this.oneorder.status == "รอการจัดยา") {
+        this.oneorder.status = "พร้อมจ่ายยา";
       }
       this.dialog_row = false;
     },
     getColor(status) {
       if (status == "cancel") return "red";
       else if (status == "พร้อมจ่ายยา") return "orange";
-      else return "green";
+      else return "grey";
     },
     initialize() {
       this.oneorder = [
@@ -269,8 +332,8 @@ export default {
           email: "worrapan@gmail.com",
           phone: "0864588223",
           pharmacy: "ลิขิตฟาร์มาซี",
-          duedate: "11/10/2562",
-          status: "พร้อมจ่ายยา",
+          duedate: "",
+          status: "รอการจัดยา",
           orderid: "0048543010",
           weight: "",
           height: "",
@@ -286,8 +349,8 @@ export default {
           email: "nattawut.t@gmail.com",
           phone: "0857773239",
           pharmacy: "บ้านเภสัชกร",
-          duedate: "15/10/2562",
-          status: "พร้อมจ่ายยา",
+          duedate: "",
+          status: "รอการจัดยา",
           orderid: "0521483098",
           weight: "",
           height: "",

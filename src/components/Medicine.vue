@@ -1,5 +1,5 @@
 <template>
-  <v-app class="admin cyan lighten-5">
+  <v-app class="font cyan lighten-5">
     <Menuadmin />
     <v-data-table
       :search="search"
@@ -25,7 +25,7 @@
             <template v-slot:activator="{ on }">
               <v-btn color="primary" dark class="mb-2" v-on="on">+ เพิ่มข้อมูลยา</v-btn>
             </template>
-            <v-card>
+            <v-card class="font">
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
               </v-card-title>
@@ -191,3 +191,12 @@ export default {
   }
 };
 </script>
+<style >
+@import url("https://fonts.googleapis.com/css?family=Sarabun&display=swap");
+.font {
+  font-family: "Sarabun", sans-serif;
+}
+thead {
+  background-color: #ffd54f;
+}
+</style>

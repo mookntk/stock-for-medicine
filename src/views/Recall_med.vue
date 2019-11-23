@@ -51,7 +51,7 @@
                     </v-list-item-action>
 
                     <v-list-item-content>
-                      <v-list-item-title>Januvia 100 mg 20 tablet</v-list-item-title>
+                      <v-list-item-title>Januvia 100 mg 20 tablets</v-list-item-title>
                     </v-list-item-content>
                   </template>
                 </v-list-item>
@@ -63,7 +63,7 @@
                     </v-list-item-action>
 
                     <v-list-item-content>
-                      <v-list-item-title>Enalapril 20 mg 25 tablet</v-list-item-title>
+                      <v-list-item-title>Enalapril 20 mg 25 tablets</v-list-item-title>
                     </v-list-item-content>
                   </template>
                 </v-list-item>
@@ -73,7 +73,7 @@
         </v-card>
       </v-dialog>
       <v-row>
-        <v-col align="left" style="font-size:25px">ระะบบคืนยา</v-col>
+        <v-col align="left" style="font-size:25px">ระบบคืนยา</v-col>
       </v-row>
       <v-dialog v-model="dialog_med" persistent max-width="700px">
         <v-card class="blue-grey lighten-5 font">

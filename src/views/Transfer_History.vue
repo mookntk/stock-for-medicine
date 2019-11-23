@@ -31,6 +31,10 @@
                       <td style="text-align:center">{{ item.name }}</td>
                       <td style="text-align:center">{{ item.create_date }}</td>
                       <td style="text-align:center">{{ item.due_date }}</td>
+                      <td>
+                        <tr>Enalapril 20 mg 2 tablets</tr>
+                        <tr>Januvia 100 mg 1 tablet</tr>
+                      </td>
                     </tr>
                   </tbody>
                 </template>
@@ -149,7 +153,8 @@ export default {
         },
         { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
         { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
-        { text: "วันนัดรับยา", align: "center", value: "status" }
+        { text: "วันนัดรับยา", align: "center", value: "status" },
+        { text: "ข้อมูลยา", align: "center", value: "status" }
       ],
       order: [
         {

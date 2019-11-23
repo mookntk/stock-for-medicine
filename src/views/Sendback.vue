@@ -39,6 +39,9 @@
                 <v-col cols="12" sm="8">
                   <v-text-field :value="order[index].dob" label="วัน/เดือน/ปีเกิด" filled readonly></v-text-field>
                 </v-col>
+                <v-col cols="12" sm="8">
+                  <v-select :items="note" label="หมายเหตุ" outlined></v-select>
+                </v-col>
               </v-row>
 
               <v-row>
@@ -157,6 +160,7 @@ export default {
     // this.date_now = today.getDate()+"/"+today.getMonth()+"/"+today.getYear()
   },
   data: () => ({
+    note: ["ผู้ป่วยไม่มารับ", "ตัวยามีปัญหา"],
     date_now: "",
     search: "",
     dialog: false,

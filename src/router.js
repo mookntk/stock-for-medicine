@@ -110,6 +110,11 @@ export default new Router({
       path: "/traceability",
       name: "Patient",
       component: () => import("./views/Sendback.vue")
+    },
+    {
+      path: "/sendback_order",
+      name: "Patient",
+      component: () => import("./views/Sendback_order.vue")
     }
   ]
 });
