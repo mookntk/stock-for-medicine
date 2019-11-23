@@ -65,7 +65,7 @@ export default {
         }
       ],
       links_order: [
-        { value: "สร้างออร์เดอร์", route: "/order_history" },
+        { value: "สร้างออร์เดอร์", route: "/create_order" },
         {
           value: "ออร์เดอร์",
           route: "/transfer_history"
