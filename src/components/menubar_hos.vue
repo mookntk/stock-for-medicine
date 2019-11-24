@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app class="teal lighten-3">
+  <v-app-bar class="teal lighten-3">
     <v-toolbar-title class="font">
       <span>เภสัชกรโรงพยาบาล</span>
       <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
@@ -68,12 +68,13 @@ export default {
         { value: "สร้างออร์เดอร์", route: "/order_history" },
         {
           value: "ออร์เดอร์",
-          route: "/transfer_history"
+          route: "/waiting_medicine"
         },
         {
           value: "จัดยา",
           route: "/transfer_history"
-        },{
+        },
+        {
           value: "จัดส่ง",
           route: "/transfer_history"
         },
