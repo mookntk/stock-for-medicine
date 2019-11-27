@@ -70,21 +70,35 @@
                   <v-row>
                     <v-col cols="12" sm="3" md="3">
                       <p class="subtitle-1 text-xl-center font-weight-black">โรค</p>
-                      <v-text-field label="โรค"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" sm="3" md="3">
                       <p class="subtitle-1 text-xl-center font-weight-black">ยา</p>
-                      <v-text-field label="ยา"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" sm="3" md="3">
                       <p class="subtitle-1 text-xl-center font-weight-black">วิธีการรับประทานยา</p>
-                      <v-text-field label="วิธีการรับประทานยา"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" sm="3" md="3">
                       <p class="subtitle-1 text-xl-center font-weight-black">จำนวน</p>
+                    </v-col>
+                  </v-row>
+
+                  <v-row v-for="n in 2" :key="n">
+                    <v-col cols="12" sm="3" md="3">
+                      <v-text-field label="โรค"></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="3" md="3">
+                      <v-text-field label="ยา"></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="3" md="3">
+                      <v-text-field label="วิธีการรับประทานยา"></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="3" md="3">
                       <v-text-field label="จำนวน" solo clearable></v-text-field>
                     </v-col>
                   </v-row>
@@ -100,6 +114,7 @@
           <v-btn color="warning" class="mr-4" @click="reset">ล้างข้อมูล</v-btn>
         </v-card-actions>
       </v-card>
+      </v-form>
     </v-content>
   </v-app>
 </template>

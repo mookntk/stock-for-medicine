@@ -88,7 +88,7 @@ export default {
         },
         {
           value: "สถานะการจัดส่ง",
-          route: "/transfer_history"
+          route: "/transfer_status"
         }
       ],
       btncolor: "teal lighten-3",
