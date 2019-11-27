@@ -1,7 +1,9 @@
 <template>
   <v-app class="font cyan lighten-5">
-    <Menu />
-    <v-content style="margin:10px">
+    <div class="menu-header">
+      <Menu />
+    </div>
+    <v-content class="main">
       <v-card>
         <v-card-title>
           <span>สร้างออร์เดอร์</span>
@@ -14,7 +16,7 @@
             </v-row>
             <v-row>
               <v-col cols="12" sm="6" md="6">
-                <v-autocomplete label="เลขประจำตัวผู้ป่วย (HN)" :items="components" outlined ></v-autocomplete>
+                <v-autocomplete label="เลขประจำตัวผู้ป่วย (HN)" :items="components" outlined></v-autocomplete>
               </v-col>
             </v-row>
 
@@ -163,5 +165,16 @@ export default {
 }
 thead {
   background-color: #ffd54f;
+}
+.menu-header {
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  z-index: 1;
+}
+.main {
+  margin: 20px;
+  margin-top: 120px;
 }
 </style>

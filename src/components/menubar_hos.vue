@@ -34,8 +34,16 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn depressed @click="click" value="notification" :color="btncolor1">
+      <!-- <v-btn depressed @click="click" value="notification" :color="btncolor1">
         <v-icon>mdi-bell</v-icon>
+      </v-btn>-->
+      <v-btn text>
+        <v-badge v-model="show" color="cyan" right>
+          <template v-slot:badge>
+            <span>6</span>
+          </template>
+          <v-icon color="grey darken-1">mdi-bell</v-icon>
+        </v-badge>
       </v-btn>
     </v-toolbar-items>
     <v-menu offset-y open-on-hover>
@@ -72,11 +80,11 @@ export default {
         },
         {
           value: "จัดยา",
-          route: "/transfer_history"
+          route: "/prepare"
         },
         {
           value: "จัดส่ง",
-          route: "/transfer_history"
+          route: "/waiting_transport"
         },
         {
           value: "สถานะการจัดส่ง",

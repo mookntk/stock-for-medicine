@@ -7,53 +7,51 @@
       <v-row>
         <v-col align="left" style="font-size:25px">{{date}}</v-col>
         <v-spacer></v-spacer>
-        <v-col>
-          <v-select
-            :items="pharmacy"
-            chips
-            label="เลือกร้านขายยา"
-            multiple
-            solo
-            clearable
-            @change="selectpharmacy"
-          ></v-select>
-        </v-col>
         <v-col cols="12" sm="1" md="1" justify="right" align="right">
-          <v-btn color="primary" x-large dark v-on="on" @click="prepare_medicine">ทำการจัดยา</v-btn>
+          <v-btn color="primary" x-large dark v-on="on" @click="waiting_transport">รอจัดส่ง</v-btn>
         </v-col>
       </v-row>
       <!-- //! dialog edit -->
-      <v-dialog v-model="dialog_edit" persistent max-width="700px">
+      <v-dialog v-model="dialog_details" persistent max-width="700px">
         <v-card class="blue-grey lighten-5 font">
           <v-card-title>
-            <span>แก้ไขข้อมูล</span>
+            <span>ยาที่จัดส่ง</span>
           </v-card-title>
           <v-card-text>
             <v-container>
-              <v-row>
-                <v-col cols="12" sm="6">
-                  <v-text-field v-model="editedItem.patient" label="ชื่อ-นามสกุล" outlined readonly></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="8">
-                  <v-text-field label="ร้านขายยา" outlined v-model="editedItem.name" readonly></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row v-for="(item,subindex) in editedItem.medicine" :key="item">
-                <v-col cols="12" sm="7">
-                  <v-text-field
-                    v-model="editedItem.medicine[subindex].name"
-                    outlined
-                    filled
-                    readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="3">
-                  <v-text-field v-model="editedItem.medicine[subindex].qty" outlined></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="2">
-                  <v-label>{{editedItem.medicine[subindex].unit}}</v-label>
-                </v-col>
-              </v-row>
+              <v-list class="blue-grey lighten-5 font" elevation>
+                <template v-for="(item, i) in order[index]">
+                  <v-list-item :key="i">
+                    <template v-slot:default="{ active, toggle }">
+                      <v-list-item-content>
+                        <v-list-item-title>{{item.name}} {{item.qty}}</v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        <v-btn color="red" dark>ยกเลิก</v-btn>
+                      </v-list-item-action>
+                    </template>
+                  </v-list-item>
+                  <v-divider :key="i"></v-divider>
+                </template>
+              </v-list>
+              <br />
+              <br />
+              <v-subheader>จำนวนยาทั้งหมด</v-subheader>
+              <v-list class="blue-grey lighten-4 font">
+                <template v-for="(item, i,int) in all_medicine">
+                  <v-list-item :key="i">
+                    <template v-slot:default="{ active, toggle }">
+                      <v-list-item-action>
+                        <v-checkbox primary hide-details v-model="check_medicine[int]"></v-checkbox>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title>{{i}} {{item}} แผง</v-list-item-title>
+                      </v-list-item-content>
+                    </template>
+                  </v-list-item>
+                  <v-divider :key="i"></v-divider>
+                </template>
+              </v-list>
             </v-container>
           </v-card-text>
           <v-card-actions>
@@ -80,21 +78,10 @@
             <th
               v-for="header in props.headers"
               :key="header.text"
-              style="text-align:center"
+              :style="'text-align:'+header.align"
             >{{ header.text }}</th>
           </tr>
         </template>
-        <!-- <template v-slot:header="{props}">
-          <tr>
-            <th>
-              <v-checkbox primary></v-checkbox>
-            </th>
-            <th v-for="header in props.headers" :key="header.text" style="text-align:center">
-              <v-icon small>arrow_upward</v-icon>
-              {{ header.text }}
-            </th>
-          </tr>
-        </template>-->
         <template v-slot:body="{ items }">
           <tbody>
             <tr
@@ -102,63 +89,21 @@
               :key="item.name"
               :class="{'selectedRow': item === selectedItem}"
             >
-              <td style="vertical-align: middle">
+              <td>
                 <v-checkbox primary hide-details v-model="item.checkbox"></v-checkbox>
               </td>
-              <td style="text-align:center">{{ item.order_id }}</td>
-              <td style="text-align:center">{{ item.patient }}</td>
-              <td style="text-align:center">{{ item.create_date }}</td>
-              <td style="text-align:center">{{ item.name }}</td>
-              <td style="text-align:center">
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+              <td @click="Showdetails(item)">{{ item.name }}</td>
+              <td style="text-align:center" @click="Showdetails(item)">{{ item.province }}</td>
+              <td style="text-align:center" @click="Showdetails(item)">{{ item.orders.length }}</td>
+              <td style="text-align:center" @click="Showdetails(item)">{{ item.name }}</td>
+              <td style="text-align:center" @click="Showdetails(item)">
+                <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
               </td>
             </tr>
           </tbody>
         </template>
       </v-data-table>
       <br />
-
-      <!-- //! table of missing medicine -->
-      <v-col align="left" style="font-size:25px">ออร์เดอร์ที่ยาขาด</v-col>
-      <v-data-table
-        :headers="headers_missing"
-        :items="order_missing_filter"
-        :items-per-page="10"
-        class="elevation-1"
-        hide-default-header
-      >
-        <template v-slot:header="{props}">
-          <tr>
-            <th>
-              <v-checkbox primary hide-details label="เลือกทั้งหมด" v-model="selectAll_missing"></v-checkbox>
-            </th>
-            <th
-              v-for="header in props.headers"
-              :key="header.text"
-              style="text-align:center"
-            >{{ header.text }}</th>
-            <!-- <th v-for="header in props.headers" :key="header.text">{{ header.text }}</th> -->
-          </tr>
-        </template>
-        <template v-slot:body="{ items }">
-          <tbody>
-            <tr
-              v-for="item in items"
-              :key="item.name"
-              :class="{'selectedRow': item === selectedItem}"
-            >
-              <td style="vertical-align: middle">
-                <v-checkbox primary hide-details v-model="item.checkbox"></v-checkbox>
-              </td>
-              <td style="text-align:center">{{ item.order_id }}</td>
-              <td style="text-align:center">{{ item.patient }}</td>
-              <td style="text-align:center">{{ item.create_date }}</td>
-              <td style="text-align:center">{{ item.name }}</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-data-table>
     </v-content>
   </v-app>
 </template>
@@ -179,6 +124,9 @@ export default {
       dialog_edit: false,
       selectAll_order: false,
       selectAll_missing: false,
+      dialog_details: false,
+      all_medicine: {},
+      check_medicine: [],
       pharmacy: [
         "บ้านเภสัชกร",
         "ลิขิตฟาร์มาซี",
@@ -187,38 +135,23 @@ export default {
         "ซิตี้ฟาร์มาซี"
       ],
       headers: [
-        // {
-        //   text: " ",
-        //   align: "left",
-        //   sortable: false,
-        //   value: "name"
-        // },
         {
-          text: "เลขออร์เดอร์",
-          align: "center",
+          text: "ร้านขายยา",
+          align: "left",
           sortable: false,
           value: "name"
         },
-        { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
-        { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
+        { text: "จังหวัด", align: "center", value: "order" },
+        { text: "จำนวนออร์เดอร์", align: "center", value: "order" },
         { text: "ร้านขายยา", align: "center", value: "order" },
-        { text: "แก้ไข/ยกเลิก", align: "center", value: "status" }
-      ],
-      headers_missing: [
-        {
-          text: "เลขออร์เดอร์",
-          align: "center",
-          sortable: false,
-          value: "name"
-        },
-        { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
-        { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
-        { text: "ร้านขายยา", align: "center", value: "order" }
+        { text: "สถานะ", align: "center", value: "status" },
+        { text: "ยกเลิก", align: "center", value: "status" }
       ],
       order: [
         {
           order_id: 234,
           name: "บ้านเภสัชกร",
+          province: "นครปฐม",
           patient: "วันชัย ศุภจตุรัส",
           create_date: "20 กรกฏาคม 2562",
           receive_date: "22 กรกฎาคม 2562",
@@ -226,11 +159,11 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
-              qty: 3,
+              name: "Sara",
+              qty: 5,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
           ],
           orders: [
             {
@@ -252,11 +185,12 @@ export default {
               due_date: "30 สิงหาคม 2562"
             }
           ],
-          status: "หยุดชั่วคราว"
+          status: "รอการจัดยา"
         },
         {
           order_id: 309,
           name: "ลิขิตฟาร์มาซี",
+          province: "ชลบุรี",
           patient: "สุกรี ฉัตรรัตนกุลชัย",
           create_date: "22 กรกฎาคม 2562",
           receive_date: "",
@@ -264,11 +198,11 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
+              name: "Sara",
               qty: 3,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Decolgen", qty: 1, unit: "tablet" }
           ],
           orders: [
             {
@@ -307,6 +241,7 @@ export default {
         {
           order_id: 801,
           name: "ร้านฟาร์มาซี สาย2",
+          province: "กรุงเทพ",
           patient: "เอก เวสโกสิทธิ์",
           create_date: "15 มีนาคม 2562",
           receive_date: "18 มีนาคม 2562",
@@ -314,11 +249,11 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
+              name: "Tylenol",
               qty: 3,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
           ],
 
           orders: [
@@ -335,11 +270,12 @@ export default {
               due_date: "9 มีนาคม 2562"
             }
           ],
-          status: "หยุดชั่วคราว"
+          status: "รอการจัดยา"
         },
         {
           order_id: 227,
           name: "เวิลด์ ฟาร์มาซี",
+          province: "นครปฐม",
           patient: "สลิลลา พิทยาพิบูลพงศ์",
           create_date: "22 กรกฎาคม 2562",
           receive_date: "",
@@ -347,11 +283,11 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
-              qty: 3,
+              name: "Decolgen",
+              qty: 2,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Tiffy", qty: 2, unit: "tablet" }
           ],
           orders: [
             {
@@ -385,11 +321,12 @@ export default {
               due_date: "30 สิงหาคม 2562"
             }
           ],
-          status: "รอการจัดส่ง"
+          status: "จัดยาเรียบร้อย"
         },
         {
           order_id: 456,
           name: "ซิตี้ฟาร์มาซี",
+          province: "นครปฐม",
           patient: "สุทธิพงศ์ ภัทรมังกร",
           create_date: "25 กรกฏาคม 2562",
           receive_date: "",
@@ -397,11 +334,11 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
+              name: "Tiffy",
               qty: 3,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Tylenol", qty: 3, unit: "tablet" }
           ],
           orders: [
             {
@@ -423,147 +360,29 @@ export default {
               due_date: "30 สิงหาคม 2562"
             }
           ],
-          status: "กำลังจัดส่ง"
+          status: "จัดยาเรียบร้อย"
         }
       ],
-      order_missing: [
-        {
-          order_id: 234,
-          name: "บ้านเภสัชกร",
-          patient: "วันชัย ศุภจตุรัส",
-          create_date: "20 กรกฏาคม 2562",
-          receive_date: "22 กรกฎาคม 2562",
-          checkbox: false,
-          medicine: [
-            {
-              tmt: "1234",
-              name: "พารา",
-              qty: 3,
-              unit: "tablet"
-            },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
-          ],
-          orders: [
-            {
-              order_id: 1,
-              name: "วันชัย ศุภจตุรัส",
-              create_date: "7 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
-            },
-            {
-              order_id: 3,
-              name: "เอก เวสโกสิทธิ์",
-              create_date: "2 มีนาคม 2562",
-              due_date: "9 มีนาคม 2562"
-            },
-            {
-              order_id: 15,
-              name: "วิชัย วิทุรวงศ์",
-              create_date: "7 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
-            }
-          ],
-          status: "หยุดชั่วคราว"
-        },
 
-        {
-          order_id: 227,
-          name: "เวิลด์ ฟาร์มาซี",
-          patient: "สลิลลา พิทยาพิบูลพงศ์",
-          create_date: "22 กรกฎาคม 2562",
-          receive_date: "",
-          checkbox: false,
-          medicine: [
-            {
-              tmt: "1234",
-              name: "พารา",
-              qty: 3,
-              unit: "tablet"
-            },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
-          ],
-          orders: [
-            {
-              order_id: 1,
-              name: "นภาพรรณ วิทุรวงศ์",
-              create_date: "5 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
-            },
-            {
-              order_id: 3,
-              name: "เอก เวสโกสิทธิ์",
-              create_date: "5 ตุลาคม 2562",
-              due_date: "9 มีนาคม 2562"
-            },
-            {
-              order_id: 15,
-              name: "สลิลลา พิทยาพิบูลพงศ์",
-              create_date: "5 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
-            },
-            {
-              order_id: 15,
-              name: "สุทธิพงศ์ ภัทรมังกร",
-              create_date: "5 สิงหาคมม 2562",
-              due_date: "30 สิงหาคม 2562"
-            },
-            {
-              order_id: 15,
-              name: "วิชัย วิทุรวงศ์",
-              create_date: "5 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
-            }
-          ],
-          status: "รอการจัดส่ง"
-        },
-        {
-          order_id: 456,
-          name: "ซิตี้ฟาร์มาซี",
-          patient: "สุทธิพงศ์ ภัทรมังกร",
-          create_date: "25 กรกฏาคม 2562",
-          receive_date: "",
-          checkbox: false,
-          medicine: [
-            {
-              tmt: "1234",
-              name: "พารา",
-              qty: 3,
-              unit: "tablet"
-            },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
-          ],
-          orders: [
-            {
-              order_id: 1,
-              name: "สุทธิพงศ์ ภัทรมังกร",
-              create_date: "10 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
-            },
-            {
-              order_id: 3,
-              name: "เอก เวสโกสิทธิ์",
-              create_date: "5 มีนาคม 2562",
-              due_date: "9 มีนาคม 2562"
-            },
-            {
-              order_id: 15,
-              name: "เฉลิม วัฒนประดิษฐ",
-              create_date: "15 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
-            }
-          ],
-          status: "กำลังจัดส่ง"
-        }
-      ],
-      order_filter: [],
-      order_missing_filter: []
+      order_filter: []
     };
   },
   mounted() {
+    this.order_filter = [...this.order];
+    console.log(this.order_filter);
     for (var i = 0; i < this.order.length; i++) {
-      this.order_filter = [...this.order];
-      this.order_missing_filter = [...this.order_missing];
+      for (var j = 0; j < this.order[i].medicine.length; j++) {
+        if (!this.all_medicine.hasOwnProperty(this.order[i].medicine[j].name)) {
+          this.all_medicine[this.order[i].medicine[j].name] = 0;
+          this.check_medicine.push(false);
+        }
+        this.all_medicine[this.order[i].medicine[j].name] =
+          this.all_medicine[this.order[i].medicine[j].name] +
+          this.order[i].medicine[j].qty;
+      }
     }
+    console.log(this.all_medicine);
+    console.log(this.check_medicine);
     var day = [
       "วันอาทิตย์",
       "วันจันทร์",
@@ -603,26 +422,28 @@ export default {
     Menu
   },
   methods: {
-    prepare_medicine() {
-      this.$router.push("/prepare");
-    },
-    selectpharmacy(item) {
-      if (item.length == 0) {
-        this.order_filter = [...this.order];
-        this.order_missing_filter = [...this.order_missing];
+    waiting_transport() {
+      var check = 0;
+      for (var i in this.order) {
+        if (this.order[i].checkbox == true) {
+          if (this.order[i].status == "จัดยาเรียบร้อย") {
+            check = 1;
+            this.$router.push("/waiting_transport");
+          } else {
+            check = 2;
+            break;
+          }
+        }
+      }
+      if (check == 1) {
+        this.$router.push("/waiting_transport");
+      } else if (check == 0) {
+        alert("เลือกร้านขายยาที่ต้องการจัดส่ง");
       } else {
-        this.order_filter = this.order.filter(store => {
-          for (var i in item) {
-            if (store.name == item[i]) return true;
-          }
-        });
-        this.order_missing_filter = this.order_missing.filter(store => {
-          for (var i in item) {
-            if (store.name == item[i]) return true;
-          }
-        });
+        alert("ยังจัดยาไม่เสร็จ");
       }
     },
+    cancel_order(item) {},
     deleteItem(item) {
       console.log("delete item");
       const index = this.order.indexOf(item);
@@ -646,11 +467,29 @@ export default {
       this.close();
     },
     close() {
-      this.dialog_edit = false;
+      this.dialog_details = false;
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       }, 300);
+    },
+    Showdetails(item) {
+      this.index = this.order_filter.indexOf(item);
+      this.dialog_details = true;
+      console.log(item);
+      if (this.order_filter[this.index].status == "จัดยาเรียบร้อย") {
+        for (var i in this.check_medicine) {
+          this.check_medicine[i] = true;
+        }
+      } else {
+        for (var i in this.check_medicine) {
+          this.check_medicine[i] = false;
+        }
+      }
+    },
+    getColor(status) {
+      if (status == "จัดยาเรียบร้อย") return "green";
+      else return "grey";
     }
   },
   watch: {
@@ -671,21 +510,18 @@ export default {
         }
       }
     },
-    selectAll_missing() {
-      var count = 0;
-      var i;
-      if (this.selectAll_missing == true) {
-        console.log("selectAll true");
-        for (let key in this.order) {
-          if (this.order_missing.hasOwnProperty(key)) {
-            this.order_missing[key].checkbox = true;
+    all_medicine() {
+      this.all_medicine = {};
+      for (var i = 0; i < this.order.length; i++) {
+        for (var j = 0; j < this.order[i].medicine.length; j++) {
+          if (
+            !this.all_medicine.hasOwnProperty(this.order[i].medicine[j].name)
+          ) {
+            this.all_medicine[this.order[i].medicine[j].name] = 0;
           }
-        }
-      } else {
-        for (let key in this.order) {
-          if (this.order_missing.hasOwnProperty(key)) {
-            this.order_missing[key].checkbox = false;
-          }
+          this.all_medicine[this.order[i].medicine[j].name] =
+            this.all_medicine[this.order[i].medicine[j].name] +
+            this.order[i].medicine[j].qty;
         }
       }
     }
