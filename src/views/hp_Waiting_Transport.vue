@@ -8,7 +8,7 @@
         <v-col align="left" style="font-size:25px">{{date}}</v-col>
         <v-spacer></v-spacer>
         <v-col cols="12" sm="1" md="1" justify="right" align="right">
-          <v-btn color="primary" x-large dark v-on="on" @click="waiting_transport">รอจัดส่ง</v-btn>
+          <v-btn color="primary" x-large dark v-on="on" @click="waiting_transport">ทำการจัดส่ง</v-btn>
         </v-col>
       </v-row>
       <!-- //! dialog edit -->
@@ -20,15 +20,12 @@
           <v-card-text>
             <v-container>
               <v-list class="blue-grey lighten-5 font" elevation>
-                <template v-for="(item, i) in order[index]">
+                <template v-for="(item, i) in order_filter[index].orders">
                   <v-list-item :key="i">
                     <template v-slot:default="{ active, toggle }">
                       <v-list-item-content>
-                        <v-list-item-title>{{item.name}} {{item.qty}}</v-list-item-title>
+                        <v-list-item-title>คุณ{{item.name}}</v-list-item-title>
                       </v-list-item-content>
-                      <v-list-item-action>
-                        <v-btn color="red" dark>ยกเลิก</v-btn>
-                      </v-list-item-action>
                     </template>
                   </v-list-item>
                   <v-divider :key="i"></v-divider>
@@ -38,14 +35,11 @@
               <br />
               <v-subheader>จำนวนยาทั้งหมด</v-subheader>
               <v-list class="blue-grey lighten-4 font">
-                <template v-for="(item, i,int) in all_medicine">
+                <template v-for="(item, i) in all_medicine">
                   <v-list-item :key="i">
                     <template v-slot:default="{ active, toggle }">
-                      <v-list-item-action>
-                        <v-checkbox primary hide-details v-model="check_medicine[int]"></v-checkbox>
-                      </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title>{{i}} {{item}} แผง</v-list-item-title>
+                        <v-list-item-title>{{i}} {{item.qty}} แผง</v-list-item-title>
                       </v-list-item-content>
                     </template>
                   </v-list-item>
@@ -95,9 +89,9 @@
               <td @click="Showdetails(item)">{{ item.name }}</td>
               <td style="text-align:center" @click="Showdetails(item)">{{ item.province }}</td>
               <td style="text-align:center" @click="Showdetails(item)">{{ item.orders.length }}</td>
-              <td style="text-align:center" @click="Showdetails(item)">{{ item.name }}</td>
-              <td style="text-align:center" @click="Showdetails(item)">
-                <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
+              <!-- <td style="text-align:center" @click="Showdetails(item)">{{ item.name }}</td> -->
+              <td style="text-align:center">
+                <v-icon class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
               </td>
             </tr>
           </tbody>
@@ -143,8 +137,7 @@ export default {
         },
         { text: "จังหวัด", align: "center", value: "order" },
         { text: "จำนวนออร์เดอร์", align: "center", value: "order" },
-        { text: "ร้านขายยา", align: "center", value: "order" },
-        { text: "สถานะ", align: "center", value: "status" },
+        // { text: "ร้านขายยา", align: "center", value: "order" },
         { text: "ยกเลิก", align: "center", value: "status" }
       ],
       order: [
@@ -373,14 +366,17 @@ export default {
     for (var i = 0; i < this.order.length; i++) {
       for (var j = 0; j < this.order[i].medicine.length; j++) {
         if (!this.all_medicine.hasOwnProperty(this.order[i].medicine[j].name)) {
-          this.all_medicine[this.order[i].medicine[j].name] = 0;
+          this.all_medicine[this.order[i].medicine[j].name] = {};
+          this.all_medicine[this.order[i].medicine[j].name]["qty"] = 0;
+          this.all_medicine[this.order[i].medicine[j].name]["success"] = false;
           this.check_medicine.push(false);
         }
-        this.all_medicine[this.order[i].medicine[j].name] =
-          this.all_medicine[this.order[i].medicine[j].name] +
+        this.all_medicine[this.order[i].medicine[j].name]["qty"] =
+          this.all_medicine[this.order[i].medicine[j].name]["qty"] +
           this.order[i].medicine[j].qty;
       }
     }
+    console.log("this.all_medicine");
     console.log(this.all_medicine);
     console.log(this.check_medicine);
     var day = [
@@ -423,36 +419,34 @@ export default {
   },
   methods: {
     waiting_transport() {
+      // this.$router.push("/transfer_status");
       var check = 0;
       for (var i in this.order) {
         if (this.order[i].checkbox == true) {
-          if (this.order[i].status == "จัดยาเรียบร้อย") {
-            check = 1;
-            this.$router.push("/waiting_transport");
-          } else {
-            check = 2;
-            break;
-          }
+          check = 1;
         }
       }
       if (check == 1) {
-        this.$router.push("/waiting_transport");
+        this.$router.push("/transfer_status");
       } else if (check == 0) {
         alert("เลือกร้านขายยาที่ต้องการจัดส่ง");
-      } else {
-        alert("ยังจัดยาไม่เสร็จ");
       }
     },
-    cancel_order(item) {},
+    cancel_order(item) {
+      console.log(item);
+      var index = this.order_filter[this.index].orders.indexOf(item);
+      confirm("คุณต้องการที่จะลบออร์เดอร์นี้ใช่หรือไม่?") &&
+        this.order_filter[this.index].orders.splice(index, 1);
+    },
     deleteItem(item) {
       console.log("delete item");
-      const index = this.order.indexOf(item);
+      const index = this.order_filter.indexOf(item);
       confirm(
         "คุณต้องการที่จะลบออร์เดอร์ใช่หรือไม่?\nคุณ" + item.patient + " "
-      ) && this.order.splice(index, 1);
+      ) && this.order_filter.splice(index, 1);
     },
     editItem(item) {
-      this.index = this.order.indexOf(item);
+      this.index = this.order_filter.indexOf(item);
       //   this.editedIndex = this.order.indexOf(item);
       this.order_selected = item.name;
       this.editedItem = Object.assign({}, item);
