@@ -1,7 +1,9 @@
 <template>
   <v-app class="font cyan lighten-5">
-    <Menu />
-    <v-content style="margin:20px">
+    <div class="menu-header">
+      <Menu />
+    </div>
+    <v-content class="main">
       <v-row>
         <v-col cols="12" sm="6" md="6" align="left" style="font-size:25px">ประวัติการรับยา</v-col>
         <v-col cols="12" sm="6" md="6" align="right">
@@ -399,5 +401,16 @@ export default {
 }
 thead {
   background-color: #ffd54f;
+}
+.menu-header {
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  z-index: 1;
+}
+.main {
+  margin: 20px;
+  margin-top: 120px;
 }
 </style>

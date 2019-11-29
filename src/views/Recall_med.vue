@@ -1,7 +1,9 @@
 <template>
   <v-app class="font cyan lighten-5">
-    <Menu />
-    <v-content style="margin:20px">
+    <div class="menu-header">
+      <Menu />
+    </div>
+    <v-content class="main">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card class="font">
           <v-toolbar dark color="primary">
@@ -652,5 +654,16 @@ export default {
 }
 thead {
   background-color: #ffd54f;
+}
+.menu-header {
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  z-index: 1;
+}
+.main {
+  margin: 20px;
+  margin-top: 120px;
 }
 </style>
