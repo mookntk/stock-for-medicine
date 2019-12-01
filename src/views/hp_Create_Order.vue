@@ -85,7 +85,9 @@
                     </v-col>
                   </v-row>
 
-                  <v-row v-for="n in 2" :key="n">
+                  <v-row v-for="n in 2" 
+                  :key="n">
+ 
                     <v-col cols="12" sm="3" md="3">
                       <v-text-field label="โรค"></v-text-field>
                     </v-col>

@@ -5,33 +5,53 @@
       <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
     </v-toolbar-title>
     <v-spacer></v-spacer>
+
     <v-toolbar-items>
-      <v-btn depressed @click="click" value="้home" :color="btncolor">หน้าหลัก</v-btn>
+      <v-btn depressed @click="click" value="้home" :color="btncolor">ออ์เดอร์พร้อมจำหน่าย</v-btn>
+
+      <!-- ยืนยันออร์เดอร์ -->
+      <v-menu offset-y open-on-hover>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" text>
+            <span style="margin-right:7px">ยืนยันออร์เดอร์</span>
+            <v-icon left>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item v-for="item in confirm" :key="item.value" router :to="item.route">
+            <v-list-item-title>{{ item.value }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <!-- ยืนยันออร์เดอร์ -->
+
+
+      <v-btn depressed @click="click" value="้home" :color="btncolor">จัดยาตามออร์เดอร์</v-btn>
+
       <!-- <v-btn depressed @click="click" value="returnmedicine" :color="btncolor">การคืนยา</v-btn> -->
       <v-menu offset-y open-on-hover>
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" text>
-            <span style="margin-right:7px">การคืนยา</span>
+            <span style="margin-right:7px">ออร์เดอร์ที่ส่งคืนโรงพยาบาล</span>
             <v-icon left>mdi-chevron-down</v-icon>
           </v-btn>
         </template>
+
         <v-list>
           <v-list-item v-for="item in links" :key="item.value" router :to="item.route">
             <v-list-item-title>{{ item.value }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn
-        depressed
-        @click="click"
-        value="transferfromhp"
-        :color="btncolor1"
-      >สถานะการจัดส่งยาจากโรงพยาบาล</v-btn>
-      <v-btn depressed @click="click" value="order" :color="btncolor2">ออเดอร์</v-btn>
+
+      <v-btn depressed @click="click" value="orderstatus" :color="btncolor2">สถานะออร์เดอร์</v-btn>
       <v-btn depressed @click="click" value="notification" :color="btncolor3">
         <v-icon>mdi-bell</v-icon>
       </v-btn>
     </v-toolbar-items>
+
+
     <v-menu offset-y open-on-hover>
       <template v-slot:activator="{ on }">
         <v-btn color="primary" dark v-on="on" text>ชื่อผู้ใช้</v-btn>
@@ -51,11 +71,18 @@ export default {
   data() {
     return {
       links: [
-        { value: "สถานะถูกยกเลิก", route: "/traceability" },
         {
-          value: "สถานะหยุดชั่วคราว",
+          value: "รายการที่ต้องส่งคืน",
           route: "/sendback_order"
-        }
+        },
+        { value: "สถานะการจัดส่ง", route: "/traceability" }
+      ],
+      confirm: [
+        {
+          value: "ยืนยันรับออร์เดอร์จากโรงพยาบาล",
+          route: "/"
+        },
+        { value: "ตรวจสอบและยืนยันยอดยา" ,route: "/" }
       ],
       logged: localStorage.getItem("login"),
       items: ["ชื่อ-นามสกุล", "เลขใบอนุญาต", "Logout"],
@@ -107,6 +134,13 @@ export default {
         this.btncolor1 = "teal lighten-3";
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-1";
+        console.log(this.btncolor);
+      } else if (e.currentTarget.value == "orderstatus") {
+        this.$router.push("/Orderdetail");
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-1";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
       }
     }

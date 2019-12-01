@@ -77,7 +77,7 @@ export default new Router({
     {
       path: "/patient",
       name: "Patient",
-      component: () => import("./views/Patient.vue")
+      component: () => import("./views/hp_Patient.vue")
     },
     {
       path: "/transfer_history",
