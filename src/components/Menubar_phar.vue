@@ -7,7 +7,7 @@
     <v-spacer></v-spacer>
 
     <v-toolbar-items>
-      <v-btn depressed @click="click" value="้home" :color="btncolor">ออ์เดอร์พร้อมจำหน่าย</v-btn>
+      <v-btn depressed @click="click" value="้home" :color="btncolor">ออร์เดอร์พร้อมจำหน่าย</v-btn>
 
       <!-- ยืนยันออร์เดอร์ -->
       <v-menu offset-y open-on-hover>
@@ -27,7 +27,7 @@
       <!-- ยืนยันออร์เดอร์ -->
 
 
-      <v-btn depressed @click="click" value="้home" :color="btncolor">จัดยาตามออร์เดอร์</v-btn>
+      <v-btn depressed @click="click" value="้prepareorder" :color="btncolor">จัดยาตามออร์เดอร์</v-btn>
 
       <!-- <v-btn depressed @click="click" value="returnmedicine" :color="btncolor">การคืนยา</v-btn> -->
       <v-menu offset-y open-on-hover>
@@ -80,9 +80,9 @@ export default {
       confirm: [
         {
           value: "ยืนยันรับออร์เดอร์จากโรงพยาบาล",
-          route: "/"
+          route: "/receive_order"
         },
-        { value: "ตรวจสอบและยืนยันยอดยา" ,route: "/" }
+        { value: "ตรวจสอบและยืนยันจำนวนยา" ,route: "/check_confirm" }
       ],
       logged: localStorage.getItem("login"),
       items: ["ชื่อ-นามสกุล", "เลขใบอนุญาต", "Logout"],
@@ -142,9 +142,16 @@ export default {
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
+      }else if (e.currentTarget.value == "prepareorder") {
+        this.$router.push("/prepare_order");
+        this.btncolor = "teal lighten-3";
+        this.btncolor1 = "teal lighten-1";
+        this.btncolor2 = "teal lighten-3";
+        this.btncolor3 = "teal lighten-3";
+        console.log(this.btncolor);
       }
     }
-  }
+  }  
 };
 </script>
 <style scoped>
