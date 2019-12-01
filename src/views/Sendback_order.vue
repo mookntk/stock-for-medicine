@@ -3,7 +3,7 @@
     <Menu />
     <v-content style="margin:20px">
       <v-row>
-        <v-col align="left" style="font-size:25px">ชุดออร์เดอร์ที่ยาไม่ครบจำนวน</v-col>
+        <v-col align="left" style="font-size:25px">ชุดออร์เดอร์ที่ส่งยากลับ</v-col>
       </v-row>
       <!-- <v-row>
         <v-col align="left" style="font-size:20px">{{date}}</v-col>
@@ -16,10 +16,7 @@
               <td style="text-align:center">{{ item.create_date}}</td>
               <td style="text-align:center">{{ item.orders.length }}</td>
               <td style="text-align:center">
-                <v-icon small class="mr-2" @click="showItem(item)">mdi-eye</v-icon>
-              </td>
-              <td style="text-align:center">
-                <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
+                <v-icon class="mr-2" @click="showdialog(item)">mdi-eye</v-icon>
               </td>
             </tr>
           </tbody>
@@ -35,18 +32,10 @@
               <v-expansion-panel v-for="(item,i) in order[index].orders" :key="i">
                 <v-expansion-panel-header>ออร์เดอร์ที่ {{order[index].orders.indexOf(item)+1}} {{item.name}}</v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <v-checkbox
-                    v-model="selected"
-                    color="success"
-                    label="Enalapril maleate 20 mg จำนวน 90 เม็ด"
-                    value="med1"
-                  ></v-checkbox>
-                  <v-checkbox
-                    v-model="selected"
-                    color="success"
-                    label="Metformin 500 mg จำนวน 90 เม็ด"
-                    value="med2"
-                  ></v-checkbox>
+                  <br />
+                  <v-label>Enalapril maleate 20 mg จำนวน 20 เม็ด</v-label>
+                  <br />
+                  <v-label>Metformin 500 mg จำนวน 30 เม็ด</v-label>
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
@@ -56,7 +45,7 @@
             <v-btn color="grey" @click="dialog_order = false">ปิด</v-btn>
             <v-btn
               color="red lighten-1"
-              @click="dialog_order = false"
+              @click="sendback"
               v-if="order[index].status!='ได้รับยาแล้ว'"
             >ส่งยากลับโรงพยาบาล</v-btn>
           </v-card-actions>
@@ -81,8 +70,7 @@ export default {
         },
         { text: "วันที่จัดส่งยา", align: "center", value: "order" },
         { text: "จำนวนออร์เดอร์", align: "center", value: "order" },
-        { text: "ยาที่ได้รับ", align: "center", value: "order" },
-        { text: "สถานะ", align: "center", value: "status" }
+        { text: "ยาที่ได้รับ", align: "center", value: "order" }
       ],
       index: 0,
       order: [
@@ -95,17 +83,20 @@ export default {
             {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              status: "หยุดชั่วคราว"
             }
           ],
           status: "หยุดชั่วคราว"
@@ -119,27 +110,32 @@ export default {
             {
               order_id: 2,
               name: "สุกรี ฉัตรรัตนกุลชัย",
-              due_date: "12 กันยายน 2562"
+              due_date: "12 กันยายน 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 5,
               name: "สมาน พิทยาพิบูลพงศ์",
-              due_date: "20 มีนาคม 2562"
+              due_date: "20 มีนาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 11,
               name: "วิชัย วิทุรวงศ์",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 39,
               name: "นภาพรรณ วัฒนประดิษฐ",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 40,
               name: "เฉลิม ศรีเมือง",
-              due_date: "15 มกราคม 2562"
+              due_date: "15 มกราคม 2562",
+              status: "หยุดชั่วคราว"
             }
           ],
           status: "หยุดชั่วคราว"
@@ -154,12 +150,14 @@ export default {
             {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              status: "หยุดชั่วคราว"
             }
           ],
           status: "หยุดชั่วคราว"
@@ -173,27 +171,32 @@ export default {
             {
               order_id: 1,
               name: "นภาพรรณ วิทุรวงศ์",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 15,
               name: "สลิลลา พิทยาพิบูลพงศ์",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 15,
               name: "สุทธิพงศ์ ภัทรมังกร",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              status: "หยุดชั่วคราว"
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              status: "หยุดชั่วคราว"
             }
           ],
           status: "หยุดชั่วคราว"
@@ -210,6 +213,15 @@ export default {
       if (status == "หยุดชั่วคราว") return "red";
       else if (status == "กำลังขนส่งยาคืน") return "orange";
       else return "green";
+    },
+    showdialog(item) {
+      this.index = this.order.indexOf(item);
+      this.dialog_order = true;
+    },
+    sendback() {
+      confirm("คุณต้องการส่งชุดออร์เดอร์กลับโรงพยาบาลใช่หรือไม่?") &&
+        this.order.splice(this.index, 1);
+      this.dialog_order = false;
     }
   },
   components: {
