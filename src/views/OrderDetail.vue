@@ -1,7 +1,9 @@
 <template>
   <v-app class="font cyan lighten-5">
-    <Menubar />
-    <v-content style="margin:0px 100px 10px 0px">
+    <div class="menu-header">
+      <Menubar />
+    </div>
+    <v-content class="main">
       <!-- <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card>
           <v-toolbar dark color="primary">
@@ -50,7 +52,7 @@
               <v-row>
                 <v-col cols="12">ยาที่ต้องได้รับ</v-col>
                 <v-col cols="12">
-      <!-- <p>{{ selected }}</p>-->
+      <p>{{ selected }}</p>-->
       <!-- <v-checkbox
                     v-model="selected"
                     color="success"
@@ -540,5 +542,16 @@ export default {
 }
 thead {
   background-color: antiquewhite;
+}
+.menu-header {
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  z-index: 1;
+}
+.main {
+  margin: 20px;
+  margin-top: 120px;
 }
 </style>
