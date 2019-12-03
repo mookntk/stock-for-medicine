@@ -48,11 +48,11 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="grey" @click="dialog_order = false">ปิด</v-btn>
-            <v-btn
+            <!-- <v-btn
               color="red lighten-1"
               @click="sendback"
               v-if="order[index].status!='ได้รับยาแล้ว'"
-            >ส่งยากลับโรงพยาบาล</v-btn>
+            >ส่งยากลับโรงพยาบาล</v-btn>-->
           </v-card-actions>
         </v-card>
       </v-dialog>

@@ -26,7 +26,6 @@
       </v-menu>
       <!-- ยืนยันออร์เดอร์ -->
 
-
       <v-btn depressed @click="click" value="prepareorder" :color="btncolor4">จัดยาตามออร์เดอร์</v-btn>
 
       <!-- <v-btn depressed @click="click" value="returnmedicine" :color="btncolor">การคืนยา</v-btn> -->
@@ -51,7 +50,6 @@
       </v-btn>
     </v-toolbar-items>
 
-
     <v-menu offset-y open-on-hover>
       <template v-slot:activator="{ on }">
         <v-btn color="primary" dark v-on="on" text>ชื่อผู้ใช้</v-btn>
@@ -75,14 +73,14 @@ export default {
           value: "รายการที่ต้องส่งคืน",
           route: "/sendback_order"
         },
-        { value: "สถานะการจัดส่ง", route: "/traceability" }
+        { value: "สถานะการจัดส่ง", route: "/sendback" }
       ],
       confirm: [
         {
           value: "ยืนยันรับออร์เดอร์จากโรงพยาบาล",
           route: "/receive_order"
         },
-        { value: "ตรวจสอบและยืนยันจำนวนยา" ,route: "/check_confirm" }
+        { value: "ตรวจสอบและยืนยันจำนวนยา", route: "/check_confirm" }
       ],
       logged: localStorage.getItem("login"),
       items: ["ชื่อ-นามสกุล", "เลขใบอนุญาต", "Logout"],
@@ -143,7 +141,7 @@ export default {
         this.btncolor2 = "teal lighten-3";
         this.btncolor3 = "teal lighten-3";
         console.log(this.btncolor);
-      }else if (e.currentTarget.value == "prepareorder") {
+      } else if (e.currentTarget.value == "prepareorder") {
         this.$router.push("/prepare_order");
         this.btncolor = "teal lighten-3";
         this.btncolor1 = "teal lighten-1";
@@ -152,7 +150,7 @@ export default {
         console.log(this.btncolor);
       }
     }
-  }  
+  }
 };
 </script>
 <style scoped>

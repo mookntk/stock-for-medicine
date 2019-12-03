@@ -3,7 +3,7 @@
     <div class="menu-header">
       <Menubar />
     </div>
-    
+
     <v-content class="main">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card class="font">
@@ -28,15 +28,23 @@
                 :headers="sub_headers"
               >
                 <template v-slot:body="{ items }">
-                  <tbody>
-                    <tr v-for="item in items" :key="item.name">
-                      <td>{{ item.order_id }}</td>
-                      <td style="text-align:center">{{ item.name }}</td>
-                      <td style="text-align:center">{{ item.create_date }}</td>
-                      <td style="text-align:center">{{ item.due_date }}</td>
+                  <tbody v-for="item in items" :key="item.name">
+                    <tr>
+                      <td :rowspan="item.medicine.length">{{ item.order_id }}</td>
+                      <td :rowspan="item.medicine.length" style="text-align:center">{{ item.name }}</td>
+                      <td
+                        :rowspan="item.medicine.length"
+                        style="text-align:center"
+                      >{{ item.create_date }}</td>
+                      <td
+                        :rowspan="item.medicine.length"
+                        style="text-align:center"
+                      >{{ item.due_date }}</td>
                       <td>
-                        <tr>Enalapril 20 mg 2 tablets</tr>
-                        <tr>Januvia 100 mg 1 tablet</tr>
+                        <p
+                          v-for="medicine in item.medicine"
+                          :key="medicine.name"
+                        >{{ medicine.name }} {{medicine.qty}} {{medicine.unit}}</p>
                       </td>
                     </tr>
                   </tbody>
@@ -100,7 +108,7 @@
               @click="selectItem(item)"
               :class="{'selectedRow': item === selectedItem}"
             >
-              <td >{{item.id}}</td>
+              <td>{{item.id}}</td>
               <td style="text-align:center">{{ item.orders.length }}</td>
               <td style="text-align:center">{{ item.create_date }}</td>
               <td style="text-align:center">{{ item.receive_date }}</td>
@@ -135,7 +143,7 @@ export default {
       selected: [],
       pharmacy: "",
       index: 0,
-      receive_date:"",
+      receive_date: "",
       headers: [
         {
           text: "ออร์เดอร์ที่",
@@ -171,19 +179,46 @@ export default {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
               create_date: "7 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
               create_date: "2 มีนาคม 2562",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
               create_date: "7 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Decolgen",
+                  qty: 2,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 2, unit: "tablet" }
+              ]
             }
           ],
           status: "ได้รับยาเรียบร้อย"
@@ -198,31 +233,76 @@ export default {
               order_id: 2,
               name: "สุกรี ฉัตรรัตนกุลชัย",
               create_date: "7 กันยายน 2562",
-              due_date: "12 กันยายน 2562"
+              due_date: "12 กันยายน 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 5,
               name: "สมาน พิทยาพิบูลพงศ์",
               create_date: "10 มีนาคม 2562",
-              due_date: "20 มีนาคม 2562"
+              due_date: "20 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Decolgen",
+                  qty: 2,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 2, unit: "tablet" }
+              ]
             },
             {
               order_id: 11,
               name: "วิชัย วิทุรวงศ์",
               create_date: "15 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Decolgen",
+                  qty: 2,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 2, unit: "tablet" }
+              ]
             },
             {
               order_id: 39,
               name: "นภาพรรณ วัฒนประดิษฐ",
               create_date: "7 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 40,
               name: "เฉลิม ศรีเมือง",
               create_date: "7 มกราคม 2562",
-              due_date: "15 มกราคม 2562"
+              due_date: "15 มกราคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             }
           ],
           status: "กำลังจัดส่ง"
@@ -238,13 +318,31 @@ export default {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
               create_date: "7 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Decolgen",
+                  qty: 2,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 2, unit: "tablet" }
+              ]
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
               create_date: "1 มีนาคม 2562",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             }
           ],
           status: "กำลังจัดส่ง"
@@ -259,31 +357,76 @@ export default {
               order_id: 1,
               name: "นภาพรรณ วิทุรวงศ์",
               create_date: "5 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
               create_date: "5 ตุลาคม 2562",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Decolgen",
+                  qty: 2,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 2, unit: "tablet" }
+              ]
             },
             {
               order_id: 15,
               name: "สลิลลา พิทยาพิบูลพงศ์",
               create_date: "5 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Decolgen",
+                  qty: 2,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 2, unit: "tablet" }
+              ]
             },
             {
               order_id: 15,
               name: "สุทธิพงศ์ ภัทรมังกร",
               create_date: "5 สิงหาคมม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
               create_date: "5 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Tylenol",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             }
           ],
           status: "กำลังจัดส่ง"
@@ -298,19 +441,46 @@ export default {
               order_id: 1,
               name: "สุทธิพงศ์ ภัทรมังกร",
               create_date: "10 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
               create_date: "5 มีนาคม 2562",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Tylenol",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 15,
               name: "เฉลิม วัฒนประดิษฐ",
               create_date: "15 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             }
           ],
           status: "กำลังจัดส่ง"
@@ -337,13 +507,31 @@ export default {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
               create_date: "7 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 70,
               name: "วันชัย ศุภจตุรัส",
               create_date: "25 ตุลาคม 2562",
-              due_date: "31 ตุลาคม 2562"
+              due_date: "31 ตุลาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Tylenol",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             }
           ],
           status: "ได้รับยาเรียบร้อย"
@@ -358,25 +546,61 @@ export default {
               order_id: 2,
               name: "สุกรี ฉัตรรัตนกุลชัย",
               create_date: "7 กันยายน 2562",
-              due_date: "12 กันยายน 2562"
+              due_date: "12 กันยายน 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 5,
               name: "สมาน พิทยาพิบูลพงศ์",
               create_date: "10 มีนาคม 2562",
-              due_date: "20 มีนาคม 2562"
+              due_date: "20 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 11,
               name: "วิชัย วิทุรวงศ์",
               create_date: "15 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Decolgen", qty: 1, unit: "tablet" }
+              ]
             },
             {
               order_id: 39,
               name: "นภาพรรณ วัฒนประดิษฐ",
               create_date: "7 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Decolgen", qty: 1, unit: "tablet" }
+              ]
             }
           ],
           status: "ได้รับยาเรียบร้อย"
@@ -392,19 +616,46 @@ export default {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
               create_date: "7 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
               create_date: "1 มีนาคม 2562",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Tylenol",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 40,
               name: "เฉลิม ศรีเมือง",
               create_date: "7 มกราคม 2562",
-              due_date: "15 มกราคม 2562"
+              due_date: "15 มกราคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Decolgen", qty: 1, unit: "tablet" }
+              ]
             }
           ],
           status: "กำลังจัดส่ง"
@@ -464,6 +715,29 @@ export default {
       } else if (this.order[this.index].status == "หยุดชั่วคราว") {
         this.order[this.index].status = "รอการจัดยา";
       }
+      var month = [
+        "มกราคม",
+        "กุมภาพันธ์",
+        "มีนาคม",
+        "เมษายน",
+        "พฤษภาคม",
+        "มิถุนายน",
+        "กรกฎาคม",
+        "สิงหาคม",
+        "กันยายน",
+        "ตุลาคม",
+        "พฤศจิกายน",
+        "ธันวาคม"
+      ];
+      var date = new Date();
+      var date_format =
+        date.getDate() +
+        " " +
+        month[date.getMonth()] +
+        " " +
+        (date.getFullYear() + 543);
+
+      this.order[this.index].receive_date = date_format;
       this.dialog_row = false;
     },
     getColor(status) {

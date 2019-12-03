@@ -26,32 +26,29 @@
             <v-container>
               <v-row>
                 <v-col cols="12" sm="6">
-                  <v-text-field :value="oneorder.name" label="ชื่อ-นามสกุลผู้ป่วย" filled readonly></v-text-field>
+                  <v-text-field
+                    :value="oneorder[index].name"
+                    label="ชื่อ-นามสกุลผู้ป่วย"
+                    filled
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
-                  <v-text-field :value="oneorder.gender" label="เพศ" filled readonly></v-text-field>
+                  <v-text-field :value="oneorder[index].gender" label="เพศ" filled readonly></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4">
-                  <v-text-field :value="oneorder.age" label="อายุ" filled readonly></v-text-field>
+                  <v-text-field :value="oneorder[index].age" label="อายุ" filled readonly></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="8">
-                  <v-text-field :value="oneorder.dob" label="วัน/เดือน/ปีเกิด" filled readonly></v-text-field>
+                  <v-text-field
+                    :value="oneorder[index].dob"
+                    label="วัน/เดือน/ปีเกิด"
+                    filled
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="6">
-                  <v-text-field :value="oneorder.status" label="สถานะ" filled readonly></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col cols="12">กรอกข้อมูลผู้ป่วย</v-col>
-                <v-col>
-                  <v-text-field cols="12" label="น้ำหนัก" filled clearable></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-text-field cols="12" label="ส่วนสูง" filled clearable></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-text-field cols="12" label="ความดัน" filled clearable></v-text-field>
+                  <v-text-field :value="oneorder[index].status" label="สถานะ" filled readonly></v-text-field>
                 </v-col>
               </v-row>
 
@@ -77,8 +74,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn rounded color="success" dark @click="successItem(item)">ผู้ป่วยรับยาเรียบร้อย</v-btn>
-            <v-btn rounded color="red" dark @click="dialog_row = false">ยกเลิกออร์เดอร์</v-btn>
+            <v-btn rounded color="success" dark @click="successItem">จัดยาเรียบร้อย</v-btn>
+            <!-- <v-btn rounded color="red" dark @click="dialog_row = false">ยกเลิกออร์เดอร์</v-btn> -->
             <v-btn rounded color="grey" dark @click="dialog_row = false">ปิด</v-btn>
           </v-card-actions>
           <!-- table in pop-up page for see each of order detial -->
@@ -91,7 +88,7 @@
             <v-btn icon dark @click="dialog_wait = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-toolbar-title>ออร์เดอร์ที่ {{oneorder.orderid}}</v-toolbar-title>
+            <v-toolbar-title>ออร์เดอร์ที่ {{oneorder[index].orderid}}</v-toolbar-title>
             <!-- <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-btn dark text @click="successItem(item)">ผู้ป่วยรับยาเรียบร้อย</v-btn>
@@ -283,21 +280,19 @@ export default {
       this.$router.push("/");
     },
     selectItem(item) {
-      this.index = this.oneorder;
+      this.index = this.oneorder.indexOf(item);
       console.log("selected");
-      this.oneorder = item;
+      // this.oneorder = item;
       if (this.oneorder.status == "รอการจัดยา") {
         this.dialog_wait = true;
       } else {
         this.dialog_row = true;
       }
     },
-    successItem(item) {
+    successItem() {
       console.log("success order");
       console.log(this.oneorder);
-      if (this.oneorder.status == "รอการจัดยา") {
-        this.oneorder.status = "พร้อมจ่ายยา";
-      }
+      this.oneorder.splice(this.index, 1);
       this.dialog_row = false;
     },
     getColor(status) {

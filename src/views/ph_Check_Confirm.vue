@@ -28,15 +28,40 @@
                 :headers="sub_headers"
               >
                 <template v-slot:body="{ items }">
-                  <tbody>
-                    <tr v-for="item in items" :key="item.name">
-                      <td>{{ item.order_id }}</td>
-                      <td style="text-align:center">{{ item.name }}</td>
-                      <td style="text-align:center">{{ item.create_date }}</td>
-                      <td style="text-align:center">{{ item.due_date }}</td>
+                  <tbody v-for="item in items" :key="item.name">
+                    <tr>
+                      <td :rowspan="item.medicine.length">{{ item.order_id }}</td>
+                      <td :rowspan="item.medicine.length" style="text-align:center">{{ item.name }}</td>
+                      <td
+                        :rowspan="item.medicine.length"
+                        style="text-align:center"
+                      >{{ item.create_date }}</td>
+                      <td
+                        :rowspan="item.medicine.length"
+                        style="text-align:center"
+                      >{{ item.due_date }}</td>
                       <td>
-                        <tr>Enalapril 20 mg 2 tablets</tr>
-                        <tr>Januvia 100 mg 1 tablet</tr>
+                        <tr
+                          v-for="medicine in item.medicine"
+                          :key="medicine.name"
+                          style="display: inline"
+                        >
+                          <v-row>
+                            <v-col cols="12" sm="6" md="6" align="right">
+                              <p>{{ medicine.name }} {{medicine.qty}} {{medicine.unit}}</p>
+                            </v-col>
+
+                            <v-col cols="12" sm="2" md="2">
+                              <v-text-field solo></v-text-field>
+                            </v-col>
+                          </v-row>
+
+                          <!-- <v-spacer></v-spacer> -->
+                        </tr>
+                        <!-- <p
+                          v-for="medicine in item.medicine"
+                          :key="medicine.name"
+                        >{{ medicine.name }} {{medicine.qty}} {{medicine.unit}}</p>-->
                       </td>
                     </tr>
                   </tbody>
@@ -170,19 +195,46 @@ export default {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
               create_date: "7 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
               create_date: "2 มีนาคม 2562",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Tylenol",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
               create_date: "7 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             }
           ],
           status: "รอการตรวจสอบ"
@@ -324,25 +376,61 @@ export default {
               order_id: 1,
               name: "วันชัย ศุภจตุรัส",
               create_date: "7 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562"
+              due_date: "15 ตุลาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 3,
               name: "เอก เวสโกสิทธิ์",
               create_date: "2 มีนาคม 2562",
-              due_date: "9 มีนาคม 2562"
+              due_date: "9 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Decolgen", qty: 1, unit: "tablet" }
+              ]
             },
             {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
               create_date: "7 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Decolgen", qty: 1, unit: "tablet" }
+              ]
             },
             {
               order_id: 70,
               name: "วันชัย ศุภจตุรัส",
               create_date: "25 ตุลาคม 2562",
-              due_date: "31 ตุลาคม 2562"
+              due_date: "31 ตุลาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             }
           ],
           status: "รอการตรวจสอบ"
@@ -357,25 +445,61 @@ export default {
               order_id: 2,
               name: "สุกรี ฉัตรรัตนกุลชัย",
               create_date: "7 กันยายน 2562",
-              due_date: "12 กันยายน 2562"
+              due_date: "12 กันยายน 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 5,
               name: "สมาน พิทยาพิบูลพงศ์",
               create_date: "10 มีนาคม 2562",
-              due_date: "20 มีนาคม 2562"
+              due_date: "20 มีนาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Decolgen", qty: 1, unit: "tablet" }
+              ]
             },
             {
               order_id: 11,
               name: "วิชัย วิทุรวงศ์",
               create_date: "15 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 5,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
+              ]
             },
             {
               order_id: 39,
               name: "นภาพรรณ วัฒนประดิษฐ",
               create_date: "7 สิงหาคม 2562",
-              due_date: "30 สิงหาคม 2562"
+              due_date: "30 สิงหาคม 2562",
+              medicine: [
+                {
+                  tmt: "1234",
+                  name: "Sara",
+                  qty: 3,
+                  unit: "tablet"
+                },
+                { tmt: "1234", name: "Decolgen", qty: 1, unit: "tablet" }
+              ]
             }
           ],
           status: "รอการตรวจสอบ"
