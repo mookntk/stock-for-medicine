@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app class="admin teal lighten-3">
+  <v-app-bar class="admin teal lighten-3">
     <v-toolbar-title>
       <span>เภสัชกรร้านขายยา</span>
       <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
@@ -27,7 +27,7 @@
       <!-- ยืนยันออร์เดอร์ -->
 
 
-      <v-btn depressed @click="click" value="้prepareorder" :color="btncolor">จัดยาตามออร์เดอร์</v-btn>
+      <v-btn depressed @click="click" value="prepareorder" :color="btncolor4">จัดยาตามออร์เดอร์</v-btn>
 
       <!-- <v-btn depressed @click="click" value="returnmedicine" :color="btncolor">การคืนยา</v-btn> -->
       <v-menu offset-y open-on-hover>
@@ -90,7 +90,8 @@ export default {
       btncolor: "teal lighten-3",
       btncolor1: "teal lighten-3",
       btncolor2: "teal lighten-3",
-      btncolor3: "teal lighten-3"
+      btncolor3: "teal lighten-3",
+      btncolor4: "teal lighten-3"
     };
   },
   methods: {

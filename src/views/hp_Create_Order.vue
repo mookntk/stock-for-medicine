@@ -76,11 +76,11 @@
                       <p class="subtitle-1 text-xl-center font-weight-black">ยา</p>
                     </v-col>
 
-                    <v-col cols="12" sm="3" md="3">
+                    <v-col cols="12" sm="4" md="4">
                       <p class="subtitle-1 text-xl-center font-weight-black">วิธีการรับประทานยา</p>
                     </v-col>
 
-                    <v-col cols="12" sm="3" md="3">
+                    <v-col cols="12" sm="2" md="2">
                       <p class="subtitle-1 text-xl-center font-weight-black">จำนวน</p>
                     </v-col>
                   </v-row>
@@ -88,6 +88,11 @@
                   <v-row v-for="n in 2" 
                   :key="n">
  
+
+                    <v-col cols="12" sm="1" md="1">
+                      <v-checkbox v-model="checkbox1"></v-checkbox>
+                    </v-col>
+
                     <v-col cols="12" sm="3" md="3">
                       <v-text-field label="โรค"></v-text-field>
                     </v-col>
@@ -100,7 +105,7 @@
                       <v-text-field label="วิธีการรับประทานยา"></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="3" md="3">
+                    <v-col cols="12" sm="2" md="2">
                       <v-text-field label="จำนวน" solo clearable></v-text-field>
                     </v-col>
                   </v-row>

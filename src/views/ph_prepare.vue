@@ -1,7 +1,9 @@
 <template>
   <v-app class="font cyan lighten-5">
-    <Menubar />
-    <v-content style="margin:20px">
+    <div class="menu-header">
+      <Menubar />
+    </div>
+    <v-content class="main">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card class="font">
           <!-- tool-bar -->
@@ -315,7 +317,7 @@ export default {
           email: "natcha_yindee@hotmail.com",
           phone: "0851477526",
           pharmacy: "บ้านเภสัชกร",
-          duedate: "11/10/2562",
+          duedate: "11 ตุลาคม 2562",
           status: "รอการจัดยา",
           orderid: "0041523011",
           weight: "",
@@ -332,7 +334,7 @@ export default {
           email: "worrapan@gmail.com",
           phone: "0864588223",
           pharmacy: "ลิขิตฟาร์มาซี",
-          duedate: "",
+          duedate: "29 ตุลาคม 2562",
           status: "รอการจัดยา",
           orderid: "0048543010",
           weight: "",
@@ -349,7 +351,7 @@ export default {
           email: "nattawut.t@gmail.com",
           phone: "0857773239",
           pharmacy: "บ้านเภสัชกร",
-          duedate: "",
+          duedate: "25 ตุลาคม 2562",
           status: "รอการจัดยา",
           orderid: "0521483098",
           weight: "",
@@ -366,7 +368,7 @@ export default {
           email: "ploy_warisara@hotmail.com",
           phone: "0852880026",
           pharmacy: "เวิลด์ ฟาร์มาซี",
-          duedate: "17/10/2562",
+          duedate: "17 ตุลาคม 2562",
           status: "รอการจัดยา",
           orderid: "0065893013",
           weight: "",
@@ -383,7 +385,7 @@ export default {
           email: "phakawat@hotmail.com",
           phone: "0851856921",
           pharmacy: "ร้านฟาร์มาซี สาย2",
-          duedate: "18/10/2562",
+          duedate: "18 ตุลาคม 2562",
           status: "รอการจัดยา",
           orderid: "0011254009",
           weight: "",
@@ -428,5 +430,16 @@ export default {
 }
 thead {
   background-color: #ffd54f;
+}
+.menu-header {
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  z-index: 1;
+}
+.main {
+  margin: 20px;
+  margin-top: 120px;
 }
 </style>
