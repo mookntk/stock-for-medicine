@@ -484,6 +484,21 @@ export default {
       this.index = this.order_filter.indexOf(item);
       this.dialog_details = true;
       console.log(item);
+      //! num of medicine each order
+      //   this.all_medicine = {}
+      //   for (var i = 0; i < this.order_filter[this.index].medicine.length; i++) {
+      //     if (!this.all_medicine.hasOwnProperty(this.order_filter[this.index].medicine[i].name)) {
+      //       this.all_medicine[this.order_filter[this.index].medicine[i].name] = {};
+      //       this.all_medicine[this.order_filter[this.index].medicine[i].name]["qty"] = 0;
+      //       this.all_medicine[this.order_filter[this.index].medicine[i].name]["success"] = false;
+      //       this.check_medicine.push(false);
+      //     }
+      //     this.all_medicine[this.order_filter[this.index].medicine[i].name]["qty"] =
+      //       this.all_medicine[this.order_filter[this.index].medicine[i].name]["qty"] +
+      //       this.order[i].medicine[j].qty;
+      // }
+      // console.log("all medicine")
+      // console.log(this.all_medicine)
       if (this.order_filter[this.index].status == "จัดยาเรียบร้อย") {
         for (var i in this.check_medicine) {
           this.check_medicine[i] = true;

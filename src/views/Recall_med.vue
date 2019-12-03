@@ -261,7 +261,7 @@ export default {
               ]
             }
           ],
-          status: "cancel",
+          status: "ยกเลิก",
           note: "ผู้ป่วยไม่มารับ",
           confirm: false
         },
@@ -368,7 +368,7 @@ export default {
               confirm: true
             }
           ],
-          status: "cancel",
+          status: "ยกเลิก",
           note: "ผู้ป่วยไม่มารับ",
           confirm: true
         },
@@ -420,8 +420,8 @@ export default {
               confirm: true
             }
           ],
-          status: "หยุดชั่วคราว",
-          note: "ยาไม่ครบตามจำนวน",
+          status: "ยกเลิก",
+          note: "ผู้ป่วยไม่มารับ",
           confirm: false
         },
         {
@@ -487,7 +487,7 @@ export default {
               confirm: true
             }
           ],
-          status: "cancel",
+          status: "ยกเลิก",
           note: "ตัวยามีปัญหา",
           confirm: false
         },
@@ -554,8 +554,8 @@ export default {
               confirm: true
             }
           ],
-          status: "หยุดชั่วคราว",
-          note: "ยาไม่ครบตามจำนวน",
+          status: "ยกเลิก",
+          note: "ตัวยาปัญหา",
           confirm: true
         }
       ],

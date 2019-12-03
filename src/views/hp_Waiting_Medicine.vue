@@ -96,20 +96,22 @@
           </tr>
         </template>-->
         <template v-slot:body="{ items }">
-          <tbody>
-            <tr
-              v-for="item in items"
+          <tbody v-for="item in items"
               :key="item.name"
-              :class="{'selectedRow': item === selectedItem}"
-            >
-              <td style="vertical-align: middle">
+              :class="{'selectedRow': item === selectedItem}">
+            <tr>
+              <td :rowspan="item.medicine.length" style="vertical-align: middle">
                 <v-checkbox primary hide-details v-model="item.checkbox"></v-checkbox>
               </td>
-              <td style="text-align:center">{{ item.order_id }}</td>
-              <td style="text-align:center">{{ item.patient }}</td>
-              <td style="text-align:center">{{ item.create_date }}</td>
-              <td style="text-align:center">{{ item.name }}</td>
-              <td style="text-align:center">
+              <td :rowspan="item.medicine.length"  style="text-align:center">{{ item.order_id }}</tdrowspan="2">
+              <td :rowspan="item.medicine.length" style="text-align:center">{{ item.patient }}</td>
+              <td :rowspan="item.medicine.length" style="text-align:center">{{ item.create_date }}</td>
+              <td :rowspan="item.medicine.length" style="text-align:center">{{ item.name }}</td>
+              <td>
+              <p v-for="medicine in item.medicine"
+              :key="medicine.name" >{{ medicine.name }} {{medicine.qty}} {{medicine.unit}}</p>
+              </td>
+              <td rowspan="2" style="text-align:center">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
               </td>
@@ -142,20 +144,30 @@
           </tr>
         </template>
         <template v-slot:body="{ items }">
-          <tbody>
-            <tr
-              v-for="item in items"
-              :key="item.name"
-              :class="{'selectedRow': item === selectedItem}"
+          <tbody v-for="item in items"
+              :key="item.name">
+            <tr 
             >
-              <td style="vertical-align: middle">
+              <td :rowspan="item.medicine.length" >
                 <v-checkbox primary hide-details v-model="item.checkbox"></v-checkbox>
               </td>
-              <td style="text-align:center">{{ item.order_id }}</td>
-              <td style="text-align:center">{{ item.patient }}</td>
-              <td style="text-align:center">{{ item.create_date }}</td>
-              <td style="text-align:center">{{ item.name }}</td>
+              <td :rowspan="item.medicine.length" style="text-align:center">{{ item.order_id }}</td>
+              <td :rowspan="item.medicine.length" style="text-align:center">{{ item.patient }}</td>
+              <td :rowspan="item.medicine.length" style="text-align:center">{{ item.create_date }}</td>
+              <td :rowspan="item.medicine.length" style="text-align:center">{{ item.name }}</td>
+              <td>
+              <p v-for="medicine in item.medicine"
+              :key="medicine.name">{{ medicine.name }} {{medicine.qty}} {{medicine.unit}}</p>
+              </td>
             </tr>
+            <!-- <tr v-for="item in items"
+              :key="item.name">
+              <td>
+              <p v-for="medicine in item.medicine"
+              :key="medicine.name" style="text-align:center">{{ medicine.name }}</p>
+              </td>
+         
+            </tr> -->
           </tbody>
         </template>
       </v-data-table>
@@ -202,6 +214,7 @@ export default {
         { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
         { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
         { text: "ร้านขายยา", align: "center", value: "order" },
+        { text: "ยาที่ได้รับ", align: "center", value: "order" },
         { text: "แก้ไข/ยกเลิก", align: "center", value: "status" }
       ],
       headers_missing: [
@@ -213,7 +226,8 @@ export default {
         },
         { text: "ชื่อ-นามสกุลผู้ป่วย", align: "center", value: "order" },
         { text: "วันที่สร้างออร์เดอร์", align: "center", value: "order" },
-        { text: "ร้านขายยา", align: "center", value: "order" }
+        { text: "ร้านขายยา", align: "center", value: "order" },
+        { text: "ยาที่ได้รับ", align: "center", value: "order" }
       ],
       order: [
         {
@@ -226,11 +240,10 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
-              qty: 3,
+              name: "Aspirin",
+              qty: 1,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
           ],
           orders: [
             {
@@ -264,11 +277,12 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
+              name: "Tiffy",
               qty: 3,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Sara", qty: 3, unit: "tablet" },
+            { tmt: "1234", name: "Aspirin", qty: 2, unit: "tablet" },
           ],
           orders: [
             {
@@ -314,11 +328,11 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
+              name: "Paracetamol",
               qty: 3,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
           ],
 
           orders: [
@@ -347,11 +361,11 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
-              qty: 3,
+              name: "Aspirin",
+              qty: 2,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Sara", qty: 5, unit: "tablet" }
           ],
           orders: [
             {
@@ -397,11 +411,10 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
+              name: "Apracur",
               qty: 3,
               unit: "tablet"
-            },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            }
           ],
           orders: [
             {
@@ -437,11 +450,12 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
-              qty: 3,
+              name: "Sara",
+              qty: 4,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" },
+            { tmt: "1234", name: "Paracetamol", qty: 3, unit: "tablet" }
           ],
           orders: [
             {
@@ -476,11 +490,11 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
-              qty: 3,
+              name: "Aspirin",
+              qty: 2,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Tiffy", qty: 2, unit: "tablet" }
           ],
           orders: [
             {
@@ -526,11 +540,11 @@ export default {
           medicine: [
             {
               tmt: "1234",
-              name: "พารา",
-              qty: 3,
+              name: "Paracetamol",
+              qty: 4,
               unit: "tablet"
             },
-            { tmt: "1234", name: "ทิฟฟี่", qty: 3, unit: "tablet" }
+            { tmt: "1234", name: "Sara", qty: 3, unit: "tablet" }
           ],
           orders: [
             {
