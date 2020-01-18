@@ -73,14 +73,14 @@
             <v-list subheader two-line flat class="font">
               <v-header>จำนวนยาทั้งหมด</v-header>
               <v-list-item-group v-model="settings" multiple>
-                <v-list-item>
+                <v-list-item v-for="(item,index) in all_medicine" :key="item.name">
                   <template v-slot:default="{ active, toggle }">
                     <v-list-item-action>
                       <v-checkbox v-model="active" color="primary" @click="toggle"></v-checkbox>
                     </v-list-item-action>
 
                     <v-list-item-content>
-                      <v-list-item-title>Enalapril 20 mg 20 tablet</v-list-item-title>
+                      <v-list-item-title>{{index}} {{item.qty}} {{item.unit}}</v-list-item-title>
                     </v-list-item-content>
                   </template>
                 </v-list-item>
@@ -373,36 +373,6 @@ export default {
           receive_date: "30 กรกฎาคม 2562",
           orders: [
             {
-              order_id: 1,
-              name: "วันชัย ศุภจตุรัส",
-              create_date: "7 ตุลาคม 2562",
-              due_date: "15 ตุลาคม 2562",
-              medicine: [
-                {
-                  tmt: "1234",
-                  name: "Sara",
-                  qty: 5,
-                  unit: "tablet"
-                },
-                { tmt: "1234", name: "Tiffy", qty: 3, unit: "tablet" }
-              ]
-            },
-            {
-              order_id: 3,
-              name: "เอก เวสโกสิทธิ์",
-              create_date: "2 มีนาคม 2562",
-              due_date: "9 มีนาคม 2562",
-              medicine: [
-                {
-                  tmt: "1234",
-                  name: "Sara",
-                  qty: 3,
-                  unit: "tablet"
-                },
-                { tmt: "1234", name: "Decolgen", qty: 1, unit: "tablet" }
-              ]
-            },
-            {
               order_id: 15,
               name: "วิชัย วิทุรวงศ์",
               create_date: "7 สิงหาคม 2562",
@@ -535,7 +505,8 @@ export default {
       ],
       date: "",
       selectedpharmacy: "",
-      selectedItem: ""
+      selectedItem: "",
+      all_medicine: {}
     };
   },
 
@@ -598,6 +569,38 @@ export default {
       if (item.status == "") {
       }
       this.pharmacy = item.name;
+
+      for (var i = 0; i < this.order[this.index].orders.length; i++) {
+        for (
+          var j = 0;
+          j < this.order[this.index].orders[i].medicine.length;
+          j++
+        ) {
+          if (
+            !this.all_medicine.hasOwnProperty(
+              this.order[this.index].orders[i].medicine[j].name
+            )
+          ) {
+            this.all_medicine[
+              this.order[this.index].orders[i].medicine[j].name
+            ] = {};
+            this.all_medicine[
+              this.order[this.index].orders[i].medicine[j].name
+            ]["qty"] = 0;
+            this.all_medicine[
+              this.order[this.index].orders[i].medicine[j].name
+            ]["unit"] = this.order[this.index].orders[i].medicine[j].unit;
+          }
+          this.all_medicine[this.order[this.index].orders[i].medicine[j].name][
+            "qty"
+          ] =
+            this.all_medicine[
+              this.order[this.index].orders[i].medicine[j].name
+            ]["qty"] + this.order[this.index].orders[i].medicine[j].qty;
+        }
+      }
+      console.log("all_medicine");
+      console.log(this.all_medicine);
       this.dialog_row = true;
     },
     save() {
