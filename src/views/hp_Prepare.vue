@@ -46,6 +46,18 @@
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title>{{i}} {{item.qty}} แผง</v-list-item-title>
+                        <v-row v-for="k in inputs.length" :key="k">
+                          <v-col cols="12" sm="10" md="10">
+                            <v-text-field label="เลขรหัสสินค้า" solo clearable></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="2" md="2">
+                            <v-icon
+                              @click="remove(k)"
+                              v-show="k || ( !k && inputs.length > 1)"
+                            >mdi-minus-circle</v-icon>
+                            <v-icon @click="add(k)" v-show="k == inputs.length">mdi-plus-circle</v-icon>
+                          </v-col>
+                        </v-row>
                       </v-list-item-content>
                     </template>
                   </v-list-item>
@@ -115,6 +127,7 @@ import Menu from "../components/menubar_hos";
 export default {
   data() {
     return {
+      inputs: [0, 1],
       picker: new Date().toISOString().substr(0, 10),
       date: "",
       selectedItem: "",
@@ -444,6 +457,13 @@ export default {
       } else {
         alert("ยังจัดยาไม่เสร็จ");
       }
+    },
+    add(index) {
+      console.log("index=" + index);
+      this.inputs.push(2);
+    },
+    remove(index) {
+      this.inputs.splice(index, 1);
     },
     cancel_order(item) {
       console.log(item);

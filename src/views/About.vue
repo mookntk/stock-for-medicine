@@ -3,7 +3,7 @@
     <div class="menu-header">
       <Menubar />
     </div>
-    <v-content class= "main">
+    <v-content class="main">
       <v-dialog v-model="dialog_row" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card class="font">
           <!-- tool-bar -->
@@ -65,6 +65,23 @@
                     label="Enalapril maleate 20 mg จำนวน 90 เม็ด"
                     value="med1"
                   ></v-checkbox>
+                </v-col>
+                <v-row v-for="k in inputs.length" :key="k">
+                  <v-col cols="8">
+                    <v-select :items="lot_no" label="เลขรหัสสินค้า"></v-select>
+                  </v-col>
+                  <v-col cols="2">
+                    <v-text-field label="จำนวน" solo clearable></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="2" md="2">
+                    <v-icon
+                      @click="remove(k)"
+                      v-show="k || ( !k && inputs.length > 1)"
+                    >mdi-minus-circle</v-icon>
+                    <v-icon @click="add(k)" v-show="k == inputs.length">mdi-plus-circle</v-icon>
+                  </v-col>
+                </v-row>
+                <v-col cols="12">
                   <v-checkbox
                     v-model="selected"
                     color="success"
@@ -225,7 +242,9 @@ export default {
     this.date = date_format;
   },
   data: () => ({
+    inputs: [0],
     dialog_wait: false,
+    lot_no: ["lt23413", "da451274"],
     date: "",
     search: "",
     headers: [
@@ -274,6 +293,13 @@ export default {
     this.initialize();
   },
   methods: {
+    add(index) {
+      console.log("index=" + index);
+      this.inputs.push(2);
+    },
+    remove(index) {
+      this.inputs.splice(index, 1);
+    },
     dialog: function(e) {
       alert(e.currentTarget);
     },

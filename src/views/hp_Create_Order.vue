@@ -85,10 +85,8 @@
                     </v-col>
                   </v-row>
 
-                  <v-row v-for="n in 2" 
-                  :key="n">
- 
-
+                  <v-row v-for="k in inputs.length" 
+                  :key="k">
                     <v-col cols="12" sm="1" md="1">
                       <v-checkbox v-model="checkbox1"></v-checkbox>
                     </v-col>
@@ -131,6 +129,7 @@ import Menu from "../components/menubar_hos";
 export default {
   data() {
     return {
+      inputs:[1,2],
       date: new Date().toISOString().substr(0, 10),
       menu: false,
       dialog_record: false,
@@ -171,7 +170,8 @@ export default {
           }
         }
       }
-    }
+    },
+    
   },
   mounted() {
     for (var i = 0; i < this.patients.length; i++) {

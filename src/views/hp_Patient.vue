@@ -43,6 +43,9 @@
                     <v-col cols="12" sm="12">
                       <v-text-field v-model="editedItem.address" label="ที่อยู่" outlined></v-text-field>
                     </v-col>
+                    <v-col cols="12" sm="12">
+                      <v-select :items="disease" chips label="เลือกโรค" multiple outlined clearable></v-select>
+                    </v-col>
                     <v-col cols="12" sm="8">
                       <v-select label="ร้านขายยา" outlined v-model="editedItem.pharmacy"></v-select>
                       <!-- <v-text-field v-model="editedItem.pharmacy" label="ร้านขายยา" outlined></v-text-field> -->
@@ -188,6 +191,7 @@ import Menu from "../components/menubar_hos";
 export default {
   data() {
     return {
+      disease: ["เบาหวาน", "หอบหืด", "ความดันโลหิตสูง", "จิตเวช"],
       dialog: false,
       dialog_record: false,
       dialog_edit: false,
